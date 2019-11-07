@@ -1,5 +1,5 @@
 
-local sti = require "src/sti/sti"
+local sti = require "sti/sti"
 local map = sti("res/maps/untitled.lua")
 
 function love.load(arg)
