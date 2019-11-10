@@ -1,3 +1,6 @@
 [submodule "sti"]
 	path = sti
 	url = https://github.com/karai17/Simple-Tiled-Implementation.git
+[submodule "astar"]
+	path = astar
+	url = https://github.com/GloryFish/lua-astar.git

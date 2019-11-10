@@ -39,9 +39,9 @@ end
 
 function Render:draw()
   
-  Render.drawMainMap(self, self.main_canvas, Camera())
-  love.graphics.setCanvas()
+  Render.drawMainMap(self, self.main_canvas, self.maincamera)
   
+  love.graphics.setCanvas()
   love.graphics.replaceTransform(love.math.newTransform())
   love.graphics.draw(self.main_canvas, 0, 0)
   love.graphics.draw(self.minimap_canvas, 0, 0)
