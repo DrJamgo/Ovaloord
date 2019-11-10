@@ -86,6 +86,9 @@
 </data>
  </layer>
  <layer id="11" name="ObstaclesLow" width="20" height="20">
+  <properties>
+   <property name="minimap" type="bool" value="true"/>
+  </properties>
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -185,6 +188,9 @@
 </data>
  </layer>
  <layer id="5" name="Treetops1" width="20" height="20">
+  <properties>
+   <property name="minimap" type="bool" value="true"/>
+  </properties>
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -209,6 +215,9 @@
 </data>
  </layer>
  <layer id="4" name="Treetops2" width="20" height="20">
+  <properties>
+   <property name="minimap" type="bool" value="true"/>
+  </properties>
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
