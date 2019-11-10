@@ -1,7 +1,7 @@
 local STI = require "sti/sti"
 require 'utils/camera'
 require 'utils/map'
-require 'game/pathhandler'
+require 'game/grid'
 require 'astar/astar'
 Game = 
 {
@@ -26,14 +26,10 @@ function Game:_init()
   return self
 end
 
-local pathhandler = PathHandler(map)
-local astar = AStar(pathhandler)
-
 function Game:load(mapPath)
   local map = STI(mapPath)
   self.map = map
-  
-  pathhandler:setMap(map)
+  self.grid = Grid(map)
   
   local object = gamemap.getObjectByName(map, "spawn")
   self.spawn = gamemap.getTileFromObject(map, object)
@@ -45,7 +41,7 @@ end
 
 function Game:update(dt)
   self.map:update(dt)
-  
+  local astar = AStar(self.grid)
   self.path = astar:findPath(self.spawn, self.goal)
 end
 

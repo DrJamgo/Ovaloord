@@ -9,7 +9,7 @@ return {
   tilewidth = 32,
   tileheight = 32,
   nextlayerid = 15,
-  nextobjectid = 6,
+  nextobjectid = 7,
   properties = {},
   tilesets = {
     {
@@ -38,7 +38,39 @@ return {
       tilecount = 1024,
       tiles = {
         {
+          id = 79,
+          type = "road"
+        },
+        {
+          id = 80,
+          type = "road"
+        },
+        {
+          id = 81,
+          type = "road"
+        },
+        {
+          id = 111,
+          type = "road"
+        },
+        {
           id = 112,
+          type = "road"
+        },
+        {
+          id = 113,
+          type = "road"
+        },
+        {
+          id = 143,
+          type = "road"
+        },
+        {
+          id = 144,
+          type = "road"
+        },
+        {
+          id = 145,
           type = "road"
         },
         {
