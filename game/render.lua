@@ -29,12 +29,18 @@ function Render:drawMainMap(canvas, camera)
   camera:setFromTile(map,9,10,self.zoom)
   self.map:draw(camera:getMapArgs())
   
-  -- redraw units layer (transparent)
   love.graphics.replaceTransform(camera:getTransform())
+  if self.grid then
+    self.grid:draw()
+  end  
+  -- redraw units layer (transparent)
+  
   map.layers.Units.properties.opacity = map.layers.Units.opacity
   map.layers.Units.opacity = 0.3
   map:drawLayer(map.layers.Units)
   map.layers.Units.opacity = map.layers.Units.properties.opacity
+  
+
 end
 
 function Render:draw()

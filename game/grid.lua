@@ -33,6 +33,20 @@ function Grid:update(dt)
   
 end
 
+function Grid:draw()
+  local map = self.map
+  love.graphics.setColor(1,0,0,0.3)
+  for y=1,map.height do
+    for x=1,map.width do
+      if not self.static[y][x] then
+        local wx,wy = self.map:convertTileToPixel(x,y)
+        love.graphics.rectangle("fill", wx, wy, -self.map.tilewidth, -self.map.tileheight)
+      end
+    end
+  end
+  love.graphics.setColor(1,1,1,1)
+end
+
 function Grid:getNode(location)
   -- Here you make sure the requested node is valid (i.e. on the map, not blocked)
   local static = self.static[location.y][location.x]
