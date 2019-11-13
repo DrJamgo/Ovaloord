@@ -17,8 +17,8 @@ function gamemap.getTileFromObject(map, object)
 end
 
 function gamemap.getPixelFromTile(map, tile)
-  local x,y = map:convertTileToPixel(tile.x-0.5, tile.y-0.5)
-  return x, y
+  local wx,wy = map:convertTileToPixel(tile.x-0.5, tile.y-0.5)
+  return wx, wy
 end
 
 return gamemap

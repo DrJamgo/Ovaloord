@@ -29,7 +29,7 @@ function Grid:initialize(map)
   end
 end
 
-function Grid:update()
+function Grid:update(dt)
   
 end
 
@@ -42,7 +42,6 @@ function Grid:getNode(location)
 
   return nil
 end
-
 
 function Grid:getAdjacentNodes(curnode, dest)
   -- Given a node, return a table containing all adjacent nodes

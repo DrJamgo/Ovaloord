@@ -8,7 +8,7 @@ return {
   height = 20,
   tilewidth = 32,
   tileheight = 32,
-  nextlayerid = 15,
+  nextlayerid = 16,
   nextobjectid = 7,
   properties = {},
   tilesets = {
@@ -787,7 +787,7 @@ return {
     {
       type = "tilelayer",
       id = 6,
-      name = "Units",
+      name = "UnitsForTest",
       x = 0,
       y = 0,
       width = 20,
@@ -820,6 +820,18 @@ return {
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
       }
+    },
+    {
+      type = "objectgroup",
+      id = 15,
+      name = "Units",
+      visible = true,
+      opacity = 1,
+      offsetx = 0,
+      offsety = 0,
+      draworder = "topdown",
+      properties = {},
+      objects = {}
     },
     {
       type = "tilelayer",
@@ -941,7 +953,7 @@ return {
       id = 10,
       name = "Objects",
       visible = true,
-      opacity = 1,
+      opacity = 0.3,
       offsetx = 0,
       offsety = 0,
       draworder = "topdown",
