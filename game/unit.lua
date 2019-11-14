@@ -25,6 +25,7 @@ function Unit:_moveToTile(dt, targetTile)
     self.path = astar:findPath(start, self.game.goal)
     self.pathindex = 0
     self.node = nil
+    self.target = targetTile
   end
   
   -- select next node
@@ -43,9 +44,7 @@ function Unit:_moveToTile(dt, targetTile)
     if self.game.grid:claimNode(self.node, self) then
       self.stuck = nil
       self.moving = true
-      local dx = self.node.location.x - self.tx
-      local dy = self.node.location.y - self.ty
-      if self:_move(dt, dx, dy) then
+      if self:_move(dt, self.node.location) then
         self.node = nil
       end
     else
@@ -58,7 +57,9 @@ function Unit:_moveToTile(dt, targetTile)
   end
 end
 
-function Unit:_move(dt, dx, dy)
+function Unit:_move(dt, location)
+  local dx = location.x - self.tx
+  local dy = location.y - self.ty
   local distance = math.sqrt(dx*dx + dy*dy)
   local step = self.speed * dt
   if distance > step then
