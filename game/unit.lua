@@ -4,7 +4,10 @@ Unit = class('Unit')
 require 'utils/map'
 
 function Unit:initialize(game, tx, ty)
+  -- references
   self.game = game
+  
+  -- physics
   self.tx, self.ty = tx, ty
   self.speed = 1
   self.radius = 0.4
@@ -12,25 +15,18 @@ function Unit:initialize(game, tx, ty)
   -- appearane
   self.size = {x=32, y=64}
   self.offset = {x=-16, y=-48}
-end 
+end
 
-function Unit:update(dt)
+function Unit:_moveToTile(dt, targetTile)
   -- find path
-  if not self.path then
+  if not self.path or self.target ~= targetTile then
     local astar = AStar(self.game.grid)
     local start = {x=math.floor(self.tx+0.5), y=math.floor(self.ty+0.5)}
-    if not self.game.grid:locationsAreEqual(start, self.game.goal) then
-      self.path = astar:findPath(start, self.game.goal)
-      self.pathindex = 0
-    else 
-      self.path = astar:findPath(start, self.game.spawn)
-      self.pathindex = 0
-      if self.stuck then
-        print("stuck")
-      end
-    end
+    self.path = astar:findPath(start, self.game.goal)
+    self.pathindex = 0
+    self.node = nil
   end
-
+  
   -- select next node
   if self.path and not self.node then
     self.pathindex = self.pathindex + 1
@@ -41,34 +37,43 @@ function Unit:update(dt)
     end
   end
   
-  -- check if node is walkable
+ -- check if node is walkable
   self.moving = false
   if self.node then
     if self.game.grid:claimNode(self.node, self) then
       self.stuck = nil
       self.moving = true
-      local gwx, gwy = gamemap.getPixelFromTile(self.game.map, self.node.location)
       local dx = self.node.location.x - self.tx
       local dy = self.node.location.y - self.ty
-      local distance = math.sqrt(dx*dx + dy*dy)
-      local step = self.speed * dt
-      if distance > step then
-        self.tx = self.tx + (dx / distance) * step
-        self.ty = self.ty + (dy / distance) * step
-      else
-        self.tx = self.node.location.x
-        self.ty = self.node.location.y
+      if self:_move(dt, dx, dy) then
         self.node = nil
       end
     else
       self.stuck = (self.stuck or 0) + dt
       if self.stuck > 3 then
         self.path = nil
-        self.node = nil
         self.stuck = 0
       end
     end
   end
+end
+
+function Unit:_move(dt, dx, dy)
+  local distance = math.sqrt(dx*dx + dy*dy)
+  local step = self.speed * dt
+  if distance > step then
+    self.tx = self.tx + (dx / distance) * step
+    self.ty = self.ty + (dy / distance) * step
+    return false
+  else
+    self.tx = self.node.location.x
+    self.ty = self.node.location.y
+    return true
+  end
+end
+
+function Unit:update(dt)
+  self:_moveToTile(dt, self.game.goal)
 end
 
 function Unit:draw()
@@ -87,13 +92,11 @@ function Unit:draw()
   }
   
   love.graphics.setColor(self.stuck and 1 or 0,0.5,0.5)
-  
   love.graphics.circle("line",unpack(self.circle))
   love.graphics.rectangle("line",unpack(self.rect))
   
-  
   love.graphics.setColor(0,0,0,0.3)
-  if self.path and self.stuck then
+  if self.path then
     local nodes = self.path:getNodes()
     for i=1,#nodes-1 do
       local x1, y1 = gamemap.getPixelFromTile(self.game.map, nodes[i].location)
