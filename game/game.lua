@@ -40,16 +40,17 @@ function Game:load(mapPath)
   self.renderer.load(self)
   
   self.units = {}
-  for i=1,1 do
+  for i=1,5 do
     self.units[i] = Unit(self, 1, 4+i)
   end
-  
-  
 end
 
 function Game:update(dt)
+  dt = math.min(dt, 0.25)
+  if love.keyboard.isDown('x') then dt = dt * 10 end
+  if love.keyboard.isDown('y') then dt = dt * 0.1 end
   self.map:update(dt)
-  self.grid:update(dt)
+  self.grid:update(dt, self.units)
   for _,unit in ipairs(self.units) do
     unit:update(dt)
   end

@@ -44,7 +44,7 @@ function Render:drawMainMap(canvas, camera)
 end
 
 function Render:draw()
-  
+  love.graphics.setColor(1,1,1,1)
   Render.drawMainMap(self, self.main_canvas, self.maincamera)
   
   love.graphics.setCanvas()
