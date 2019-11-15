@@ -2,6 +2,7 @@ require 'middleclass'
 Unit = class('Unit')
 
 require 'utils/map'
+require 'game/unit/lpcsprite'
 
 Unit.speed = 1
 Unit.radius = 0.4
@@ -13,14 +14,14 @@ function Unit:initialize(game, tx, ty)
   -- references
   self.game = game
   -- physics
-  self.tx, self.ty = tx, ty
+  self.pos = vec2(tx, ty)
 end
 
 function Unit:_moveToTile(dt, targetTile)
   -- find path
   if not self.path or self.target ~= targetTile then
     local astar = AStar(self.game.grid)
-    local start = {x=math.floor(self.tx+0.5), y=math.floor(self.ty+0.5)}
+    local start = {x=math.floor(self.pos.x+0.5), y=math.floor(self.pos.y+0.5)}
     self.path = astar:findPath(start, self.game.goal)
     self.pathindex = 0
     self.node = nil
@@ -57,27 +58,35 @@ function Unit:_moveToTile(dt, targetTile)
 end
 
 function Unit:_move(dt, location)
-  local dx = location.x - self.tx
-  local dy = location.y - self.ty
-  local distance = math.sqrt(dx*dx + dy*dy)
+  local diff = vec2_sub(location, self.pos)
   local step = self.speed * dt
+  local distance
+  self.moveinc, distance = vec2_norm(diff, step)
   if distance > step then
-    self.tx = self.tx + (dx / distance) * step
-    self.ty = self.ty + (dy / distance) * step
+    self.pos = vec2_add(self.pos, self.moveinc)
     return false
   else
-    self.tx = self.node.location.x
-    self.ty = self.node.location.y
+    copy(self.pos, location)
     return true
   end
 end
 
+function Unit:_update(dt, target)
+  if target[1] == 'move' then
+    self:_moveToTile(dt, target[2])
+  end
+  if target[1] == 'attack' then
+    -- TODO: implement attack
+  end
+end
+
 function Unit:update(dt)
-  self:_moveToTile(dt, self.game.goal)
+  -- default behaviour: move to game.goal..
+  self:_update(dt, {'move', self.game.goal})
 end
 
 function Unit:draw()
-  local wx, wy = gamemap.getPixelFromTile(self.game.map, {x=self.tx, y=self.ty})
+  local wx, wy = gamemap.getPixelFromTile(self.game.map, {x=self.pos.x, y=self.pos.y})
    
   self.rect = {
     wx + self.offset.x, 

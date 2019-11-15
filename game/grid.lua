@@ -38,8 +38,8 @@ function Grid:update(dt)
       local location = {x=x, y=y}
       if unit then
         if unit.node and not Grid:locationsAreEqual(unit.node.location, location) then
-          local dx = math.abs(unit.tx - x)
-          local dy = math.abs(unit.ty - y)
+          local dx = math.abs(unit.pos.x - x)
+          local dy = math.abs(unit.pos.y - y)
           local dist = math.max(dx,dy)
           if dist > unit.radius * 2 then
             self.dynamic[y][x] = nil
@@ -67,7 +67,7 @@ function Grid:draw()
       local unit = self.dynamic[y][x]
       if unit then
         local wx,wy = self.map:convertTileToPixel(x,y)
-        local wux, wuy = self.map:convertTileToPixel(unit.tx, unit.ty)
+        local wux, wuy = self.map:convertTileToPixel(unit.pos.x, unit.pos.y)
         love.graphics.rectangle("fill", wx, wy, -self.map.tilewidth, -self.map.tileheight)
         love.graphics.line(wx-16, wy-16, wux - 16, wuy - 16)
       end
