@@ -74,7 +74,7 @@ Object.subclass = function(theClass, name)
     __call = function(_, ...) return theSubClass:new(...) end  -- allows MyClass(...) instead of MyClass:new(...)
   })
 
-  theSubClass.initialize = function(instance,...) super.initialize(instance) end -- default initialize method
+  theSubClass.initialize = function(instance,...) super.initialize(instance,...) end -- default initialize method
   _classes[theSubClass]= theSubClass -- registers the new class on the list of _classes
   theClass:subclassed(theSubClass)   -- hook method. By default it does nothing
 

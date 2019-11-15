@@ -3,18 +3,17 @@ Unit = class('Unit')
 
 require 'utils/map'
 
+Unit.speed = 1
+Unit.radius = 0.4
+
+Unit.size = {x=32, y=64}
+Unit.offset = {x=-16, y=-48}
+
 function Unit:initialize(game, tx, ty)
   -- references
   self.game = game
-  
   -- physics
   self.tx, self.ty = tx, ty
-  self.speed = 1
-  self.radius = 0.4
-  
-  -- appearane
-  self.size = {x=32, y=64}
-  self.offset = {x=-16, y=-48}
 end
 
 function Unit:_moveToTile(dt, targetTile)

@@ -2,7 +2,7 @@ local STI = require "sti/sti"
 require 'utils/camera'
 require 'utils/map'
 require 'game/grid'
-require 'game/unit'
+require 'game/unit/corpse'
 require 'astar/astar'
 Game = 
 {
@@ -41,7 +41,7 @@ function Game:load(mapPath)
   
   self.units = {}
   for i=1,5 do
-    self.units[i] = Unit(self, 1, 4+i)
+    self.units[i] = Corpse(self, 1, 4+i)
   end
 end
 

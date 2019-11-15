@@ -6,7 +6,7 @@ if arg[#arg] == "-debug" then require("mobdebug").start() end
 
 love.window.setMode(1000, 640, flags)
 
-require 'game/game'
+require 'game'
 
 local game = Game()
 
