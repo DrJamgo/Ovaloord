@@ -2,6 +2,7 @@ require 'middleclass'
 Unit = class('Unit')
 
 require 'utils/map'
+require 'utils/vec'
 require 'game/unit/lpcsprite'
 
 Unit.speed = 1
@@ -66,7 +67,7 @@ function Unit:_move(dt, location)
     self.pos = vec2_add(self.pos, self.moveinc)
     return false
   else
-    copy(self.pos, location)
+    self.pos = vec2(location.x, location.y)
     return true
   end
 end
