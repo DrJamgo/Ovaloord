@@ -8,9 +8,6 @@ require 'game/unit/lpcsprite'
 Unit.speed = 1
 Unit.radius = 0.4
 
-Unit.size = {x=32, y=64}
-Unit.offset = {x=-16, y=-48}
-
 function Unit:initialize(game, tx, ty)
   -- references
   self.game = game
@@ -89,23 +86,22 @@ end
 function Unit:draw()
   local wx, wy = gamemap.getPixelFromTile(self.game.map, {x=self.pos.x, y=self.pos.y})
    
-  self.rect = {
-    wx + self.offset.x, 
-    wy + self.offset.y,
-    self.size.x,
-    self.size.y
-  }
   self.circle = {
     wx,
     wy,
-    self.size.x / 2
+    self.radius * self.game.map.tilewidth
   }
   
   love.graphics.setColor(self.stuck and 1 or 0,0.5,0.5)
   love.graphics.circle("line",unpack(self.circle))
-  love.graphics.rectangle("line",unpack(self.rect))
   
-  love.graphics.setColor(0,0,0,0.3)
+  local dir = (math.floor((math.atan2(self.moveinc.y, self.moveinc.x) / math.pi * 2 + 0.5))) % 4 + 1
+  
+  local _, diff = vec2_norm(self.moveinc)
+  LPCSprite.drawAnimation(self, (self.stuck and 'stand') or 'move', dir, diff)
+  
+  --[[
+  love.graphics.setColor(0,0,0,1)
   if self.path then
     local nodes = self.path:getNodes()
     for i=1,#nodes-1 do
@@ -114,5 +110,5 @@ function Unit:draw()
       love.graphics.line(x1, y1, x2, y2)
     end
   end
-  
+  ]]--
 end

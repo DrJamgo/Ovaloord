@@ -59,8 +59,5 @@ end
 function Game:draw()
   self.renderer.draw(self)
   love.graphics.replaceTransform(self.maincamera:getTransform())
-  for _,unit in ipairs(self.units) do
-    unit:draw()
-  end
 end
 

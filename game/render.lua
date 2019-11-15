@@ -40,7 +40,9 @@ function Render:drawMainMap(canvas, camera)
   map:drawLayer(map.layers.Units)
   map.layers.Units.opacity = map.layers.Units.properties.opacity
   
-
+  for _,unit in ipairs(self.units) do
+    unit:draw()
+  end
 end
 
 function Render:draw()

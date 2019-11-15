@@ -1,5 +1,5 @@
 function vec2(x, y)
-  return {x=x, y=y}
+  return {x=x or 0, y=y or 0}
 end
 
 function vec2_add(v1, v2)
