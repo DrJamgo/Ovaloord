@@ -26,18 +26,18 @@ local dir_offset = {
   0
 }
 
-function LPCSprite:drawAnimation(animation, direction, time)
-  local anim_offset = LPCSprite.anim[animation]
+function LPCSprite:drawAnimation(wx, wy, animation, direction, time)
+  local anim_offset = self.anim[animation]
   self.animtime = (self.animtime or 0) + time
   if anim_offset then
     local drawframe = (math.floor(self.animtime / anim_offset.frametime) % anim_offset.framecnt)
     local anim_time_offset = (self.drawframe or 0) * 64
-    local quad = love.graphics.newQuad(anim_offset.x + anim_time_offset, anim_offset.y + dir_offset[direction], LPCSprite.size[1], LPCSprite.size[2], LPCSprite.sprite:getDimensions())
-    local wx, wy = gamemap.getPixelFromTile(self.game.map, {x=self.pos.x, y=self.pos.y})
+    local quad = love.graphics.newQuad(anim_offset.x + anim_time_offset, anim_offset.y + dir_offset[direction], self.size[1], self.size[2], self.sprite:getDimensions())
+    
     if not self.drawpos or self.drawframe ~= drawframe then
       self.drawpos = vec2(wx, wy)
     end
-    love.graphics.draw(LPCSprite.sprite, quad, self.drawpos.x, self.drawpos.y, 0, LPCSprite.scale, LPCSprite.scale, unpack(LPCSprite.offset))
+    love.graphics.draw(self.sprite, quad, self.drawpos.x, self.drawpos.y, 0, self.scale, self.scale, unpack(self.offset))
     
     self.drawframe = drawframe
   end

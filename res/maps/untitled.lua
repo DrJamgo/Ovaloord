@@ -8,7 +8,7 @@ return {
   height = 20,
   tilewidth = 32,
   tileheight = 32,
-  nextlayerid = 15,
+  nextlayerid = 16,
   nextobjectid = 7,
   properties = {},
   tilesets = {
@@ -36,7 +36,28 @@ return {
       properties = {},
       terrains = {},
       tilecount = 1024,
-      tiles = {}
+      tiles = {
+        {
+          id = 38,
+          type = "road"
+        },
+        {
+          id = 112,
+          type = "road"
+        },
+        {
+          id = 175,
+          type = "road"
+        },
+        {
+          id = 176,
+          type = "road"
+        },
+        {
+          id = 177,
+          type = "road"
+        }
+      }
     },
     {
       name = "Canibal",

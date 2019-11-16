@@ -13,6 +13,8 @@ function Unit:initialize(game, tx, ty)
   self.game = game
   -- physics
   self.pos = vec2(tx, ty)
+  -- appearance
+  self.spite = LPCSprite()
 end
 
 function Unit:_moveToTile(dt, targetTile)
@@ -23,27 +25,29 @@ function Unit:_moveToTile(dt, targetTile)
     self.path = astar:findPath(start, self.game.goal)
     self.pathindex = 0
     self.node = nil
+    self.nextNode = nil
     self.target = targetTile
   end
   
   -- select next node
-  if self.path and not self.node then
+  if self.path and not self.nextNode then
     self.pathindex = self.pathindex + 1
     local nodes = self.path:getNodes()
-    self.node = nodes[self.pathindex]
-    if not self.node then
+    self.nextNode = nodes[self.pathindex]
+    if not self.nextNode then
       self.path = nil
     end
   end
   
  -- check if node is walkable
   self.moving = false
-  if self.node then
-    if self.game.grid:claimNode(self.node, self) then
+  if self.nextNode then
+    if self.game.grid:claimNode(self.nextNode, self) then
       self.stuck = nil
       self.moving = true
-      if self:_move(dt, self.node.location) then
-        self.node = nil
+      if self:_move(dt, self.nextNode.location) then
+        self.node = self.nextNode
+        self.nextNode = nil
       end
     else
       self.stuck = (self.stuck or 0) + dt
@@ -98,10 +102,10 @@ function Unit:draw()
   local dir = (math.floor((math.atan2(self.moveinc.y, self.moveinc.x) / math.pi * 2 + 0.5))) % 4 + 1
   
   local _, diff = vec2_norm(self.moveinc)
-  LPCSprite.drawAnimation(self, (self.stuck and 'stand') or 'move', dir, diff)
+  self.spite:drawAnimation(wx, wy, (self.stuck and 'stand') or 'move', dir, diff)
   
   --[[
-  love.graphics.setColor(0,0,0,1)
+  --love.graphics.setColor(0,0,0,1)
   if self.path then
     local nodes = self.path:getNodes()
     for i=1,#nodes-1 do
@@ -111,4 +115,5 @@ function Unit:draw()
     end
   end
   ]]--
+  
 end

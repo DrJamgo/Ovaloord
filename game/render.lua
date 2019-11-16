@@ -52,9 +52,9 @@ function Render:drawMainMap(canvas, camera)
   
   map.layers.Units.properties.opacity = map.layers.Units.opacity
   map.layers.Units.opacity = 0.5
-  love.graphics.setColorMask(false, true, false, false)
+  --love.graphics.setColorMask(false, true, false, false)
   map:drawLayer(map.layers.Units)
-  love.graphics.setColorMask(true, true, true, true)
+  --love.graphics.setColorMask(true, true, true, true)
   map.layers.Units.opacity = map.layers.Units.properties.opacity
 end
 

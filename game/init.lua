@@ -2,7 +2,7 @@ local STI = require "sti/sti"
 require 'utils/camera'
 require 'utils/map'
 require 'game/grid'
-require 'game/unit/corpse'
+require 'game/unit/undead'
 require 'astar/astar'
 Game = 
 {

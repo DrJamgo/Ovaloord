@@ -44,7 +44,7 @@ function Grid:update(dt)
       local unit = self.dynamic[y][x]
       if unit then
         local location = vec2(x,y)
-        if unit.node and not Grid:locationsAreEqual(unit.node.location, location) then
+        if unit.nextNode and not Grid:locationsAreEqual(unit.nextNode.location, location) then
           local diff = vec2_sub(unit.pos, location)
           local dist = math.max(diff.x, diff.y)
           if dist > unit.radius * 2 then
@@ -114,7 +114,7 @@ local neighbours = {
   vec2( 1, 0),
   vec2( 0, 1),
   vec2(-1, 0),
-  vec2( 0,-1),
+  vec2( 0,-1)
 }
 
 function Grid:getAdjacentNodes(curnode, dest)
