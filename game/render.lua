@@ -1,8 +1,23 @@
 local Render = {}
 
+function drawUnitsLayer(layer)
+  for y=1,layer.map.height do
+    for _,unit in ipairs(layer.units) do
+      if unit.pos.y >= y and unit.pos.y < y+1 then
+        unit:draw()
+      end
+    end
+  end
+end
+
 function Render:load()
   Render.drawMinimap(self, self.minimap_canvas, self.minimapcamera)
   love.graphics.setCanvas()
+  
+  self.unitslayer = self.map:convertToCustomLayer('Units')
+  self.unitslayer.draw = drawUnitsLayer
+  self.unitslayer.map = self.map
+  self.unitslayer.units = self.units
 end
 
 function Render:drawMinimap(canvas, camera)
@@ -31,18 +46,16 @@ function Render:drawMainMap(canvas, camera)
   
   love.graphics.replaceTransform(camera:getTransform())
   if self.grid then
-    self.grid:draw()
+    --self.grid:draw()
   end  
   -- redraw units layer (transparent)
   
   map.layers.Units.properties.opacity = map.layers.Units.opacity
-  map.layers.Units.opacity = 0.3
+  map.layers.Units.opacity = 0.5
+  love.graphics.setColorMask(false, true, false, false)
   map:drawLayer(map.layers.Units)
+  love.graphics.setColorMask(true, true, true, true)
   map.layers.Units.opacity = map.layers.Units.properties.opacity
-  
-  for _,unit in ipairs(self.units) do
-    unit:draw()
-  end
 end
 
 function Render:draw()

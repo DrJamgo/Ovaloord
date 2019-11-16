@@ -8,7 +8,7 @@ return {
   height = 20,
   tilewidth = 32,
   tileheight = 32,
-  nextlayerid = 16,
+  nextlayerid = 15,
   nextobjectid = 7,
   properties = {},
   tilesets = {
@@ -36,58 +36,7 @@ return {
       properties = {},
       terrains = {},
       tilecount = 1024,
-      tiles = {
-        {
-          id = 79,
-          type = "road"
-        },
-        {
-          id = 80,
-          type = "road"
-        },
-        {
-          id = 81,
-          type = "road"
-        },
-        {
-          id = 111,
-          type = "road"
-        },
-        {
-          id = 112,
-          type = "road"
-        },
-        {
-          id = 113,
-          type = "road"
-        },
-        {
-          id = 143,
-          type = "road"
-        },
-        {
-          id = 144,
-          type = "road"
-        },
-        {
-          id = 145,
-          type = "road"
-        },
-        {
-          id = 175,
-          type = "road",
-          probability = 0.1
-        },
-        {
-          id = 176,
-          type = "road",
-          probability = 0.5
-        },
-        {
-          id = 177,
-          type = "road"
-        }
-      }
+      tiles = {}
     },
     {
       name = "Canibal",
@@ -787,7 +736,7 @@ return {
     {
       type = "tilelayer",
       id = 6,
-      name = "UnitsForTest",
+      name = "Units",
       x = 0,
       y = 0,
       width = 20,
@@ -820,18 +769,6 @@ return {
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
       }
-    },
-    {
-      type = "objectgroup",
-      id = 15,
-      name = "Units",
-      visible = true,
-      opacity = 1,
-      offsetx = 0,
-      offsety = 0,
-      draworder = "topdown",
-      properties = {},
-      objects = {}
     },
     {
       type = "tilelayer",
@@ -952,8 +889,8 @@ return {
       type = "objectgroup",
       id = 10,
       name = "Objects",
-      visible = true,
-      opacity = 0.3,
+      visible = false,
+      opacity = 1,
       offsetx = 0,
       offsety = 0,
       draworder = "topdown",

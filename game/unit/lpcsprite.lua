@@ -34,7 +34,6 @@ function LPCSprite:drawAnimation(animation, direction, time)
     local anim_time_offset = (self.drawframe or 0) * 64
     local quad = love.graphics.newQuad(anim_offset.x + anim_time_offset, anim_offset.y + dir_offset[direction], LPCSprite.size[1], LPCSprite.size[2], LPCSprite.sprite:getDimensions())
     local wx, wy = gamemap.getPixelFromTile(self.game.map, {x=self.pos.x, y=self.pos.y})
-    love.graphics.setColor(1,1,1,1)
     if not self.drawpos or self.drawframe ~= drawframe then
       self.drawpos = vec2(wx, wy)
     end

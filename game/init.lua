@@ -36,10 +36,9 @@ function Game:load(mapPath)
   self.spawn = gamemap.getTileFromObject(map, object)
   object = gamemap.getObjectByName(map, "goal")
   self.goal = gamemap.getTileFromObject(map, object)
-  
+  self.units = {}
   self.renderer.load(self)
   
-  self.units = {}
   for i=1,5 do
     self.units[i] = Corpse(self, 1, 4+i)
   end

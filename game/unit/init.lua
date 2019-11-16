@@ -6,7 +6,7 @@ require 'utils/vec'
 require 'game/unit/lpcsprite'
 
 Unit.speed = 1
-Unit.radius = 0.4
+Unit.radius = 0.2
 
 function Unit:initialize(game, tx, ty)
   -- references
@@ -92,8 +92,8 @@ function Unit:draw()
     self.radius * self.game.map.tilewidth
   }
   
-  love.graphics.setColor(self.stuck and 1 or 0,0.5,0.5)
-  love.graphics.circle("line",unpack(self.circle))
+  --love.graphics.setColor(self.stuck and 1 or 0,0.5,0.5)
+  --love.graphics.circle("line",unpack(self.circle))
   
   local dir = (math.floor((math.atan2(self.moveinc.y, self.moveinc.x) / math.pi * 2 + 0.5))) % 4 + 1
   
