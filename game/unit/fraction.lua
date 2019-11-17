@@ -7,25 +7,42 @@ require 'game/unit/unitspec'
 Fraction = class('Fraction')
 function Fraction:initialize(game, layer)
   self.game = game
-  for y,col in ipairs(layer.data) do
-    for x,tile in pairs(col) do
-      assert(_G[tile.type], "Unit type '"..(tile.type or "nil").."' not found! "..game.mappath.." -> "..layer.name.." -> ".. x-1 ..","..y-1)
-      self:addUnit(tile.type, x, y)
+  gamemap.getTilesInLayer(layer, 
+    function(tile, pos)
+      if _G[tile.type] then
+        self:addUnit(tile.type, pos)
+        self.game.map:setLayerTile(layer.name, pos.x, pos.y, nil)
+      end
     end
-  end
+  )
 end
-function Fraction:addUnit(typename, x, y)
+function Fraction:addUnit(typename, spawn)
   local class = assert(_G[typename], "Unit type '"..(typename or "nil").."' not found! ")
-  self.game.units[#self.game.units+1] = class(self.game, self, x, y)
+  self.game.units[#self.game.units+1] = class(self.game, self, spawn)
 end
 function Fraction:getUnitTarget(unit)
-  -- do nothing
+  -- do nothing, just stand there
 end
 
 Undead = class('Undead', Fraction)
+function Undead:initialize(game, layer)
+  Fraction.initialize(self, game, layer)
+  local map = game.map
+  
+  gamemap.getTilesInLayer(layer,
+    function(tile, pos)
+      if tile.type == 'spawn' then
+        self.spawn = pos
+      end
+      if tile.type == 'goal' then
+        self.goal = pos
+      end
+    end
+  )
+end
 function Undead:getUnitTarget(unit)
-  -- default behaviour: move to game.goal..
-  return {'move', self.game.goal}
+  -- default behaviour: move to goal..
+  return {'move', self.goal}
 end
 
 Human = class('Human', Fraction)

@@ -10,14 +10,14 @@ Unit.speed = 0.5
 Unit.radius = 0.4
 Unit.spritepath = 'res/sprites/default.png'
 
-function Unit:initialize(game, fraction, tx, ty)
+function Unit:initialize(game, fraction, spawn)
   -- references
   self.game = game
   self.fraction = fraction
-  self.spawn = vec2(tx, ty)
+  self.spawn = spawn
   
   -- physics
-  self.pos = vec2(tx, ty)
+  self.pos = vec2(spawn.x, spawn.y)
   
   -- appearance
   self.sprite = LPCSprite(self.spritepath)
@@ -44,7 +44,7 @@ function Unit:_moveToTile(dt, targetTile)
   if not self.path or self.target ~= targetTile then
     local astar = AStar(self)
     local start = {x=math.floor(self.pos.x+0.5), y=math.floor(self.pos.y+0.5)}
-    self.path = astar:findPath(start, self.game.goal)
+    self.path = astar:findPath(start, targetTile)
     self.pathindex = 0
     self.node = nil
     self.nextNode = nil

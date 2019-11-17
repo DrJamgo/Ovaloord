@@ -32,13 +32,7 @@ function Game:load(mapPath)
   self.mappath = mapPath
   self.map = map
   self.grid = Grid(map)
-  
-  local object = gamemap.getObjectByName(map, "spawn")
-  self.spawn = gamemap.getTileFromObject(map, object)
-  object = gamemap.getObjectByName(map, "goal")
-  self.goal = gamemap.getTileFromObject(map, object)
-  
-  
+
   self.units = {}
   self.fractions = {}
   self.renderer.load(self)
@@ -47,7 +41,6 @@ function Game:load(mapPath)
     local fraction = layer.properties.fraction
     if fraction then
       self.fractions = _G[fraction](self, layer)
-      layer.visible = false
     end
   end
   

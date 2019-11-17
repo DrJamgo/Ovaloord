@@ -6,4 +6,6 @@
  <tile id="175" type="road"/>
  <tile id="176" type="road"/>
  <tile id="177" type="road"/>
+ <tile id="719" type="spawn"/>
+ <tile id="720" type="goal"/>
 </tileset>

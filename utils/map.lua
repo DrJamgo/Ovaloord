@@ -21,5 +21,13 @@ function gamemap.getPixelFromTile(map, tile)
   return wx, wy
 end
 
+function gamemap.getTilesInLayer(layer, callback)
+  for y,col in ipairs(layer.data) do
+    for x,tile in pairs(col) do
+      callback(tile, {x=x, y=y})
+    end
+  end
+end
+
 return gamemap
 
