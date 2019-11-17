@@ -46,7 +46,7 @@ function Render:drawMainMap(canvas, camera)
   
   love.graphics.replaceTransform(camera:getTransform())
   if self.grid then
-    --self.grid:draw()
+    self.grid:draw()
   end  
   -- redraw units layer (transparent)
   

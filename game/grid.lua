@@ -46,7 +46,7 @@ function Grid:update(dt)
         local location = vec2(x,y)
         if unit.nextNode and not Grid:locationsAreEqual(unit.nextNode.location, location) then
           local diff = vec2_sub(unit.pos, location)
-          local dist = math.max(diff.x, diff.y)
+          local dist = math.max(math.abs(diff.x), math.abs(diff.y))
           if dist > unit.radius * 2 then
             self.dynamic[y][x] = nil
           end
@@ -93,7 +93,9 @@ function Grid:getNode(location)
       if unit then
         cost = cost * ((unit.moving and COST.UNIT_MOVING) or COST.UNIT_STANDING)
       end
-      return Node(static.location, cost, static.id)
+      local node = Node(static.location, cost, static.id)
+      node.unit = unit
+      return node
     end
   end
 
