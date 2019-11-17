@@ -1,11 +1,11 @@
 require 'game/unit'
 
 local units = {
-  human = {
+  Human = {
     Peasant = {}
   },
   
-  undead = {
+  Undead = {
     Canibal = {}
   }
 }

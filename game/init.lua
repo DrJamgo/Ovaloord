@@ -2,7 +2,7 @@ local STI = require "sti/sti"
 require 'utils/camera'
 require 'utils/map'
 require 'game/grid'
-require 'game/unit/unitspec'
+require 'game/unit/fraction'
 
 Game = 
 {
@@ -29,6 +29,7 @@ end
 
 function Game:load(mapPath)
   local map = STI(mapPath)
+  self.mappath = mapPath
   self.map = map
   self.grid = Grid(map)
   
@@ -36,18 +37,16 @@ function Game:load(mapPath)
   self.spawn = gamemap.getTileFromObject(map, object)
   object = gamemap.getObjectByName(map, "goal")
   self.goal = gamemap.getTileFromObject(map, object)
+  
+  
   self.units = {}
+  self.fractions = {}
   self.renderer.load(self)
   
   for l,layer in ipairs(map.layers) do
     local fraction = layer.properties.fraction
     if fraction then
-      for y,col in ipairs(layer.data) do
-        for x,tile in pairs(col) do
-          local class = assert(_G[tile.type], "Unit type '"..(tile.type or "nil").."' not found! "..mapPath.." -> "..layer.name.." -> ".. x-1 ..","..y-1)
-          self.units[#self.units+1] = class(self, fraction, x, y)
-        end
-      end
+      self.fractions = _G[fraction](self, layer)
       layer.visible = false
     end
   end

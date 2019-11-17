@@ -163,7 +163,7 @@
  </layer>
  <layer id="17" name="SpawnUndead" width="20" height="20">
   <properties>
-   <property name="fraction" value="undead"/>
+   <property name="fraction" value="Undead"/>
   </properties>
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -190,7 +190,7 @@
  </layer>
  <layer id="16" name="SpawnHumans" width="20" height="20">
   <properties>
-   <property name="fraction" value="humans"/>
+   <property name="fraction" value="Human"/>
   </properties>
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,

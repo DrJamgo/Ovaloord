@@ -46,7 +46,7 @@ function LPCSprite:drawAnimation(wx, wy, animation, direction, time)
   if anim_offset then
     local drawframe = (math.floor(self.animtime / anim_offset.frametime) % anim_offset.framecnt)
     local anim_time_offset = (self.drawframe or 0) * 64
-    local quad = love.graphics.newQuad(anim_offset.x + anim_time_offset, anim_offset.y + dir_offset[direction], self.size[1], self.size[2], self.spriteimage:getDimensions())
+    local quad = love.graphics.newQuad(anim_offset.x + anim_time_offset, anim_offset.y + dir_offset[direction or 2], self.size[1], self.size[2], self.spriteimage:getDimensions())
     
     if not self.drawpos or self.drawframe ~= drawframe then
       self.drawpos = vec2(wx, wy)

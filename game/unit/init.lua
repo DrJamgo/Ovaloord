@@ -21,6 +21,7 @@ function Unit:initialize(game, fraction, tx, ty)
   
   -- appearance
   self.sprite = LPCSprite(self.spritepath)
+  self.moveinc = vec2(0,1)
 end
 
 --
@@ -104,8 +105,10 @@ function Unit:_update(dt, target)
 end
 
 function Unit:update(dt)
-  -- default behaviour: move to game.goal..
-  self:_update(dt, {'move', self.game.goal})
+  local target = self.fraction:getUnitTarget(self)
+  if target then
+    self:_update(dt, target)
+  end
 end
 
 function Unit:draw()

@@ -368,7 +368,7 @@ return {
       offsetx = 0,
       offsety = 0,
       properties = {
-        ["fraction"] = "undead"
+        ["fraction"] = "Undead"
       },
       encoding = "lua",
       data = {
@@ -407,7 +407,7 @@ return {
       offsetx = 0,
       offsety = 0,
       properties = {
-        ["fraction"] = "humans"
+        ["fraction"] = "Human"
       },
       encoding = "lua",
       data = {
