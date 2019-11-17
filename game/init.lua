@@ -39,19 +39,30 @@ function Game:load(mapPath)
   self.units = {}
   self.renderer.load(self)
   
-  for i=1,5 do
-    self.units[i] = Corpse(self, 'undead', 1, 4+i)
+  for l,layer in ipairs(map.layers) do
+    local fraction = layer.properties.fraction
+    if fraction then
+      for y,col in ipairs(layer.data) do
+        for x,tile in pairs(col) do
+          local class = assert(_G[tile.type], "Unit type "..(tile.type or "nil").." not found!")
+          self.units[#self.units+1] = class(self, fraction, x, y)
+        end
+      end
+      layer.visible = false
+    end
   end
+  
 end
 
 function Game:update(dt)
   dt = math.min(dt, 0.25)
-  if love.keyboard.isDown('x') then dt = dt * 10 end
   if love.keyboard.isDown('y') then dt = dt * 0.1 end
-  self.map:update(dt)
-  self.grid:update(dt, self.units)
-  for _,unit in ipairs(self.units) do
-    unit:update(dt)
+  for _=1,(love.keyboard.isDown('x') and 10) or 1 do
+    self.map:update(dt)
+    self.grid:update(dt, self.units)
+    for _,unit in ipairs(self.units) do
+      unit:update(dt)
+    end
   end
 end
 

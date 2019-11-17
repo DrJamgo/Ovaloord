@@ -12,8 +12,11 @@ function Unit:initialize(game, fraction, tx, ty)
   -- references
   self.game = game
   self.fraction = fraction
+  self.spawn = vec2(tx, ty)
+  
   -- physics
   self.pos = vec2(tx, ty)
+  
   -- appearance
   self.spite = LPCSprite()
 end
