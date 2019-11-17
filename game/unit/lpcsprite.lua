@@ -1,9 +1,23 @@
 require 'middleclass'
 require 'utils/map'
 
+LPCSpriteLibrary = class('LPCSSpriteLibrary')
+
+local library
+function LPCSpriteLibrary.getSprite(filepath)
+
+  return library[filepath]
+end
+
 LPCSprite = class('LPCSprite')
-LPCSprite.sprite = love.graphics.newImage('res/sprites/Canibal.png')
-LPCSprite.sprite:setFilter('nearest','nearest')
+function LPCSprite:initialize(filepath)
+  library = library or {}
+  if not library[filepath] then
+    library[filepath] = love.graphics.newImage(filepath)
+    library[filepath]:setFilter('nearest','nearest')
+  end
+  self.spriteimage = library[filepath]
+end
 
 LPCSprite.size = {64, 64}
 LPCSprite.offset = {32, 48}
@@ -32,12 +46,12 @@ function LPCSprite:drawAnimation(wx, wy, animation, direction, time)
   if anim_offset then
     local drawframe = (math.floor(self.animtime / anim_offset.frametime) % anim_offset.framecnt)
     local anim_time_offset = (self.drawframe or 0) * 64
-    local quad = love.graphics.newQuad(anim_offset.x + anim_time_offset, anim_offset.y + dir_offset[direction], self.size[1], self.size[2], self.sprite:getDimensions())
+    local quad = love.graphics.newQuad(anim_offset.x + anim_time_offset, anim_offset.y + dir_offset[direction], self.size[1], self.size[2], self.spriteimage:getDimensions())
     
     if not self.drawpos or self.drawframe ~= drawframe then
       self.drawpos = vec2(wx, wy)
     end
-    love.graphics.draw(self.sprite, quad, self.drawpos.x, self.drawpos.y, 0, self.scale, self.scale, unpack(self.offset))
+    love.graphics.draw(self.spriteimage, quad, self.drawpos.x, self.drawpos.y, 0, self.scale, self.scale, unpack(self.offset))
     
     self.drawframe = drawframe
   end

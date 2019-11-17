@@ -2,8 +2,8 @@ local STI = require "sti/sti"
 require 'utils/camera'
 require 'utils/map'
 require 'game/grid'
-require 'game/unit/undead'
-require 'astar/astar'
+require 'game/unit/unitspec'
+
 Game = 
 {
   renderer = require 'game/render'
@@ -44,7 +44,7 @@ function Game:load(mapPath)
     if fraction then
       for y,col in ipairs(layer.data) do
         for x,tile in pairs(col) do
-          local class = assert(_G[tile.type], "Unit type "..(tile.type or "nil").." not found!")
+          local class = assert(_G[tile.type], "Unit type '"..(tile.type or "nil").."' not found! "..mapPath.." -> "..layer.name.." -> ".. x-1 ..","..y-1)
           self.units[#self.units+1] = class(self, fraction, x, y)
         end
       end

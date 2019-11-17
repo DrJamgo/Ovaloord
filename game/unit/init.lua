@@ -4,9 +4,11 @@ Unit = class('Unit')
 require 'utils/map'
 require 'utils/vec'
 require 'game/unit/lpcsprite'
+require 'astar/astar'
 
-Unit.speed = 1
-Unit.radius = 0.2
+Unit.speed = 0.5
+Unit.radius = 0.4
+Unit.spritepath = 'res/sprites/default.png'
 
 function Unit:initialize(game, fraction, tx, ty)
   -- references
@@ -18,7 +20,7 @@ function Unit:initialize(game, fraction, tx, ty)
   self.pos = vec2(tx, ty)
   
   -- appearance
-  self.spite = LPCSprite()
+  self.sprite = LPCSprite(self.spritepath)
 end
 
 --
@@ -121,7 +123,7 @@ function Unit:draw()
   local dir = (math.floor((math.atan2(self.moveinc.y, self.moveinc.x) / math.pi * 2 + 0.5))) % 4 + 1
   
   local _, diff = vec2_norm(self.moveinc or {x=0, y=0})
-  self.spite:drawAnimation(wx, wy, (self.stuck and 'stand') or 'move', dir, diff)
+  self.sprite:drawAnimation(wx, wy, (self.stuck and 'stand') or 'move', dir, diff)
   
   --[[
   --love.graphics.setColor(0,0,0,1)
