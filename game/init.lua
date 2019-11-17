@@ -40,7 +40,7 @@ function Game:load(mapPath)
   self.renderer.load(self)
   
   for i=1,5 do
-    self.units[i] = Corpse(self, 1, 4+i)
+    self.units[i] = Corpse(self, 'undead', 1, 4+i)
   end
 end
 

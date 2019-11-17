@@ -8,19 +8,35 @@ require 'game/unit/lpcsprite'
 Unit.speed = 1
 Unit.radius = 0.2
 
-function Unit:initialize(game, tx, ty)
+function Unit:initialize(game, fraction, tx, ty)
   -- references
   self.game = game
+  self.fraction = fraction
   -- physics
   self.pos = vec2(tx, ty)
   -- appearance
   self.spite = LPCSprite()
 end
 
+--
+-- WRAPPERS for GRID
+--
+function Unit:getAdjacentNodes(...)
+  return self.game.grid:getAdjacentNodes(...)
+end
+
+function Unit:locationsAreEqual(...)
+  return self.game.grid:locationsAreEqual(...)
+end
+
+function Unit:getNode(...)
+  return self.game.grid:getNode(...)
+end
+
 function Unit:_moveToTile(dt, targetTile)
   -- find path
   if not self.path or self.target ~= targetTile then
-    local astar = AStar(self.game.grid)
+    local astar = AStar(self)
     local start = {x=math.floor(self.pos.x+0.5), y=math.floor(self.pos.y+0.5)}
     self.path = astar:findPath(start, self.game.goal)
     self.pathindex = 0
@@ -101,7 +117,7 @@ function Unit:draw()
   
   local dir = (math.floor((math.atan2(self.moveinc.y, self.moveinc.x) / math.pi * 2 + 0.5))) % 4 + 1
   
-  local _, diff = vec2_norm(self.moveinc)
+  local _, diff = vec2_norm(self.moveinc or {x=0, y=0})
   self.spite:drawAnimation(wx, wy, (self.stuck and 'stand') or 'move', dir, diff)
   
   --[[

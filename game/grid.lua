@@ -110,7 +110,7 @@ function Grid:claimNode(node, unit)
   end
 end
 
-local neighbours = {
+local moveNodes = {
   vec2( 1, 0),
   vec2( 0, 1),
   vec2(-1, 0),
@@ -123,8 +123,9 @@ function Grid:getAdjacentNodes(curnode, dest)
   -- for other types of node graphs
   local result = {}
   
-  for _,delta in ipairs(neighbours) do
-    table.insert(result, self:_handleNode(vec2_add(curnode.location, delta), curnode, dest, 'move'))
+  for _,delta in ipairs(moveNodes) do
+    table.insert(result, 
+      self:_handleMoveNodes(vec2_add(curnode.location, delta), curnode, dest, 'move'))
   end
   return result
 end
@@ -133,7 +134,7 @@ function Grid:locationsAreEqual(a, b)
   return a.x == b.x and a.y == b.y
 end
 
-function Grid:_handleNode(loc, fromnode, dest, action)
+function Grid:_handleMoveNodes(loc, fromnode, dest, action)
   -- Fetch a Node for the given location and set its parameters
   local n = self:getNode(loc)
 
