@@ -26,8 +26,8 @@ end
 
 function Camera:setFromWorld(map,wx,wy,zoom)
   local canvas = love.graphics.getCanvas() or love.graphics
-  self.offsetx = -wx + canvas:getWidth() / 2 / zoom
-  self.offsety = -wy + canvas:getHeight() / 2 / zoom
+  self.offsetx = math.floor(-wx + canvas:getWidth() / 2 / zoom)
+  self.offsety = math.floor(-wy + canvas:getHeight() / 2 / zoom)
   self.scale   = zoom
   self:updateTransform()
 end

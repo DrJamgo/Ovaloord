@@ -14,6 +14,11 @@ function vec2_mul(v, s)
   return {x=v.x*s, y=v.y*s}
 end
 
+function vec2_dist(v1, v2)
+  local diff = vec2_sub(v1, v2)
+  return math.sqrt(diff.x*diff.x + diff.y*diff.y)
+end
+
 -- returns normalized vector and un-normalized length
 function vec2_norm(v, l)
   local l = l or 1

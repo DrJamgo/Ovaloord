@@ -21,7 +21,9 @@ function Unit:initialize(game, fraction, spawn)
   self.pos = vec2(spawn.x, spawn.y)
   self.node = self.game.grid:getNode(spawn)
   self.game.grid:claimNode(self.node, self)
-  self.melee = Ability(2,1,0.8)
+  if self.melee then
+    self.melee = Melee(unpack(self.melee))
+  end
   
   -- appearance
   self.sprite = LPCSprite(self.spritepath)
@@ -32,13 +34,7 @@ end
 --
 function Unit:getAdjacentNodes(curnode, dest)
   local nodes = self.game.grid:getAdjacentNodes(curnode, dest)
-  local melee = {}
-  for _,node in ipairs(nodes) do
-    if node.unit and node.unit.fraction ~= self.fraction then
-      node.action = 'melee'
-      table.insert(melee, node)
-    end
-  end
+  local melee = self.melee and self.melee:getNodes(self.game.grid, self, self.node) or {}
   return nodes, melee
 end
 
@@ -53,6 +49,8 @@ end
 function Unit:_faceNode(node)
   if node then
     local diff = vec2_sub(node.location, self.node.location)
+
+    -- 1=right, 2=down, 3=left, 4=up
     self.dir = (math.floor((math.atan2(diff.y, diff.x) / math.pi * 2 + 0.5))) % 4 + 1
   end
 end
@@ -60,17 +58,19 @@ end
 function Unit:_moveToTile(dt, targetTile)
   -- find path
   if not self.path or self.target ~= targetTile then
-    local astar = AStar(self)
-    local start = {x=math.floor(self.pos.x+0.5), y=math.floor(self.pos.y+0.5)}
-    self.path = astar:findPath(start, targetTile)
-    self.pathindex = 0
-    self.nextNode = nil
-    self.target = targetTile
+    if not self.game.grid:locationsAreEqual(self.node.location, targetTile) then
+      local astar = AStar(self)
+      local start = {x=math.floor(self.pos.x+0.5), y=math.floor(self.pos.y+0.5)}
+      self.path = astar:findPath(start, targetTile)
+      self.pathindex = 0
+      self.nextNode = nil
+      self.target = targetTile
+    end
   end
   
   -- check if enemy in melee range
   if not self.nextNode then
-    local allNodes, melee = self:getAdjacentNodes(self.node, targetTile)
+    local allNodes, melee = self:getAdjacentNodes(self.node, self.node.location)
     if melee[1] then
       self.nextNode = melee[1]
       self:_faceNode(self.nextNode)
@@ -106,9 +106,11 @@ function Unit:_moveToTile(dt, targetTile)
           self.stuck = 0
         end
       end
-    elseif self.nextNode.action == 'melee' then
-      if self.melee:activate() then
-        
+    elseif self.nextNode.action == 'melee' and self.melee then
+      if self.melee:validateTarget(self, self.node, self.nextNode.unit) then
+        self.melee:activate(self, self.nextNode.unit)
+      else
+        self.nextNode = nil
       end
     end
   end
@@ -138,11 +140,15 @@ function Unit:_update(dt, target)
 end
 
 function Unit:update(dt)
-  self.melee:update(dt)
-  local target = self.fraction:getUnitTarget(self)
-  if target then
-    self:_update(dt, target)
+  if self.melee and self.melee:isActive() then
+    local trigger = self.melee:update(dt)
+  else
+    local target = self.fraction:getUnitTarget(self)
+    if target then
+      self:_update(dt, target)
+    end
   end
+
 end
 
 function Unit:draw()
@@ -161,9 +167,14 @@ function Unit:draw()
     local _, diff = vec2_norm(self.moveinc or {x=0, y=0})
     self.movedist = (self.movedist or 0) + diff
     self.sprite:drawAnimation(wx, wy, (self.stuck and 'stand') or 'move', self.dir, self.movedist)
-  else
+  elseif self.melee then
     self.sprite:drawAnimation(wx, wy, 'slash', self.dir, self.melee:getProgress())
+  else
+    self.sprite:drawAnimation(wx, wy, 'stand', self.dir, 0)
   end
+  
+  love.graphics.print(tostring(self.id), wx, wy)
+  love.graphics.print(tostring(self.hp), wx, wy-32)
   
   --[[
   --love.graphics.setColor(0,0,0,1)

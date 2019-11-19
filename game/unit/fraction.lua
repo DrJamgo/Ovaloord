@@ -18,10 +18,16 @@ function Fraction:initialize(game, layer)
 end
 function Fraction:addUnit(typename, spawn)
   local class = assert(_G[typename], "Unit type '"..(typename or "nil").."' not found! ")
-  self.game.units[#self.game.units+1] = class(self.game, self, spawn)
+  local newUnit = class(self.game, self, spawn)
+  self.game.units[#self.game.units+1] = newUnit
+  newUnit.id = #self.game.units
 end
 function Fraction:getUnitTarget(unit)
-  -- do nothing, just stand there
+  return {'move', unit.spawn}
+end
+
+function Fraction:isEnemy(unit)
+  return unit.fraction ~= self
 end
 
 Undead = class('Undead', Fraction)

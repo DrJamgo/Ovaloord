@@ -2,11 +2,17 @@ require 'game/unit'
 
 local units = {
   Human = {
-    Peasant = {}
+    Peasant = {
+      melee = {1,0.6,0.5},
+      hp = 10
+      }
   },
   
   Undead = {
-    Canibal = {}
+    Canibal = {
+      melee = {1.6,0.6,0.5},
+      hp = 10
+      }
   }
 }
 

@@ -15,6 +15,7 @@ function Grid:initialize(map)
   self.map = map
   self.static = {}
   self.dynamic = {}
+  self.numtiles = map.height * map.width
   for y=1,map.height do
     self.static[y] = {}
     self.dynamic[y] = {}
@@ -112,7 +113,7 @@ function Grid:claimNode(node, unit)
   end
 end
 
-local moveNodes = {
+Grid.adjecentOffsets = {
   vec2( 1, 0),
   vec2( 0, 1),
   vec2(-1, 0),
@@ -125,9 +126,9 @@ function Grid:getAdjacentNodes(curnode, dest)
   -- for other types of node graphs
   local result = {}
   
-  for _,delta in ipairs(moveNodes) do
+  for _,delta in ipairs(Grid.adjecentOffsets) do
     table.insert(result, 
-      self:_handleMoveNodes(vec2_add(curnode.location, delta), curnode, dest, 'move'))
+      self:_handleMoveNodes(vec2_add(curnode.location, delta), curnode, dest))
   end
   return result
 end
@@ -136,7 +137,7 @@ function Grid:locationsAreEqual(a, b)
   return a.x == b.x and a.y == b.y
 end
 
-function Grid:_handleMoveNodes(loc, fromnode, dest, action)
+function Grid:_handleMoveNodes(loc, fromnode, dest)
   -- Fetch a Node for the given location and set its parameters
   local n = self:getNode(loc)
 
@@ -148,7 +149,7 @@ function Grid:_handleMoveNodes(loc, fromnode, dest, action)
     n.mCost = n.mCost + fromnode.mCost
     n.score = n.mCost + emCost
     n.parent = fromnode
-    n.action = action
+    n.action = 'move'
 
     return n
   end
