@@ -3,7 +3,7 @@ local Render = {}
 function drawUnitsLayer(layer)
   for y=1,layer.map.height do
     for _,unit in ipairs(layer.units) do
-      local offset = (unit.hp > 0 and 0) or 1
+      local offset = (unit.hp > 0 and 0) or 2
       if unit.pos.y >= y + offset and unit.pos.y < y+1+offset then
         unit:draw()
       end

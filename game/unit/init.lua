@@ -142,11 +142,12 @@ end
 
 function Unit:hit(dmg, unit)
   self.hp = self.hp - dmg
+  self.ishit = 0.2
 end
 
 function Unit:update(dt)
   if self.hp and self.hp <= 0 then
-    self.prone = math.min(1, (self.prone or 0) + dt)
+    self.prone = math.min(1, (self.prone or 0) + dt * 2)
   elseif self.melee and self.melee:isActive() then
     local trigger = self.melee:update(dt)
   else
@@ -155,7 +156,8 @@ function Unit:update(dt)
       self:_update(dt, target)
     end
   end
-
+  
+  self.ishit = (self.ishit or 0) - dt
 end
 
 function Unit:draw()
@@ -170,6 +172,10 @@ function Unit:draw()
   --love.graphics.setColor(self.stuck and 1 or 0,0.5,0.5)
   --love.graphics.circle("line",unpack(self.circle))
   
+  if self.ishit > 0 then
+    love.graphics.setColorMask(false, true, true, false)
+  end
+  
   if self.prone then
     self.sprite:drawAnimation(wx, wy, 'prone', 4, self.prone)
     self.node = nil
@@ -183,6 +189,8 @@ function Unit:draw()
   else
     self.sprite:drawAnimation(wx, wy, 'stand', self.dir, 0)
   end
+  
+  love.graphics.setColorMask()
   
   --love.graphics.print(tostring(self.id), wx, wy)
   --love.graphics.print(tostring(self.hp), wx, wy-32)
