@@ -25,6 +25,9 @@ function Unit:initialize(game, fraction, spawn)
   if self.melee then
     self.melee = Melee(unpack(self.melee))
   end
+  if self.range then
+    self.range = Range(unpack(self.range))
+  end
   
   -- appearance
   self.sprite = LPCSprite(self.spritepath)
@@ -34,9 +37,10 @@ end
 -- WRAPPERS for GRID
 --
 function Unit:getAdjacentNodes(curnode, dest)
-  local nodes = self.game.grid:getAdjacentNodes(curnode, dest)
+  local move = self.game.grid:getAdjacentNodes(curnode, dest)
   local melee = self.melee and self.melee:getNodes(self.game.grid, self, self.node) or {}
-  return nodes, melee
+  local range = self.range and self.range:getNodes(self.game.grid, self, self.node) or {}
+  return move, melee, range
 end
 
 function Unit:locationsAreEqual(...)
@@ -71,9 +75,14 @@ function Unit:_moveToTile(dt, targetTile)
   
   -- check if enemy in melee range
   if not self.nextNode then
-    local allNodes, melee = self:getAdjacentNodes(self.node, self.node.location)
+    local move, melee, range = self:getAdjacentNodes(self.node, self.node.location)
     if melee[1] then
       self.nextNode = melee[1]
+      self.attack = self.melee
+      self:_faceNode(self.nextNode)
+    elseif range[1] then
+      self.nextNode = range[1]
+      self.attack = self.range
       self:_faceNode(self.nextNode)
     end
   end
@@ -107,9 +116,9 @@ function Unit:_moveToTile(dt, targetTile)
           self.stuck = 0
         end
       end
-    elseif self.nextNode.action == 'melee' and self.melee then
-      if self.melee:validateTarget(self, self.node, self.nextNode.unit) then
-        self.melee:activate(self, self.nextNode.unit)
+    elseif self.nextNode.action and self.attack then
+      if self.attack:validateTarget(self, self.node, self.nextNode.unit) then
+        self.attack:activate(self, self.nextNode.unit)
       else
         self.nextNode = nil
       end
@@ -148,8 +157,8 @@ end
 function Unit:update(dt)
   if self.hp and self.hp <= 0 then
     self.prone = math.min(1, (self.prone or 0) + dt * 2)
-  elseif self.melee and self.melee:isActive() then
-    local trigger = self.melee:update(dt)
+  elseif self.attack and self.attack:isActive() then
+    local trigger = self.attack:update(dt)
   else
     local target = self.fraction:getUnitTarget(self)
     if target then
@@ -184,8 +193,8 @@ function Unit:draw()
     local _, diff = vec2_norm(self.moveinc or {x=0, y=0})
     self.movedist = (self.movedist or 0) + diff
     self.sprite:drawAnimation(wx, wy, (self.stuck and 'stand') or 'move', self.dir, self.movedist)
-  elseif self.melee and self.melee:isActive() then
-    self.sprite:drawAnimation(wx, wy, self.melee.anim, self.dir, self.melee:getProgress())
+  elseif self.attack and self.attack:isActive() then
+    self.sprite:drawAnimation(wx, wy, self.attack.anim, self.dir, self.attack:getProgress())
   else
     self.sprite:drawAnimation(wx, wy, 'stand', self.dir, 0)
   end

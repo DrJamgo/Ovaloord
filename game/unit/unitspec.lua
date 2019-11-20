@@ -1,34 +1,31 @@
 require 'game/unit'
 
 --
--- CHeet sheets
+-- Cheet sheets
 --
--- melee(dmg, anim, cooldown, duration, trigger)
+-- melee(dmg, range, anim, cooldown, duration, trigger)
 --
-
-
 local units = {
   Human = {
     Peasant = {
-      melee = {0.5, 'slash', 0.5, 0.4, 0.2},
+      melee = {0.5, 1.1, 'slash', 0.5, 0.4, 0.2},
       hp = 5
     }
   },
   
   Undead = {
-    Shooter = {
-      range = {2.0, 'shoot', 1, 0.8, 0.5},
-      hp = 10
-    },
     Revenant = {
-      melee = {2.0, 'thrust', 1, 0.8, 0.6},
+      melee = {2.0, 1.1, 'thrust', 1, 0.8, 0.6},
+      hp = 5
+    },
+    Hitter = {
+      range = {2.0, 5, 'shoot', 1, 0.8, 0.5},
       hp = 5
     },
     Canibal = {
-      melee = {2.0, 'slash', 1, 0.8, 0.5},
+      melee = {2.0, 1.1, 'slash',  1, 0.8, 0.5},
       hp = 10
     },
-
   }
 }
 

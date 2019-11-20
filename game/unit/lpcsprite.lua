@@ -28,7 +28,7 @@ LPCSprite.anim = {
   stand = vec2(0,  2*4*64),
   move  = vec2(64, 2*4*64),
   slash = vec2(0, 3*4*64),
-  shoot = vec2(0, 4*4*64),
+  shoot = vec2(64, 4*4*64),
   prone = vec2(0, 5*4*64)
 }
 LPCSprite.anim.stand.framecnt = 1
@@ -39,6 +39,8 @@ LPCSprite.anim.move.framecnt = 8
 LPCSprite.anim.move.frametime = 1/8
 LPCSprite.anim.slash.framecnt = 6
 LPCSprite.anim.slash.frametime = 1/8
+LPCSprite.anim.shoot.framecnt = 12
+LPCSprite.anim.shoot.frametime = 1/12
 LPCSprite.anim.prone.framecnt = 6
 LPCSprite.anim.prone.frametime = 1/6
 

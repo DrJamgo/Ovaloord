@@ -21,19 +21,19 @@ function Grid:initialize(map)
     self.dynamic[y] = {}
     for x=1,map.width do
       local walk = true
+      local shoot = true
       local cost = COST.OTHER
       for _,layer in ipairs(self.map.layers) do
-        if layer.properties.nowalk then
-          if layer.data[y][x] then
-            walk = false
-          end
+        if layer.data[y][x] then
+            walk = layer.properties.nowalk == nil
+            shoot = layer.properties.noshoot == nil
         end
         if layer.data and layer.data[y][x] and layer.data[y][x].type == 'road' then
           cost = COST.ROAD
         end
       end
-      if walk then
-        self.static[y][x] = {location = vec2(x,y), cost=cost, id=y*map.width+x}
+      if walk or shoot then
+        self.static[y][x] = {location = vec2(x,y), cost=cost, id=y*map.width+x, shoot=shoot, walk=walk}
       end
     end
   end
@@ -61,20 +61,22 @@ end
 
 function Grid:draw()
   local map = self.map
-  love.graphics.setColor(1,0,0,0.3)
+  
   for y=1,map.height do
     for x=1,map.width do
       if not self.static[y][x] then
+        love.graphics.setColor(0,0,0,0.3)
         local wx,wy = self.map:convertTileToPixel(x,y)
         love.graphics.rectangle("fill", wx, wy, -self.map.tilewidth, -self.map.tileheight)
       end
-    end
-  end
-  love.graphics.setColor(0,0,1,0.3)
-  for y=1,map.height do
-    for x=1,map.width do
+      if self.static[y][x] and self.static[y][x].walk ==false then
+        love.graphics.setColor(1,0,0,0.3)
+        local wx,wy = self.map:convertTileToPixel(x,y)
+        love.graphics.rectangle("fill", wx, wy, -self.map.tilewidth, -self.map.tileheight)
+      end
       local unit = self.dynamic[y][x]
       if unit then
+        love.graphics.setColor(0,0,1,0.3)
         local wx,wy = self.map:convertTileToPixel(x,y)
         local wux, wuy = self.map:convertTileToPixel(unit.pos.x, unit.pos.y)
         love.graphics.rectangle("fill", wx, wy, -self.map.tilewidth, -self.map.tileheight)
@@ -98,6 +100,8 @@ function Grid:getNode(location)
       end
       local node = Node(static.location, cost, static.id)
       node.unit = unit
+      node.shoot = static.shoot
+      node.walk = static.walk
       return node
     end
   end
@@ -143,7 +147,7 @@ function Grid:_handleMoveNodes(loc, fromnode, dest)
   -- Fetch a Node for the given location and set its parameters
   local n = self:getNode(loc)
 
-  if n ~= nil then
+  if n ~= nil and n.walk then
     local dx = math.max(loc.x, dest.x) - math.min(loc.x, dest.x)
     local dy = math.max(loc.y, dest.y) - math.min(loc.y, dest.y)
     local emCost = dx + dy

@@ -3,5 +3,6 @@
  <tileoffset x="-16" y="0"/>
  <image source="undead.png" width="320" height="640"/>
  <tile id="3" type="Revenant"/>
+ <tile id="8" type="Hitter"/>
  <tile id="17" type="Canibal"/>
 </tileset>

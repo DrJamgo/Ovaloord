@@ -56,15 +56,19 @@ function Ability:getProgress()
   return self.time / math.max(self.duration, 0.0001)
 end
 
+function Ability:_calculateCost(grid, unit, node)
+  local emCost = 1
+  node.mCost = node.mCost + (node.parent.mCost or 0)
+  node.score = node.mCost + emCost
+end
+
 function Ability:getNodes(grid, unit, fromnode)
   local result = {}
   for _,delta in ipairs(Grid.adjecentOffsets) do
     local n = self:getNode(grid, unit, fromnode, vec2_add(fromnode.location, delta))
     if n then
-      local emCost = 1
-      n.mCost = n.mCost + (fromnode.mCost or 0)
-      n.score = n.mCost + emCost
       n.parent = fromnode
+      self:_calculateCost(grid, unit, n)
       table.insert(result, n)
     end
   end
@@ -74,9 +78,9 @@ end
 ---------- Melee ----------
 
 Melee = class('Melee', Ability)
-function Melee:initialize(dmg, anim, ...)
+function Melee:initialize(dmg, range, anim, ...)
   Ability.initialize(self, ...)
-  self.range = 1.1
+  self.range = range
   self.dmg = dmg
   self.anim = anim
 end
@@ -114,4 +118,30 @@ function Melee:getNode(grid, unit, fromnode, location)
       end
   end
   return nil
+end
+
+---------- Range ----------
+Range = class('Range', Melee)
+function Range:getNodes(grid, unit, fromnode)
+  local result = {}
+  for _,delta in ipairs(Grid.adjecentOffsets) do
+    local loc = fromnode.location
+    for i=1,math.floor(self.range) do
+      if loc then
+        loc = vec2_add(loc, delta)
+        local node = grid:getNode(loc)
+        if node and node.shoot then
+          if node.unit and self:validateTarget(unit, fromnode, node.unit) then
+            node.parent = fromnode
+            node.action = 'range'
+            self:_calculateCost(grid, unit, node)
+            table.insert(result, node)
+          end
+        else
+          loc = nil
+        end
+      end
+    end
+  end
+  return result
 end
