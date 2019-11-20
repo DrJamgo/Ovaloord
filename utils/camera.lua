@@ -40,7 +40,7 @@ end
 
 function Camera:fit(map, canvas)
   local width  = map.width * map.tilewidth
-  local height = map.height * map.tileheight
+  local height = map.height * map.tileheight 
   local invscale = 
     math.max(width / canvas:getWidth(), height / canvas:getHeight())
   self.scale = 1 / math.floor(invscale)

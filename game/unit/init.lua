@@ -10,6 +10,7 @@ require 'astar/astar'
 Unit.speed = 0.5
 Unit.radius = 0.45
 Unit.spritepath = 'res/sprites/default.png'
+Unit.stuckpatience = 2
 
 function Unit:initialize(game, fraction, spawn)
   -- references
@@ -101,7 +102,7 @@ function Unit:_moveToTile(dt, targetTile)
         end
       else
         self.stuck = (self.stuck or 0) + dt
-        if self.stuck > 3 then
+        if self.stuck > self.stuckpatience then
           self.path = nil
           self.stuck = 0
         end
@@ -139,8 +140,14 @@ function Unit:_update(dt, target)
   end
 end
 
+function Unit:hit(dmg, unit)
+  self.hp = self.hp - dmg
+end
+
 function Unit:update(dt)
-  if self.melee and self.melee:isActive() then
+  if self.hp and self.hp <= 0 then
+    self.prone = math.min(1, (self.prone or 0) + dt)
+  elseif self.melee and self.melee:isActive() then
     local trigger = self.melee:update(dt)
   else
     local target = self.fraction:getUnitTarget(self)
@@ -163,18 +170,22 @@ function Unit:draw()
   --love.graphics.setColor(self.stuck and 1 or 0,0.5,0.5)
   --love.graphics.circle("line",unpack(self.circle))
   
-  if self.moving then
+  if self.prone then
+    self.sprite:drawAnimation(wx, wy, 'prone', 4, self.prone)
+    self.node = nil
+    self.nextNode = nil
+  elseif self.moving then
     local _, diff = vec2_norm(self.moveinc or {x=0, y=0})
     self.movedist = (self.movedist or 0) + diff
     self.sprite:drawAnimation(wx, wy, (self.stuck and 'stand') or 'move', self.dir, self.movedist)
-  elseif self.melee then
-    self.sprite:drawAnimation(wx, wy, 'slash', self.dir, self.melee:getProgress())
+  elseif self.melee and self.melee:isActive() then
+    self.sprite:drawAnimation(wx, wy, self.melee.anim, self.dir, self.melee:getProgress())
   else
     self.sprite:drawAnimation(wx, wy, 'stand', self.dir, 0)
   end
   
-  love.graphics.print(tostring(self.id), wx, wy)
-  love.graphics.print(tostring(self.hp), wx, wy-32)
+  --love.graphics.print(tostring(self.id), wx, wy)
+  --love.graphics.print(tostring(self.hp), wx, wy-32)
   
   --[[
   --love.graphics.setColor(0,0,0,1)

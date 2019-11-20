@@ -45,7 +45,9 @@ function Grid:update(dt)
       local unit = self.dynamic[y][x]
       if unit then
         local location = vec2(x,y)
-        if unit.nextNode and not Grid:locationsAreEqual(unit.nextNode.location, location) then
+        if unit.hp <= 0 then
+          self.dynamic[y][x] = nil
+        elseif unit.nextNode and not Grid:locationsAreEqual(unit.nextNode.location, location) then
           local diff = vec2_sub(unit.pos, location)
           local dist = math.max(math.abs(diff.x), math.abs(diff.y))
           if dist > unit.radius * 2 then

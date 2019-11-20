@@ -3,7 +3,7 @@ Ability = class('Ability')
 
 function Ability:initialize(cooldown, duration, trigger)
 
-  self.cooldown = cooldown or 0
+  self.cooldown = cooldown
   self.duration = duration or 0
   self.trigger = trigger or 0
   
@@ -22,7 +22,7 @@ function Ability:update(dt)
   
   trigger = (trigger == false) and (self.time > self.trigger)
   
-  if self.time > self.cooldown then
+  if self.cooldown and self.time > self.cooldown then
     self.active = false
     self.time = self.time - self.cooldown
   end
@@ -74,9 +74,11 @@ end
 ---------- Melee ----------
 
 Melee = class('Melee', Ability)
-function Melee:initialize(...)
+function Melee:initialize(dmg, anim, ...)
   Ability.initialize(self, ...)
   self.range = 1.1
+  self.dmg = dmg
+  self.anim = anim
 end
 
 function Melee:activate(unit, target)
@@ -89,13 +91,13 @@ function Melee:update(dt)
   local trigger = Ability.update(self, dt) and self:validateTarget(self.unit, self.unit.node, self.target)
   if trigger then
     -- todo: DMG calculation
-    self.target.hp = self.target.hp - 1
+    self.target:hit(self.dmg, self.unit)
   end
   return trigger 
 end
 
 function Melee:validateTarget(unit, fromnode, target)
-  return target and unit.fraction:isEnemy(target) and vec2_dist(target.pos, fromnode.location) <= self.range and target.hp > 0
+  return target and unit.fraction:isEnemy(target) and target.hp and target.hp > 0 and vec2_dist(target.pos, fromnode.location) <= self.range
 end
 
 function Melee:getNode(grid, unit, fromnode, location)

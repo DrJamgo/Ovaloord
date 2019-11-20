@@ -3,7 +3,8 @@ local Render = {}
 function drawUnitsLayer(layer)
   for y=1,layer.map.height do
     for _,unit in ipairs(layer.units) do
-      if unit.pos.y >= y and unit.pos.y < y+1 then
+      local offset = (unit.hp > 0 and 0) or 1
+      if unit.pos.y >= y + offset and unit.pos.y < y+1+offset then
         unit:draw()
       end
     end
@@ -46,7 +47,7 @@ function Render:drawMainMap(canvas, camera)
   
   love.graphics.replaceTransform(camera:getTransform())
   if self.grid then
-    self.grid:draw()
+    local g = options['g'] and self.grid:draw()
   end  
   -- redraw units layer (transparent)
   
