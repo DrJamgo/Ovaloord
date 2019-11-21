@@ -24,7 +24,8 @@ local units = {
     },
     Canibal = {
       melee = {2.0, 1.1, 'slash',  1, 0.8, 0.5},
-      hp = 10
+      hp = 10,
+      speed = 0.4
     },
   }
 }

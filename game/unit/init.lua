@@ -3,6 +3,7 @@ Unit = class('Unit')
 
 require 'utils/map'
 require 'utils/vec'
+require 'game/effect'
 require 'game/unit/lpcsprite'
 require 'game/unit/ability'
 require 'astar/astar'
@@ -157,6 +158,10 @@ end
 function Unit:update(dt)
   if self.hp and self.hp <= 0 then
     self.prone = math.min(1, (self.prone or 0) + dt * 2)
+    if self.prone == 1 and not self.dead then
+      self.dead = true
+      self.game:addObject(SpiritEffect(self.game, self.pos, {1,0,0,1}))
+    end
   elseif self.attack and self.attack:isActive() then
     local trigger = self.attack:update(dt)
   else
