@@ -19,8 +19,7 @@ end
 function Fraction:addUnit(typename, spawn)
   local class = assert(_G[typename], "Unit type '"..(typename or "nil").."' not found! ")
   local newUnit = class(self.game, self, spawn)
-  self.game.units[#self.game.units+1] = newUnit
-  newUnit.id = #self.game.units
+  self.game:addUnit(newUnit)
 end
 function Fraction:getUnitTarget(unit)
   return {'move', unit.spawn}

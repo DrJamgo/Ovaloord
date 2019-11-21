@@ -76,6 +76,7 @@ function Ability:getNodes(grid, unit, fromnode)
 end
 
 ---------- Melee ----------
+require 'game/unit/projectile'
 
 Melee = class('Melee', Ability)
 function Melee:initialize(dmg, range, anim, ...)
@@ -144,4 +145,12 @@ function Range:getNodes(grid, unit, fromnode)
     end
   end
   return result
+end
+
+function Range:update(dt)
+  local trigger = Ability.update(self, dt) and self:validateTarget(self.unit, self.unit.node, self.target)
+  if trigger then
+    self.unit.game:addObject(Arrow(self, self.unit, self.target))
+  end
+  return trigger
 end

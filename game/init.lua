@@ -34,6 +34,7 @@ function Game:load(mapPath)
   self.grid = Grid(map)
 
   self.units = {}
+  self.objects = {}
   self.fractions = {}
   self.renderer.load(self)
   
@@ -55,6 +56,9 @@ function Game:update(dt)
     for _,unit in ipairs(self.units) do
       unit:update(dt)
     end
+    for _,object in pairs(self.objects) do
+      object:update(dt)
+    end
   end
 end
 
@@ -63,3 +67,17 @@ function Game:draw()
   love.graphics.replaceTransform(self.maincamera:getTransform())
 end
 
+function Game:addUnit(unit)
+  self.units[#self.units+1] = unit
+  unit.id = #self.units
+end
+local id = 1
+function Game:addObject(object)
+  self.objects[id] = object
+  object.id = id
+  id = id + 1
+end
+
+function Game:removeObject(object)
+  self.objects[object.id] = nil
+end

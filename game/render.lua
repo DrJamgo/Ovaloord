@@ -8,6 +8,11 @@ function drawUnitsLayer(layer)
         unit:draw()
       end
     end
+    for _,object in pairs(layer.objects) do
+      if object.pos.y >= y and object.pos.y < y+1 then
+        object:draw()
+      end
+    end
   end
 end
 
@@ -19,6 +24,7 @@ function Render:load()
   self.unitslayer.draw = drawUnitsLayer
   self.unitslayer.map = self.map
   self.unitslayer.units = self.units
+  self.unitslayer.objects = self.objects
 end
 
 function Render:drawMinimap(canvas, camera)

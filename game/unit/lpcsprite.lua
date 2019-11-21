@@ -5,7 +5,6 @@ LPCSpriteLibrary = class('LPCSSpriteLibrary')
 
 local library
 function LPCSpriteLibrary.getSprite(filepath)
-
   return library[filepath]
 end
 
