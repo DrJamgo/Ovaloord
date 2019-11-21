@@ -132,7 +132,7 @@ function Range:getNodes(grid, unit, fromnode)
         loc = vec2_add(loc, delta)
         local node = grid:getNode(loc)
         if node and node.shoot then
-          if node.unit and self:validateTarget(unit, fromnode, node.unit) then
+          if i > 1 and node.unit and self:validateTarget(unit, fromnode, node.unit) then
             node.parent = fromnode
             node.action = 'range'
             self:_calculateCost(grid, unit, node)

@@ -182,7 +182,7 @@ function Unit:draw()
   --love.graphics.circle("line",unpack(self.circle))
   
   if self.ishit > 0 then
-    love.graphics.setColorMask(false, true, true, false)
+    love.graphics.setColor(1, 0.5, 0.5, 1)
   end
   
   if self.prone then
@@ -199,7 +199,7 @@ function Unit:draw()
     self.sprite:drawAnimation(wx, wy, 'stand', self.dir, 0)
   end
   
-  love.graphics.setColorMask()
+  love.graphics.setColor(1,1,1,1)
   
   --love.graphics.print(tostring(self.id), wx, wy)
   --love.graphics.print(tostring(self.hp), wx, wy-32)
