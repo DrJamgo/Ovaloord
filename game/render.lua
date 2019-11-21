@@ -1,10 +1,12 @@
 local Render = {}
 
 function drawUnitsLayer(layer)
+  Render:pushColor()
   for y=1,layer.map.height do
     for _,unit in ipairs(layer.units) do
       local offset = (unit.hp > 0 and 0) or 2
       if unit.pos.y >= y + offset and unit.pos.y < y+1+offset then
+        Render:popColor()
         unit:draw()
       end
     end
@@ -14,6 +16,14 @@ function drawUnitsLayer(layer)
       end
     end
   end
+end
+
+function Render:pushColor()
+  self.color = {love.graphics.getColor( )}
+end
+
+function Render:popColor()
+  love.graphics.setColor(unpack(self.color))
 end
 
 function Render:load()
@@ -35,7 +45,7 @@ function Render:drawMinimap(canvas, camera)
   end
   camera:fit(self.map, canvas)
   love.graphics.setCanvas(canvas)
-  love.graphics.clear(0,0,0,1)
+  love.graphics.clear(0,0,0.1,1)
   self.map:draw(camera:getMapArgs())
   -- restore original state
   for i,layer in ipairs(self.map.layers) do
@@ -47,7 +57,7 @@ function Render:drawMainMap(canvas, camera)
   local map = self.map
   -- draw map
   love.graphics.setCanvas(canvas)
-  love.graphics.clear(0,0,0,1)
+  love.graphics.clear(0,0,0.1,1)
   camera:setFromTile(map,9,10,self.zoom)
   self.map:draw(camera:getMapArgs())
   
@@ -58,7 +68,7 @@ function Render:drawMainMap(canvas, camera)
   -- redraw units layer (transparent)
   
   map.layers.Units.properties.opacity = map.layers.Units.opacity
-  map.layers.Units.opacity = 0.5
+  map.layers.Units.opacity = 0.2
   --love.graphics.setColorMask(false, true, false, false)
   map:drawLayer(map.layers.Units)
   --love.graphics.setColorMask(true, true, true, true)

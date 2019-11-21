@@ -199,8 +199,6 @@ function Unit:draw()
     self.sprite:drawAnimation(wx, wy, 'stand', self.dir, 0)
   end
   
-  love.graphics.setColor(1,1,1,1)
-  
   --love.graphics.print(tostring(self.id), wx, wy)
   --love.graphics.print(tostring(self.hp), wx, wy-32)
   

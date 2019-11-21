@@ -54,7 +54,7 @@ local dir_offset = {
 function LPCSprite:drawAnimation(wx, wy, animation, direction, animtime)
   local anim_offset = self.anim[animation] or self.anim['stand']
   if anim_offset then
-    local drawframe = (math.floor(animtime / (anim_offset.frametime + 0.001)) % anim_offset.framecnt)
+    local drawframe = (math.floor(animtime / (anim_offset.frametime + 0.00001)) % anim_offset.framecnt)
     local anim_time_offset = (self.drawframe or 0) * 64
     local quad = love.graphics.newQuad(anim_offset.x + anim_time_offset, anim_offset.y + dir_offset[direction or 2], self.size.x, self.size.y, self.spriteimage:getDimensions())
     
