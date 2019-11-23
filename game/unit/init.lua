@@ -32,7 +32,8 @@ function Unit:initialize(game, fraction, spawn)
   
   -- appearance
   self.sprite = LPCSprite(self.spritepath)
-  self.moveinc = vec2(0,1)
+
+  require('utils/microscope')('Unit.dot', self, 2, 'nometatables')
 end
 --
 -- WRAPPERS for GRID

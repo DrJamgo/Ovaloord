@@ -37,6 +37,8 @@ function Grid:initialize(map)
       end
     end
   end
+  
+  require('utils/microscope')('Grid.dot', self, 2, 'nometatables')
 end
 
 function Grid:update(dt)

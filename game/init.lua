@@ -45,6 +45,7 @@ function Game:load(mapPath)
     end
   end
   
+  require('utils/microscope')('Game.dot', self, 2, 'nometatables')
 end
 
 function Game:update(dt)

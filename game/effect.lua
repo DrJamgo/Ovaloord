@@ -34,7 +34,7 @@ end
 
 SpiritEffect = class('SpiritEffect', StationaryEffect)
 SpiritEffect.spriteimage = love.graphics.newImage('res/sprites/effects/undead-spirit-recruit-anim-explode.png')
-SpiritEffect.spriteimage:setFilter('nearest','nearest')
+--SpiritEffect.spriteimage:setFilter('nearest','nearest')
 SpiritEffect.scale = 1
 SpiritEffect.offset = vec2(32, 128)
 SpiritEffect.quadsize = vec2(64,128)
