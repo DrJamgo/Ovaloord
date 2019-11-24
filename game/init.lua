@@ -20,11 +20,12 @@ setmetatable(Game, {
 
 function Game:_init()
   self.scale = 2
-  self.renderer.init(self)
   return self
 end
 
 function Game:load(mapPath)
+  self.guimap = STI('res/maps/gui_units.lua')
+  
   local map = STI(mapPath)
   self.mappath = mapPath
   self.map = map
@@ -38,7 +39,7 @@ function Game:load(mapPath)
   for l,layer in ipairs(map.layers) do
     local fraction = layer.properties.fraction
     if fraction then
-      self.fractions = _G[fraction](self, layer)
+      self.fractions[#self.fractions] = _G[fraction](self, layer)
     end
   end
   
@@ -49,6 +50,7 @@ function Game:update(dt)
   dt = math.min(dt, 0.25)
   if love.keyboard.isDown('y') then dt = dt * 0.1 end
   if options['p'] then dt = 0 end
+  local leading_undead = nil
   for _=1,(love.keyboard.isDown('x') and 10) or 1 do
     self.map:update(dt)
     self.grid:update(dt, self.units)
@@ -63,7 +65,6 @@ end
 
 function Game:draw()
   self.renderer.draw(self)
-  love.graphics.replaceTransform(self.maincamera:getTransform())
 end
 
 function Game:addUnit(unit)

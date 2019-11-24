@@ -32,3 +32,8 @@ function Widget:draw()
   love.graphics.pop()
   love.graphics.rectangle("line",x,y,w,h)
 end
+
+STIWidget = class('STIWidget', Widget)
+function STIWidget:initialize(stimap)
+
+end

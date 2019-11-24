@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="17" height="3" tilewidth="24" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="1">
+ <tileset firstgid="1" source="../tilesets/undead.tsx"/>
+ <tileset firstgid="51" source="../tilesets/terrain_atlas.tsx"/>
+ <layer id="6" name="Tile Layer 2" width="17" height="3" offsetx="0" offsety="16">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,551,0,551,0,551,0,551,0,0,0,0,0,0,0,0,0,
+0,583,0,583,0,583,0,583,0,0,0,0,0,0,0,550,0
+</data>
+ </layer>
+ <layer id="7" name="Tile Layer 1" width="17" height="3" offsetx="0" offsety="8">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,9,0,4,0,0,0,549,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,550,0,0,0,550,0,0,0
+</data>
+ </layer>
+ <layer id="8" name="Tile Layer 3" width="17" height="3">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,18,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,550,0,0,0,0,0
+</data>
+ </layer>
+</map>
