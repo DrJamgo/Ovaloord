@@ -1,3 +1,5 @@
+require('graphics/widget')
+
 local Render = {}
 
 function drawUnitsLayer(layer)
@@ -36,10 +38,13 @@ function Render:load()
   local pixelperTile = 2
   local w,h = self.map.width * pixelperTile, self.map.height * pixelperTile
   
+  self.main = Widget({100, 0, 800, 600})
+  self.minimap = Widget({0, 0, w, h})
+  
   self.minimap_canvas = love.graphics.newCanvas(w,h)
   self.minimap_canvas:setFilter( 'nearest', 'nearest' )
 
-  local s_w, s_h = love.graphics:getDimensions()
+  local s_w, s_h = self.main:getDimensions()
   local mc_h = s_h / self.scale
   local mc_w = mc_h * s_w / s_h
 
@@ -103,16 +108,9 @@ function Render:draw()
   Render.drawMainMap(self, self.main_canvas, self.maincamera)
   
   love.graphics.setCanvas()
-  local vscale = love.graphics:getHeight() / self.main_canvas:getHeight()
-  local t = love.math.newTransform(0,0,0,self.scale,self.scale)
-  love.graphics.replaceTransform(t)
-  love.graphics.draw(self.main_canvas, 0, 0, 0, 1, 1)
-  love.graphics.draw(self.minimap_canvas, 0, 0, 0, 1, 1)
-  love.graphics.replaceTransform(t)
-  love.graphics.setColor(1,0,0,1)
-  love.graphics.rectangle('line', 0,0, self.main_canvas:getWidth(), self.main_canvas:getHeight())
-  love.graphics.rectangle("line",0,0,self.minimap_canvas:getWidth(), self.minimap_canvas:getHeight())
-  love.graphics.setColor(1,1,1,1)
+  love.graphics.replaceTransform(love.math.newTransform())
+  self.main:draw(self.main_canvas)
+  self.minimap:draw(self.minimap_canvas)
 end
 
 return Render
