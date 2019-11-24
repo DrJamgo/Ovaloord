@@ -35,25 +35,16 @@ end
 function Render:load()
   assert(self.map)
 
-  local pixelperTile = 2
+  local pixelperTile = 4
   local w,h = self.map.width * pixelperTile, self.map.height * pixelperTile
   
-  self.main = Widget({100, 0, 800, 600})
-  self.minimap = Widget({0, 0, w, h})
-  
-  self.minimap_canvas = love.graphics.newCanvas(w,h)
-  self.minimap_canvas:setFilter( 'nearest', 'nearest' )
+  self.main = Widget(0, 0, love.graphics:getWidth(), love.graphics:getHeight(), self.scale)
+  self.minimap = Widget(0, 0, w, h, pixelperTile/self.map.tilewidth)
 
-  local s_w, s_h = self.main:getDimensions()
-  local mc_h = s_h / self.scale
-  local mc_w = mc_h * s_w / s_h
-
-  self.main_canvas    = love.graphics.newCanvas(mc_w,mc_h)
-  self.main_canvas:setFilter( 'nearest', 'nearest' )
-  self.maincamera = Camera(self.main_canvas)
-  self.minimapcamera = Camera(self.minimap_canvas)
+  self.maincamera = Camera(self.main.canvas)
+  self.minimapcamera = Camera(self.minimap.canvas)
   
-  Render.drawMinimap(self, self.minimap_canvas, self.minimapcamera)
+  Render.drawMinimap(self, self.minimap.canvas, self.minimapcamera)
   love.graphics.setCanvas()
   
   self.unitslayer = self.map:convertToCustomLayer('Units')
@@ -105,7 +96,7 @@ end
 
 function Render:draw()
   love.graphics.setColor(1,1,1,1)
-  Render.drawMainMap(self, self.main_canvas, self.maincamera)
+  Render.drawMainMap(self, self.main.canvas, self.maincamera)
   
   love.graphics.setCanvas()
   love.graphics.replaceTransform(love.math.newTransform())

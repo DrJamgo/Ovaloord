@@ -48,6 +48,7 @@ end
 function Game:update(dt)
   dt = math.min(dt, 0.25)
   if love.keyboard.isDown('y') then dt = dt * 0.1 end
+  if options['p'] then dt = 0 end
   for _=1,(love.keyboard.isDown('x') and 10) or 1 do
     self.map:update(dt)
     self.grid:update(dt, self.units)
