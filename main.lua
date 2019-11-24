@@ -19,6 +19,10 @@ function love.keypressed( key, scancode, isrepeat )
   end
 end
 
+function love.mousepressed(...)
+  game.renderer.mousepressed(game, ...)
+end
+
 function love.wheelmoved(x, y)
   game.zoom = math.max(1, math.min(4,game.zoom + y/2))
 end

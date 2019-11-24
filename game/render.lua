@@ -35,12 +35,15 @@ function Render:load()
   local pixelperTile = 4
   local w,h = self.map.width * pixelperTile, self.map.height * pixelperTile
   
+  self.widgets = {}
   self.main = MainViewWidget(self.map, 0, 0, love.graphics:getWidth(), love.graphics:getHeight(), self.scale)
+  
+  self.widgets[#self.widgets+1] = self.main
 
   local numButtons = 8
   local w,h = self.guimap.tilewidth * self.guimap.width * self.scale, self.guimap.tileheight * self.guimap.height * self.scale, self.scale
   local y = love.graphics:getHeight() - h
-  self.gui_units = GuiWidget(self.guimap, 0, y, w, h, self.scale)
+  self.widgets[#self.widgets+1] = GuiWidget(self.guimap, 0, y, w, h, self.scale)
   
   self.unitslayer = self.map:convertToCustomLayer('Units')
   self.unitslayer.draw = drawUnitsLayer
@@ -55,8 +58,24 @@ function Render:draw()
   love.graphics.replaceTransform(love.math.newTransform())
   
   self.main:setFocus(self.units[1].pos)
-  self.main:draw()
-  self.gui_units:draw()
+  
+  for _,widget in ipairs(self.widgets) do
+    widget:draw()
+  end
+end
+
+function Render:mousepressed(x,y,...)
+  if self.widgets then
+    for i=1,#self.widgets do
+      -- iterate in reverse order to process last dawn widgets first
+      local widget = self.widgets[#self.widgets + 1 - i]
+      if widget:test(x,y) and widget.mousepressed then
+        if widget:mousepressed(x,y,...) then
+          return
+        end
+      end
+    end
+  end
 end
 
 return Render
