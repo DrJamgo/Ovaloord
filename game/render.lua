@@ -26,7 +26,28 @@ function Render:popColor()
   love.graphics.setColor(unpack(self.color))
 end
 
+function Render:init()
+
+end
+
 function Render:load()
+  assert(self.map)
+
+  local pixelperTile = 2
+  local w,h = self.map.width * pixelperTile, self.map.height * pixelperTile
+  
+  self.minimap_canvas = love.graphics.newCanvas(w,h)
+  self.minimap_canvas:setFilter( 'nearest', 'nearest' )
+
+  local s_w, s_h = love.graphics:getDimensions()
+  local mc_h = s_h / self.scale
+  local mc_w = mc_h * s_w / s_h
+
+  self.main_canvas    = love.graphics.newCanvas(mc_w,mc_h)
+  self.main_canvas:setFilter( 'nearest', 'nearest' )
+  self.maincamera = Camera(self.main_canvas)
+  self.minimapcamera = Camera(self.minimap_canvas)
+  
   Render.drawMinimap(self, self.minimap_canvas, self.minimapcamera)
   love.graphics.setCanvas()
   
@@ -57,8 +78,10 @@ function Render:drawMainMap(canvas, camera)
   local map = self.map
   -- draw map
   love.graphics.setCanvas(canvas)
-  love.graphics.clear(0,0,0.1,1)
-  camera:setFromTile(map,9,10,self.zoom)
+  love.graphics.clear(0,0,0.3,1)
+  local unit = self.units[1]
+  camera:setFromTile(map, unit.pos.x, unit.pos.y, 1) 
+  --camera:fit(self.map, self.main_canvas)
   self.map:draw(camera:getMapArgs())
   
   love.graphics.replaceTransform(camera:getTransform())
@@ -80,12 +103,16 @@ function Render:draw()
   Render.drawMainMap(self, self.main_canvas, self.maincamera)
   
   love.graphics.setCanvas()
-  love.graphics.replaceTransform(love.math.newTransform())
-  love.graphics.draw(self.main_canvas, 0, 0)
-  love.graphics.draw(self.minimap_canvas, 0, 0)
-  
-  local minimap_canvas = self.minimap_canvas
-  love.graphics.rectangle("line",0,0,minimap_canvas:getWidth(), minimap_canvas:getHeight())
+  local vscale = love.graphics:getHeight() / self.main_canvas:getHeight()
+  local t = love.math.newTransform(0,0,0,self.scale,self.scale)
+  love.graphics.replaceTransform(t)
+  love.graphics.draw(self.main_canvas, 0, 0, 0, 1, 1)
+  love.graphics.draw(self.minimap_canvas, 0, 0, 0, 1, 1)
+  love.graphics.replaceTransform(t)
+  love.graphics.setColor(1,0,0,1)
+  love.graphics.rectangle('line', 0,0, self.main_canvas:getWidth(), self.main_canvas:getHeight())
+  love.graphics.rectangle("line",0,0,self.minimap_canvas:getWidth(), self.minimap_canvas:getHeight())
+  love.graphics.setColor(1,1,1,1)
 end
 
 return Render

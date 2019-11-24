@@ -19,11 +19,8 @@ setmetatable(Game, {
 })
 
 function Game:_init()
-  self.minimap_canvas = love.graphics.newCanvas(160, 120)
-  self.main_canvas    = love.graphics.newCanvas(800, 640)
-  self.maincamera = Camera()
-  self.minimapcamera = Camera()
-  self.zoom = 2
+  self.scale = 2
+  self.renderer.init(self)
   return self
 end
 
@@ -54,8 +51,8 @@ function Game:update(dt)
   for _=1,(love.keyboard.isDown('x') and 10) or 1 do
     self.map:update(dt)
     self.grid:update(dt, self.units)
-    for _,unit in ipairs(self.units) do
-      unit:update(dt)
+    for _,unit in pairs(self.units) do
+      unit:update(dt*1.25)
     end
     for _,object in pairs(self.objects) do
       object:update(dt)
