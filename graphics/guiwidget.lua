@@ -6,14 +6,19 @@ function GuiWidget:initialize(map, ...)
   
   self.camera:fit(map)
   self.map = map
+  self.tile = nil
 end
 
-function GuiWidget:mousepressed(gx,gy,button,isTouch)
-  local lx,ly = self.transform:inverseTransformPoint(gx, gy)
-  tx, ty = self.map:convertPixelToTile(lx, ly)
-  tx = math.floor(tx + 1)
-  ty = math.floor(ty + 1)
-  local layer = self.map.layers['Tile Layer 1']
-  print("x/y: "..tx..'/'..ty)
-  print(layer.data[ty][tx].id)
+function GuiWidget:mousemoved(gx,gy)
+  local tile = self:getTileAtPosition(gx, gy)
+  self.cursortile = tile
+  self.cursor = {gx, gy}
+  return self.tile ~= nil
+end
+
+function GuiWidget:draw()
+  MainViewWidget.draw(self)
+  if self.cursortile then
+    love.graphics.print(self.cursortile.type, self.cursor[1], self.cursor[2], 0, 2)
+  end
 end

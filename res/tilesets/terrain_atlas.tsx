@@ -6,6 +6,7 @@
  <tile id="175" type="road" probability="0.1"/>
  <tile id="176" type="road" probability="0.5"/>
  <tile id="177" type="road"/>
+ <tile id="234" type="stone"/>
  <tile id="719" type="spawn"/>
  <tile id="720" type="goal"/>
 </tileset>

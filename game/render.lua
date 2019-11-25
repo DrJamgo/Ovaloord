@@ -64,13 +64,13 @@ function Render:draw()
   end
 end
 
-function Render:mousepressed(x,y,...)
+function Render:forwardMouseEvent(f, x, y, ...)
   if self.widgets then
     for i=1,#self.widgets do
       -- iterate in reverse order to process last dawn widgets first
       local widget = self.widgets[#self.widgets + 1 - i]
-      if widget:test(x,y) and widget.mousepressed then
-        if widget:mousepressed(x,y,...) then
+      if widget:test(x,y) and widget[f] then
+        if widget[f](widget, x,y,...) then
           return
         end
       end

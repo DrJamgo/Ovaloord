@@ -20,7 +20,11 @@ function love.keypressed( key, scancode, isrepeat )
 end
 
 function love.mousepressed(...)
-  game.renderer.mousepressed(game, ...)
+  game.renderer.forwardMouseEvent(game, 'mousepressed', ...)
+end
+
+function love.mousemoved(...)
+  game.renderer.forwardMouseEvent(game, 'mousemoved', ...)
 end
 
 function love.wheelmoved(x, y)

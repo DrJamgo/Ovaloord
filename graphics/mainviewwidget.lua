@@ -25,6 +25,21 @@ function MainViewWidget:draw()
   Widget.draw(self)
 end
 
+function MainViewWidget:getTileAtPosition(screenx,screeny)
+  local lx,ly = self.transform:inverseTransformPoint(screenx, screeny)
+  tx, ty = self.map:convertPixelToTile(lx, ly)
+  tx = math.floor(tx + 1)
+  ty = math.floor(ty + 1)
+  for i=1,#self.map.layers do
+    local layer = self.map.layers[#self.map.layers + 1 - i]
+    if layer.data then
+      local tile = layer.data[ty][tx]
+      if tile then return tile end
+    end
+  end
+  return nil
+end
+
 function MainViewWidget:setFocus(focus)
   self.focus = focus
 end
