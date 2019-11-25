@@ -3,4 +3,5 @@
  <tileoffset x="-16" y="0"/>
  <image source="human.png" width="320" height="640"/>
  <tile id="0" type="Peasant"/>
+ <tile id="1" type="Militia"/>
 </tileset>

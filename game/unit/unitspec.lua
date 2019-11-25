@@ -10,6 +10,10 @@ local units = {
     Peasant = {
       melee = {0.5, 1.1, 'slash', 0.5, 0.4, 0.2},
       hp = 5
+    },
+    Militia = {
+      melee = {1.0, 1.1, 'slash', 0.6, 0.4, 0.2},
+      hp = 7
     }
   },
   
@@ -38,6 +42,10 @@ for fraction,unitlist in pairs(units) do
     end
     for k,v in pairs(spec) do
       _G[name][k] = v 
+    end
+    
+    if true then
+      
     end
   end
 end
