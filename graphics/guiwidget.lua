@@ -1,12 +1,18 @@
 require('graphics/mainviewwidget')
 GuiWidget = class('GuiWidget', MainViewWidget)
 
-function GuiWidget:initialize(map, ...)  
+function GuiWidget:initialize(fraction, map, ...)  
   MainViewWidget.initialize(self, map, ...)
   
   self.camera:fit(map)
+  self.fraction = fraction
   self.map = map
   self.tile = nil
+end
+
+function GuiWidget:mousepressed(gx,gy,button,isTouch)
+  local tile = self:getTileAtPosition(gx, gy)
+  self.fraction:addUnit(tile.type, self.fraction.spawn)
 end
 
 function GuiWidget:mousemoved(gx,gy)

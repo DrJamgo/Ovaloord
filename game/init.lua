@@ -34,14 +34,15 @@ function Game:load(mapPath)
   self.units = {}
   self.objects = {}
   self.fractions = {}
-  self.renderer.load(self)
-  
+
   for l,layer in ipairs(map.layers) do
     local fraction = layer.properties.fraction
     if fraction then
-      self.fractions[#self.fractions] = _G[fraction](self, layer)
+      self.fractions[fraction] = _G[fraction](self, layer)
     end
   end
+  
+  self.renderer.load(self)
   
   require('utils/microscope')('Game.dot', self, 2, 'nometatables')
 end

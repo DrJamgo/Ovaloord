@@ -43,7 +43,7 @@ function Render:load()
   local numButtons = 8
   local w,h = self.guimap.tilewidth * self.guimap.width * self.scale, self.guimap.tileheight * self.guimap.height * self.scale, self.scale
   local y = love.graphics:getHeight() - h
-  self.widgets[#self.widgets+1] = GuiWidget(self.guimap, 0, y, w, h, self.scale)
+  self.widgets[#self.widgets+1] = GuiWidget(self.fractions['Undead'], self.guimap, 0, y, w, h, self.scale)
   
   self.unitslayer = self.map:convertToCustomLayer('Units')
   self.unitslayer.draw = drawUnitsLayer
