@@ -50,4 +50,14 @@ function Undead:getUnitTarget(unit)
   return {'move', self.goal}
 end
 
+function Undead:getLeadingUnit(unit)
+  local leader = nil
+  for _,unit in pairs(self.game.units) do
+    if unit.hp > 0 and unit.fraction == self and ((leader == nil) or leader.pos.x < unit.pos.x) then
+      leader = unit
+    end
+  end
+  return leader
+end
+
 Human = class('Human', Fraction)

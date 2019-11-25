@@ -57,7 +57,13 @@ function Render:draw()
   love.graphics.setCanvas()
   love.graphics.replaceTransform(love.math.newTransform())
   
-  self.main:setFocus(self.units[1].pos)
+  local undead = self.fractions['Undead']
+  local leader = self.fractions['Undead']:getLeadingUnit()
+  if leader then
+    self.main:setFocus(leader.pos)
+  else
+    self.main:setFocus(undead.spawn)
+  end
   
   for _,widget in ipairs(self.widgets) do
     widget:draw()

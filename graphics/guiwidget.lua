@@ -12,7 +12,9 @@ end
 
 function GuiWidget:mousepressed(gx,gy,button,isTouch)
   local tile = self:getTileAtPosition(gx, gy)
-  self.fraction:addUnit(tile.type, self.fraction.spawn)
+  if tile and tile.type then
+    self.fraction:addUnit(tile.type, self.fraction.spawn)
+  end
 end
 
 function GuiWidget:mousemoved(gx,gy)
