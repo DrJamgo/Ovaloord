@@ -43,9 +43,5 @@ for fraction,unitlist in pairs(units) do
     for k,v in pairs(spec) do
       _G[name][k] = v 
     end
-    
-    if true then
-      
-    end
   end
 end

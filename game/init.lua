@@ -62,6 +62,9 @@ function Game:update(dt)
       object:update(dt)
     end
   end
+  for _,widget in ipairs(self.widgets) do
+    widget:update(dt)
+  end
 end
 
 function Game:draw()
@@ -72,6 +75,7 @@ function Game:addUnit(unit)
   self.units[#self.units+1] = unit
   unit.id = #self.units
 end
+
 local id = 1
 function Game:addObject(object)
   self.objects[id] = object

@@ -7,6 +7,10 @@ function MainViewWidget:initialize(map, ...)
   self.camera = Camera(self.canvas)
 end
 
+function MainViewWidget:update(dt)
+  self.map:update(dt)
+end
+
 function MainViewWidget:draw()
   -- save current canvas
   local targetCanvas = love.graphics.getCanvas()
@@ -34,7 +38,7 @@ function MainViewWidget:getTileAtPosition(screenx,screeny)
     local layer = self.map.layers[#self.map.layers + 1 - i]
     if layer.data then
       local tile = layer.data[ty][tx]
-      if tile then return tile end
+      if tile then return tile, layer, tx, ty end
     end
   end
   return nil

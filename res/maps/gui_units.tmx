@@ -1,26 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="17" height="3" tilewidth="24" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="1">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="17" height="4" tilewidth="36" tileheight="32" infinite="0" nextlayerid="18" nextobjectid="1">
  <tileset firstgid="1" source="../tilesets/undead.tsx"/>
  <tileset firstgid="51" source="../tilesets/terrain_atlas.tsx"/>
- <layer id="6" name="Tile Layer 2" width="17" height="3" offsetx="0" offsety="16">
+ <tileset firstgid="1075" source="../sprites/effects/undead-spirit-recruit-anim-explode.tsx"/>
+ <layer id="15" name="Tile Layer 2" width="17" height="4" offsetx="8" offsety="16">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,551,0,551,0,551,0,551,0,0,0,0,0,0,0,0,0,
-0,583,0,583,0,583,0,583,0,0,0,0,0,0,0,550,0
+551,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+516,551,551,551,551,455,0,0,0,0,0,0,0,0,0,0,0,
+548,487,487,516,487,582,0,550,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer id="7" name="Tile Layer 1" width="17" height="3" offsetx="0" offsety="8">
+ <layer id="17" name="Tile Layer 3" width="17" height="4" offsetx="8" offsety="8">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,9,0,4,0,0,0,549,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,550,0,0,0,550,0,0,0
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer id="8" name="Tile Layer 3" width="17" height="3">
+ <layer id="16" name="Tile Layer 1" width="17" height="4" offsetx="8" offsety="8">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,18,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,550,0,0,0,0,0
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,4,0,9,18,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,550,0,550,0,0,0,0,0,0,0,0
 </data>
  </layer>
 </map>

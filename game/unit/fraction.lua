@@ -4,6 +4,8 @@
 require 'middleclass'
 require 'game/unit/unitspec'
 
+---------- Fraction ----------
+
 Fraction = class('Fraction')
 function Fraction:initialize(game, layer)
   self.game = game
@@ -28,6 +30,8 @@ end
 function Fraction:isEnemy(unit)
   return unit.fraction ~= self
 end
+
+---------- Undead ----------
 
 Undead = class('Undead', Fraction)
 function Undead:initialize(game, layer)
@@ -59,5 +63,7 @@ function Undead:getLeadingUnit(unit)
   end
   return leader
 end
+
+---------- Human ----------
 
 Human = class('Human', Fraction)

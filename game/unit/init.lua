@@ -161,7 +161,7 @@ function Unit:update(dt)
     self.prone = math.min(1, (self.prone or 0) + dt * 2)
     if self.prone == 1 and not self.dead then
       self.dead = true
-      self.game:addObject(SpiritEffect(self.game, self.pos, {1,0,0,1}))
+      self.game:addObject(SpiritEffect(self.game, self.pos, {0.5,1.0,0.5,1}))
     end
   elseif self.attack and self.attack:isActive() then
     local trigger = self.attack:update(dt)
