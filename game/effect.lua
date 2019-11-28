@@ -2,10 +2,10 @@ require 'middleclass'
 StationaryEffect = class('StationaryEffect')
 StationaryEffect.color = {1,1,1,1}
 
-function StationaryEffect:initialize(game, pos, color)
+function StationaryEffect:initialize(map, pos, color)
   assert(self.spriteimage, "spriteimage not set")
   self.color = color or self.color
-  self.game = game
+  self.map = map
   self.pos = vec2(pos.x, pos.y)
   self.time = 0
 end
@@ -17,12 +17,12 @@ end
 function StationaryEffect:update(dt)
   self.time = math.min(1, self.time + dt)
   if self.time >= self.duration then
-    self.game:removeObject(self)
+    self.map:removeObject(self)
   end
 end
 
 function StationaryEffect:draw()
-  local pos = vec2(gamemap.getPixelFromTile(self.game.map, {x=self.pos.x, y=self.pos.y}))
+  local pos = vec2(gamemap.getPixelFromTile(self.map, {x=self.pos.x, y=self.pos.y}))
   local frame = math.floor(self:getProgress() * self.frames)
   local quad = love.graphics.newQuad(frame * self.quadsize.x, 0, self.quadsize.x, self.quadsize.y, self.spriteimage:getDimensions())
   love.graphics.setColor(unpack(self.color))

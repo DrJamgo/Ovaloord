@@ -64,7 +64,7 @@ end
 
 function Ability:getNodes(grid, unit, fromnode)
   local result = {}
-  for _,delta in ipairs(Grid.adjecentOffsets) do
+  for _,delta in ipairs(grid.adjecentOffsets) do
     local n = self:getNode(grid, unit, fromnode, vec2_add(fromnode.location, delta))
     if n then
       n.parent = fromnode

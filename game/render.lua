@@ -2,6 +2,9 @@ require('graphics/guiwidget')
 require('graphics/mainviewwidget')
 require('graphics/widget')
 
+require('game/combat/unitslayer')
+require('game/combat/gridlayer')
+
 local Render = {}
 
 function drawUnitsLayer(layer)
@@ -28,14 +31,6 @@ function updateUnitsLayer(layer, dt)
   end
 end
 
-function updateGridLayer(layer, dt)
-  layer.grid:update(dt)
-end
-  
-function drawGridLayer(layer, dt)
-  layer.grid:draw()
-end
-
 function Render:pushColor()
   self.color = {love.graphics.getColor( )}
 end
@@ -59,17 +54,7 @@ function Render:load()
   local y = love.graphics:getHeight() - h
   self.widgets[#self.widgets+1] = GuiWidget(self.fractions['Undead'], self.guimap, 0, y, w, h, self.scale)
   
-  self.unitslayer = self.map:convertToCustomLayer('Units')
-  self.unitslayer.draw = drawUnitsLayer
-  self.unitslayer.update = updateUnitsLayer
-  self.unitslayer.map = self.map
-  self.unitslayer.objects = self.objects
-  
-  self.gridlayer = self.map:addCustomLayer('grid')
-  self.gridlayer.update = updateGridLayer
-  self.gridlayer.draw = drawGridLayer
-  self.gridlayer.grid = self.grid
-  self.gridlayer.objects = self.unitslayer.objects
+
 end
 
 return Render

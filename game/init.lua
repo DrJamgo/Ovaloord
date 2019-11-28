@@ -1,7 +1,6 @@
 local STI = require "sti/sti"
 require 'utils/camera'
 require 'utils/map'
-require 'game/grid'
 require 'game/unit/fraction'
 
 Game = 
@@ -23,16 +22,38 @@ function Game:_init()
   return self
 end
 
+local id = 1
+function addObject(map, object)
+  local objects = map.layers.Units.objects
+  objects[id] = object
+  object.id = id
+  id = id + 1
+end
+
+function removeObject(map, object)
+  local objects = map.layers.Units.objects
+  objects[object.id] = nil
+end
+
 function Game:load(mapPath)
   self.guimap = STI('res/maps/gui_units.lua')
   
   local map = STI(mapPath)
+  map.addObject = addObject
+  map.removeObject = removeObject
   self.mappath = mapPath
   self.map = map
-  self.grid = Grid(map)
   
   self.objects = {}
   self.fractions = {}
+
+  self.unitslayer = self.map:convertToCustomLayer('Units')
+  self.unitslayer.draw = drawUnitsLayer
+  self.unitslayer.update = updateUnitsLayer
+  self.unitslayer.map = self.map
+  self.unitslayer.objects = self.objects
+  
+  self.gridlayer = GridLayer(self.map, self.unitslayer.objects)
 
   for l,layer in ipairs(map.layers) do
     local fraction = layer.properties.fraction
@@ -69,12 +90,6 @@ function Game:draw()
     widget:draw()
   end
 end
-local id = 1
-function Game:addObject(object)
-  self.objects[id] = object
-  object.id = id
-  id = id + 1
-end
 
 function Game:forwardMouseEvent(f, x, y, ...)
   if self.widgets then
@@ -88,8 +103,4 @@ function Game:forwardMouseEvent(f, x, y, ...)
       end
     end
   end
-end
-
-function Game:removeObject(object)
-  self.objects[object.id] = nil
 end

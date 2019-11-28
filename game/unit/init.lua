@@ -13,16 +13,16 @@ Unit.radius = 0.45
 Unit.spritepath = 'res/sprites/default.png'
 Unit.stuckpatience = 2
 
-function Unit:initialize(game, fraction, spawn)
+function Unit:initialize(map, fraction, spawn)
   -- references
-  self.game = game
+  self.map = map
   self.fraction = fraction
   self.spawn = spawn
   
   -- physics
   self.pos = vec2(spawn.x, spawn.y)
-  self.node = self.game.grid:getNode(spawn)
-  self.game.grid:claimNode(self.node, self)
+  self.node = self.map.layers.grid:getNode(spawn)
+  self.map.layers.grid:claimNode(self.node, self)
   if self.melee then
     self.melee = Melee(unpack(self.melee))
   end
@@ -39,18 +39,18 @@ end
 -- WRAPPERS for GRID
 --
 function Unit:getAdjacentNodes(curnode, dest)
-  local move = self.game.grid:getAdjacentNodes(curnode, dest)
-  local melee = self.melee and self.melee:getNodes(self.game.grid, self, self.node) or {}
-  local range = self.range and self.range:getNodes(self.game.grid, self, self.node) or {}
+  local move = self.map.layers.grid:getAdjacentNodes(curnode, dest)
+  local melee = self.melee and self.melee:getNodes(self.map.layers.grid, self, self.node) or {}
+  local range = self.range and self.range:getNodes(self.map.layers.grid, self, self.node) or {}
   return move, melee, range
 end
 
 function Unit:locationsAreEqual(...)
-  return self.game.grid:locationsAreEqual(...)
+  return self.map.layers.grid:locationsAreEqual(...)
 end
 
 function Unit:getNode(...)
-  return self.game.grid:getNode(...)
+  return self.map.layers.grid:getNode(...)
 end
 
 function Unit:_faceNode(node)
@@ -65,7 +65,7 @@ end
 function Unit:_moveToTile(dt, targetTile)
   -- find path
   if not self.path or self.target ~= targetTile then
-    if not self.game.grid:locationsAreEqual(self.node.location, targetTile) then
+    if not self.map.layers.grid:locationsAreEqual(self.node.location, targetTile) then
       local astar = AStar(self)
       local start = {x=math.floor(self.pos.x+0.5), y=math.floor(self.pos.y+0.5)}
       self.path = astar:findPath(start, targetTile)
@@ -104,7 +104,7 @@ function Unit:_moveToTile(dt, targetTile)
   self.moving = false
   if self.nextNode then
     if self.nextNode.action == 'move' then
-      if self.game.grid:claimNode(self.nextNode, self) then
+      if self.map.layers.grid:claimNode(self.nextNode, self) then
         self.stuck = nil
         self.moving = true
         if self:_move(dt, self.nextNode.location) then
@@ -161,7 +161,7 @@ function Unit:update(dt)
     self.prone = math.min(1, (self.prone or 0) + dt * 2)
     if self.prone == 1 and not self.dead then
       self.dead = true
-      self.game:addObject(SpiritEffect(self.game, self.pos, {0.5,1.0,0.5,1}))
+      self.map:addObject(SpiritEffect(self.map, self.pos, {0.5,1.0,0.5,1}))
     end
   elseif self.attack and self.attack:isActive() then
     local trigger = self.attack:update(dt)
@@ -176,12 +176,12 @@ function Unit:update(dt)
 end
 
 function Unit:draw()
-  local wx, wy = gamemap.getPixelFromTile(self.game.map, {x=self.pos.x, y=self.pos.y})
+  local wx, wy = gamemap.getPixelFromTile(self.map, {x=self.pos.x, y=self.pos.y})
    
   self.circle = {
     wx,
     wy,
-    self.radius * self.game.map.tilewidth
+    self.radius * self.map.tilewidth
   }
   
   --love.graphics.setColor(self.stuck and 1 or 0,0.5,0.5)
@@ -213,8 +213,8 @@ function Unit:draw()
   if self.path then
     local nodes = self.path:getNodes()
     for i=1,#nodes-1 do
-      local x1, y1 = gamemap.getPixelFromTile(self.game.map, nodes[i].location)
-      local x2, y2 = gamemap.getPixelFromTile(self.game.map, nodes[i+1].location)
+      local x1, y1 = gamemap.getPixelFromTile(self.map, nodes[i].location)
+      local x2, y2 = gamemap.getPixelFromTile(self.map, nodes[i+1].location)
       love.graphics.line(x1, y1, x2, y2)
     end
   end
