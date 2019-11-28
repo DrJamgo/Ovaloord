@@ -31,12 +31,12 @@ function Projectile:update(dt)
   self.time = math.min(1, self.time + dt)
   if self.time >= self.duration then
     self.target:hit(self.ability.dmg, self.unit)
-    self.unit.game:removeObject(self)
+    self.unit.map:removeObject(self)
   end
 end
 
 function Projectile:draw()
-  local pos = vec2(gamemap.getPixelFromTile(self.unit.game.map, {x=self.pos.x, y=self.pos.y}))
+  local pos = vec2(gamemap.getPixelFromTile(self.unit.map, {x=self.pos.x, y=self.pos.y}))
   local quad = love.graphics.newQuad(0, (self.dir - 1) * self.quadsize.y, self.quadsize.x, self.quadsize.y, self.spriteimage:getDimensions())
   love.graphics.draw(self.spriteimage, quad,
     pos.x,

@@ -41,18 +41,12 @@ function Game:load(mapPath)
   local map = STI(mapPath)
   map.addObject = addObject
   map.removeObject = removeObject
-  self.mappath = mapPath
   self.map = map
   
   self.objects = {}
   self.fractions = {}
-
-  self.unitslayer = self.map:convertToCustomLayer('Units')
-  self.unitslayer.draw = drawUnitsLayer
-  self.unitslayer.update = updateUnitsLayer
-  self.unitslayer.map = self.map
-  self.unitslayer.objects = self.objects
   
+  self.unitslayer = UnitsLayer(self.map)
   self.gridlayer = GridLayer(self.map, self.unitslayer.objects)
 
   for l,layer in ipairs(map.layers) do

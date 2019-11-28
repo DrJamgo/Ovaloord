@@ -125,7 +125,7 @@ end
 Range = class('Range', Melee)
 function Range:getNodes(grid, unit, fromnode)
   local result = {}
-  for _,delta in ipairs(Grid.adjecentOffsets) do
+  for _,delta in ipairs(grid.adjecentOffsets) do
     local loc = fromnode.location
     for i=1,math.floor(self.range) do
       if loc then
@@ -150,7 +150,7 @@ end
 function Range:update(dt)
   local trigger = Ability.update(self, dt) and self:validateTarget(self.unit, self.unit.node, self.target)
   if trigger then
-    self.unit.game:addObject(Arrow(self, self.unit, self.target))
+    self.unit.map:addObject(Arrow(self, self.unit, self.target))
   end
   return trigger
 end

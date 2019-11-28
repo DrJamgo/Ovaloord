@@ -54,9 +54,9 @@ function Undead:getUnitTarget(unit)
   return {'move', self.goal}
 end
 
-function Undead:getLeadingUnit(unit)
+function Undead:getLeadingUnit()
   local leader = nil
-  for _,unit in pairs(self.game.objects) do
+  for _,unit in pairs(self.game.map.layers.Units.objects) do
     if unit.hp and unit.hp > 0 and unit.fraction == self and ((leader == nil) or leader.pos.x < unit.pos.x) then
       leader = unit
     end
