@@ -37,10 +37,13 @@ function Combat:update(dt)
   else
     self:_setFocus(undead.spawn)
   end
+  self.gridlayer.cursor = self.cursorl
   self.map:update(dt)
 end
 
 function Combat:draw()
+  self.gridlayer.visible = options['g']
+  
   -- save current canvas
   local targetCanvas = love.graphics.getCanvas()
   

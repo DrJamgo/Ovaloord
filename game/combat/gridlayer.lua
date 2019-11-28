@@ -68,22 +68,28 @@ function GridLayer:draw()
   for y=1,map.height do
     for x=1,map.width do
       if not self.static[y][x] then
-        love.graphics.setColor(0,0,0,0.3)
+        love.graphics.setColor(0,0,0,0.5)
         local wx,wy = self.map:convertTileToPixel(x,y)
         love.graphics.rectangle("fill", wx, wy, -self.map.tilewidth, -self.map.tileheight)
       end
       if self.static[y][x] and self.static[y][x].walk ==false then
-        love.graphics.setColor(1,0,0,0.3)
+        love.graphics.setColor(1,0,0,0.5)
         local wx,wy = self.map:convertTileToPixel(x,y)
         love.graphics.rectangle("fill", wx, wy, -self.map.tilewidth, -self.map.tileheight)
       end
       local unit = self.dynamic[y][x]
       if unit then
-        love.graphics.setColor(0,0,1,0.3)
+        love.graphics.setColor(0,0,1,0.5)
         local wx,wy = self.map:convertTileToPixel(x,y)
         local wux, wuy = self.map:convertTileToPixel(unit.pos.x, unit.pos.y)
         love.graphics.rectangle("fill", wx, wy, -self.map.tilewidth, -self.map.tileheight)
         love.graphics.line(wx-16, wy-16, wux - 16, wuy - 16)
+      end
+      if self.cursor and self.cursor[1] == x and self.cursor[2] == y then
+        love.graphics.setColor(1,1,1,1.0)
+        local wx,wy = self.map:convertTileToPixel(x,y)
+        love.graphics.rectangle("line", wx, wy, -self.map.tilewidth, -self.map.tileheight)
+        love.graphics.print(x .. ',' .. y, wx, wy)
       end
     end
   end

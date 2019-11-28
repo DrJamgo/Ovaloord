@@ -35,7 +35,7 @@ function Widget:draw()
   love.graphics.replaceTransform(self.transform)
   love.graphics.draw(self.canvas)
   love.graphics.pop()
-  --love.graphics.rectangle("line",x,y,w,h)
+  love.graphics.rectangle("line",x,y,w,h)
 end
 
 TiledWidget = class('TiledWidget', Widget)
@@ -47,8 +47,12 @@ function TiledWidget:initialize(map, ...)
 end
 
 function TiledWidget:getTileAtPosition(screenx, screeny)
-  local lx,ly = self.transform:inverseTransformPoint(screenx, screeny)
-  tx, ty = self.map:convertPixelToTile(lx, ly)
+  -- transform from screen to canvas pixels
+  local canvasx, canvasy = self.transform:inverseTransformPoint(screenx, screeny)
+  -- transform from canvas to map pixels
+  local mapx, mapy = self.camera.transform:inverseTransformPoint(canvasx, canvasy)
+  -- transform from map pixels to map tiles
+  local tx, ty = self.map:convertPixelToTile(mapx, mapy)
   tx = math.floor(tx + 1)
   ty = math.floor(ty + 1)
   for i=1,#self.map.layers do
@@ -59,4 +63,12 @@ function TiledWidget:getTileAtPosition(screenx, screeny)
     end
   end
   return nil
+end
+
+function TiledWidget:mousemoved(gx,gy)
+  local tile, layer, tx, ty = self:getTileAtPosition(gx, gy)
+  self.cursortile = tile
+  self.cursorl = {tx, ty}
+  self.cursor = {gx, gy}
+  return self.tile ~= nil
 end

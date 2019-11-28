@@ -1,7 +1,7 @@
 require 'game/widget'
-GuiWidget = class('GuiWidget', TiledWidget)
+ControlWidget = class('ControlWidget', TiledWidget)
 
-function GuiWidget:initialize(fraction, map, scale)
+function ControlWidget:initialize(fraction, map, scale)
   local w,h = map.tilewidth * map.width * scale, map.tileheight * map.height * scale
   local y = love.graphics:getHeight() - h
   
@@ -13,7 +13,7 @@ function GuiWidget:initialize(fraction, map, scale)
   self.tile = nil
 end
 
-function GuiWidget:mousepressed(gx,gy,button,isTouch)
+function ControlWidget:mousepressed(gx,gy,button,isTouch)
   local tile, layer, x, y = self:getTileAtPosition(gx, gy)
   if tile and tile.type and tile.type ~= '' and _G[tile.type] then
     self.fraction:addUnit(tile.type, self.fraction.spawn)
@@ -21,18 +21,11 @@ function GuiWidget:mousepressed(gx,gy,button,isTouch)
   end
 end
 
-function GuiWidget:mousemoved(gx,gy)
-  local tile = self:getTileAtPosition(gx, gy)
-  self.cursortile = tile
-  self.cursor = {gx, gy}
-  return self.tile ~= nil
-end
-
-function GuiWidget:update(dt)
+function ControlWidget:update(dt)
   self.map:update(dt)
 end
 
-function GuiWidget:draw()
+function ControlWidget:draw()
   -- save current canvas
   local targetCanvas = love.graphics.getCanvas()
   

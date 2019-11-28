@@ -4,20 +4,12 @@ require 'game/unit/fraction'
 require 'game/combat/combat'
 require 'game/control/controlwidget'
 
+require 'middleclass'
+
 local STI = require "sti/sti"
+Game = class('Game')
 
-Game = {}
-Game.__index = Game
-
-setmetatable(Game, {
-  __call = function (cls, ...)
-    local self = setmetatable({}, cls)
-    self:_init(...)
-    return self
-  end
-})
-
-function Game:_init()
+function Game:initialize()
   self.scale = 2
   return self
 end
@@ -39,7 +31,7 @@ function Game:load(mapPath)
   self.guimap = STI('res/maps/gui_units.lua')
   self.combatmap = STI('res/maps/untitled.lua')
   self.combat = Combat(self.combatmap)
-  self.control = GuiWidget(self.combat.fractions['Undead'], self.guimap, self.scale)
+  self.control = ControlWidget(self.combat.fractions['Undead'], self.guimap, self.scale)
   
   self.widgets = {}
   self:addWidget(self.combat)
