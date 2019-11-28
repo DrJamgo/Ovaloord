@@ -1,12 +1,12 @@
-local STI = require "sti/sti"
 require 'utils/camera'
 require 'utils/map'
 require 'game/unit/fraction'
+require 'game/combat/combat'
+require 'game/control/controlwidget'
 
-Game = 
-{
-  renderer = require 'game/render'
-}
+local STI = require "sti/sti"
+
+Game = {}
 Game.__index = Game
 
 setmetatable(Game, {
@@ -37,39 +37,22 @@ end
 
 function Game:load(mapPath)
   self.guimap = STI('res/maps/gui_units.lua')
+  self.combatmap = STI('res/maps/untitled.lua')
+  self.combat = Combat(self.combatmap)
+  self.control = GuiWidget(self.combat.fractions['Undead'], self.guimap, self.scale)
   
-  local map = STI(mapPath)
-  map.addObject = addObject
-  map.removeObject = removeObject
-  self.map = map
-  
-  self.objects = {}
-  self.fractions = {}
-  
-  self.unitslayer = UnitsLayer(self.map)
-  self.gridlayer = GridLayer(self.map, self.unitslayer.objects)
-
-  for l,layer in ipairs(map.layers) do
-    local fraction = layer.properties.fraction
-    if fraction then
-      self.fractions[fraction] = _G[fraction](self, layer)
-    end
-  end
-  
-  self.renderer.load(self)
+  self.widgets = {}
+  self:addWidget(self.combat)
+  self:addWidget(self.control)
   
   require('utils/microscope')('Game.dot', self, 2, 'nometatables')
 end
 
+function Game:addWidget(widget)
+  self.widgets[#self.widgets+1] = widget
+end
+
 function Game:update(dt)
-  local undead = self.fractions['Undead']
-  local leader = self.fractions['Undead']:getLeadingUnit()
-  if leader then
-    self.main:setFocus(leader.pos)
-  else
-    self.main:setFocus(undead.spawn)
-  end
-  
   for _,widget in ipairs(self.widgets) do
     widget:update(dt)
   end

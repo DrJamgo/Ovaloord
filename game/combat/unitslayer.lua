@@ -7,7 +7,7 @@ function UnitsLayer:initialize(map)
   for i,layer in ipairs(map.layers) do
     if layer.name == 'Units' then
       map:removeLayer(i)
-      map:addCustomLayer('Units',nil,self)
+      map:addCustomLayer('Units',i,self)
       self.draw = UnitsLayer.draw
       self.update = UnitsLayer.update
       break
