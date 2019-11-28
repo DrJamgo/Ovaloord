@@ -21,7 +21,7 @@ end
 function Fraction:addUnit(typename, spawn)
   local class = assert(_G[typename], "Unit type '"..(typename or "nil").."' not found! ")
   local newUnit = class(self.game, self, spawn)
-  self.game:addUnit(newUnit)
+  self.game:addObject(newUnit)
 end
 function Fraction:getUnitTarget(unit)
   return {'move', unit.spawn}
@@ -56,8 +56,8 @@ end
 
 function Undead:getLeadingUnit(unit)
   local leader = nil
-  for _,unit in pairs(self.game.units) do
-    if unit.hp > 0 and unit.fraction == self and ((leader == nil) or leader.pos.x < unit.pos.x) then
+  for _,unit in pairs(self.game.objects) do
+    if unit.hp and unit.hp > 0 and unit.fraction == self and ((leader == nil) or leader.pos.x < unit.pos.x) then
       leader = unit
     end
   end

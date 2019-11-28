@@ -7,19 +7,33 @@ local Render = {}
 function drawUnitsLayer(layer)
   Render:pushColor()
   for y=1,layer.map.height do
-    for _,unit in ipairs(layer.units) do
-      local offset = (unit.hp > 0 and 0) or 2
-      if unit.pos.y >= y + offset and unit.pos.y < y+1+offset then
-        Render:popColor()
-        unit:draw()
-      end
-    end
     for _,object in pairs(layer.objects) do
       if object.pos.y >= y and object.pos.y < y+1 then
+        Render:popColor()
         object:draw()
       end
     end
   end
+end
+
+function updateUnitsLayer(layer, dt)
+  dt = math.min(dt, 0.25)
+  if love.keyboard.isDown('y') then dt = dt * 0.1 end
+  if options['p'] then dt = 0 end
+  local leading_undead = nil
+  for _=1,(love.keyboard.isDown('x') and 10) or 1 do
+    for _,object in pairs(layer.objects) do
+      object:update(dt)
+    end
+  end
+end
+
+function updateGridLayer(layer, dt)
+  layer.grid:update(dt)
+end
+  
+function drawGridLayer(layer, dt)
+  layer.grid:draw()
 end
 
 function Render:pushColor()
@@ -47,41 +61,15 @@ function Render:load()
   
   self.unitslayer = self.map:convertToCustomLayer('Units')
   self.unitslayer.draw = drawUnitsLayer
+  self.unitslayer.update = updateUnitsLayer
   self.unitslayer.map = self.map
-  self.unitslayer.units = self.units
   self.unitslayer.objects = self.objects
-end
-
-function Render:draw()
-  love.graphics.setColor(1,1,1,1)
-  love.graphics.setCanvas()
-  love.graphics.replaceTransform(love.math.newTransform())
   
-  local undead = self.fractions['Undead']
-  local leader = self.fractions['Undead']:getLeadingUnit()
-  if leader then
-    self.main:setFocus(leader.pos)
-  else
-    self.main:setFocus(undead.spawn)
-  end
-  
-  for _,widget in ipairs(self.widgets) do
-    widget:draw()
-  end
-end
-
-function Render:forwardMouseEvent(f, x, y, ...)
-  if self.widgets then
-    for i=1,#self.widgets do
-      -- iterate in reverse order to process last dawn widgets first
-      local widget = self.widgets[#self.widgets + 1 - i]
-      if widget:test(x,y) and widget[f] then
-        if widget[f](widget, x,y,...) then
-          return
-        end
-      end
-    end
-  end
+  self.gridlayer = self.map:addCustomLayer('grid')
+  self.gridlayer.update = updateGridLayer
+  self.gridlayer.draw = drawGridLayer
+  self.gridlayer.grid = self.grid
+  self.gridlayer.objects = self.unitslayer.objects
 end
 
 return Render

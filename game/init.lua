@@ -30,8 +30,7 @@ function Game:load(mapPath)
   self.mappath = mapPath
   self.map = map
   self.grid = Grid(map)
-
-  self.units = {}
+  
   self.objects = {}
   self.fractions = {}
 
@@ -48,39 +47,47 @@ function Game:load(mapPath)
 end
 
 function Game:update(dt)
-  dt = math.min(dt, 0.25)
-  if love.keyboard.isDown('y') then dt = dt * 0.1 end
-  if options['p'] then dt = 0 end
-  local leading_undead = nil
-  for _=1,(love.keyboard.isDown('x') and 10) or 1 do
-    self.map:update(dt)
-    self.grid:update(dt, self.units)
-    for _,unit in pairs(self.units) do
-      unit:update(dt*1.25)
-    end
-    for _,object in pairs(self.objects) do
-      object:update(dt)
-    end
+  local undead = self.fractions['Undead']
+  local leader = self.fractions['Undead']:getLeadingUnit()
+  if leader then
+    self.main:setFocus(leader.pos)
+  else
+    self.main:setFocus(undead.spawn)
   end
+  
   for _,widget in ipairs(self.widgets) do
     widget:update(dt)
   end
 end
 
 function Game:draw()
-  self.renderer.draw(self)
+  love.graphics.setColor(1,1,1,1)
+  love.graphics.setCanvas()
+  love.graphics.replaceTransform(love.math.newTransform())
+  
+  for _,widget in ipairs(self.widgets) do
+    widget:draw()
+  end
 end
-
-function Game:addUnit(unit)
-  self.units[#self.units+1] = unit
-  unit.id = #self.units
-end
-
 local id = 1
 function Game:addObject(object)
   self.objects[id] = object
   object.id = id
   id = id + 1
+end
+
+function Game:forwardMouseEvent(f, x, y, ...)
+  if self.widgets then
+    for i=1,#self.widgets do
+      -- iterate in reverse order to process last dawn widgets first
+      local widget = self.widgets[#self.widgets + 1 - i]
+      if widget:test(x,y) and widget[f] then
+        if widget[f](widget, x,y,...) then
+          return
+        end
+      end
+    end
+  end
 end
 
 function Game:removeObject(object)

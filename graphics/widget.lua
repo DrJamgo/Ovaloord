@@ -34,7 +34,6 @@ function Widget:draw()
   local x,y,w,h = unpack(self.rect)
   love.graphics.replaceTransform(self.transform)
   love.graphics.draw(self.canvas)
-  
   love.graphics.pop()
   --love.graphics.rectangle("line",x,y,w,h)
 end
