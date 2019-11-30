@@ -11,13 +11,48 @@ function ControlWidget:initialize(fraction, map, scale)
   self.fraction = fraction
   self.map = map
   self.tile = nil
+  
+  self.spirits = {}
+  self.spiritslayer = map:convertToCustomLayer('Spirits', nil)
+  self.spiritslayer.spirits = self.spirits
+  self.spiritslayer.map = map
+  self.spiritslayer.draw = drawSpirits
+  self.spiritslayer.update = updateSpirits
+  
+  self:addSpirit(1)
+  self:addSpirit(2)
+end
+
+function updateSpirits(layer, dt)
+  local x,y = layer.map:convertTileToPixel(1,5)
+  for i,spirit in ipairs(layer.spirits) do
+    spirit.pos.x = 1
+    local targetY = 5.5-((i-1) * 0.5)
+    local diff = targetY - spirit.pos.y
+    spirit.pos.y = spirit.pos.y + (diff) * 0.1
+    spirit:update(dt)
+  end
+end
+
+function drawSpirits(layer)
+  for _,spirit in ipairs(layer.spirits) do
+    spirit:draw()
+  end
+end
+
+function ControlWidget:addSpirit(tier)
+  local spirit = SpiritOrb(self.map, {x=1, y=0.0}, SpiritOrb.colors[tier])
+  table.insert(self.spirits, spirit)
 end
 
 function ControlWidget:mousepressed(gx,gy,button,isTouch)
   local tile, layer, x, y = self:getTileAtPosition(gx, gy)
   if tile and tile.type and tile.type ~= '' and _G[tile.type] then
-    self.fraction:addUnit(tile.type, self.fraction.spawn)
-    self.map:setLayerTile(layer.name, x, y, 0)
+    if self.spirits[1] then
+      self.fraction:addUnit(tile.type, self.fraction.spawn)
+      self.map:setLayerTile(layer.name, x, y, 0)
+      table.remove(self.spirits, 1)
+    end
   end
 end
 

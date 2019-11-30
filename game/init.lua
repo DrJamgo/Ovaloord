@@ -37,7 +37,7 @@ function Game:load(mapPath)
   self:addWidget(self.combat)
   self:addWidget(self.control)
   
-  require('utils/microscope')('Game.dot', self, 2, 'nometatables')
+  --require('utils/microscope')('Game.dot', self, 2, 'nometatables')
 end
 
 function Game:addWidget(widget)

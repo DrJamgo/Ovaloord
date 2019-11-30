@@ -8,10 +8,11 @@ require 'game/unit/lpcsprite'
 require 'game/unit/ability'
 require 'astar/astar'
 
-Unit.speed = 0.8
+Unit.speed = 1.1
 Unit.radius = 0.45
 Unit.spritepath = 'res/sprites/default.png'
 Unit.stuckpatience = 2
+Unit.tier = 0
 
 function Unit:initialize(map, fraction, spawn)
   -- references
@@ -161,7 +162,13 @@ function Unit:update(dt)
     self.prone = math.min(1, (self.prone or 0) + dt * 2)
     if self.prone == 1 and not self.dead then
       self.dead = true
-      self.map:addObject(SpiritEffect(self.map, self.pos, {0.5,1.0,0.5,1}))
+      if self.fraction.name ~= 'Undead' then
+        self.map:addObject(
+          SpiritEffect(self.map, self.pos, SpiritEffect.colors[self.tier]))
+      else
+        self.map:addObject(
+          SpiritEffect(self.map, self.pos, {0.2,0.2,0.2,1}))
+      end
     end
   elseif self.attack and self.attack:isActive() then
     local trigger = self.attack:update(dt)

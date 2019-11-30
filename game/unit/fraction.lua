@@ -9,6 +9,7 @@ require 'game/unit/unitspec'
 Fraction = class('Fraction')
 function Fraction:initialize(game, layer)
   self.game = game
+  self.name = self.class.name
   gamemap.getTilesInLayer(layer, 
     function(tile, pos)
       if _G[tile.type] then

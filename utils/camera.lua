@@ -14,7 +14,7 @@ function Camera:_init(canvas)
   self.offsetx = 0
   self.offsety = 0
   self.scale = 1
-  self:updateTransform()
+  self:_updateTransform()
   return self
 end
 
@@ -28,18 +28,18 @@ function Camera:setFromWorld(map,wx,wy,zoom)
   self.offsetx = math.floor(-wx + canvas:getWidth() / 2 / zoom)
   self.offsety = math.floor(-wy + canvas:getHeight() / 2 / zoom)
   self.scale   = zoom
-  self:limitToMap(map)
-  self:updateTransform()
+  self:_limitToMap(map)
+  self:_updateTransform()
 end
 
-function Camera:limitToMap(map)
+function Camera:_limitToMap(map)
   local max_x = map.width * map.tilewidth - self.canvas:getWidth() / self.scale
   local max_y = map.height * map.tileheight - self.canvas:getHeight() / self.scale
   self.offsetx = math.max(math.min(self.offsetx, 0), -max_x)
   self.offsety = math.max(math.min(self.offsety, 0), -max_y)
 end
 
-function Camera:updateTransform()
+function Camera:_updateTransform()
   self.transform = love.math.newTransform(
     0, 0, 0, self.scale, self.scale, 
     -self.offsetx, -self.offsety)

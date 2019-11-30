@@ -43,8 +43,11 @@ function UnitsLayer:update(dt)
   if options['p'] then dt = 0 end
   local leading_undead = nil
   for _=1,(love.keyboard.isDown('x') and 10) or 1 do
-    for _,object in pairs(self.objects) do
+    for i,object in pairs(self.objects) do
       object:update(dt)
+      if object.dead then
+        self.objects[i] = nil
+      end
     end
   end
 end

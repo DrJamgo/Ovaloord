@@ -7,7 +7,7 @@ Combat = class('Combat', TiledWidget)
 local STI = require "sti/sti"
 
 function Combat:initialize(map)
-  TiledWidget.initialize(self, map, 0, 0, love.graphics:getWidth(), love.graphics:getHeight(), 2)
+  TiledWidget.initialize(self, map, 0, 0, love.graphics:getWidth(), love.graphics:getHeight(), 3)
   map.addObject = addObject
   map.removeObject = removeObject
   
@@ -35,7 +35,7 @@ function Combat:update(dt)
   if leader then
     self:_setFocus(leader.pos)
   else
-    self:_setFocus(undead.spawn)
+    --self:_setFocus(undead.spawn)
   end
   self.gridlayer.cursor = self.cursorl
   self.map:update(dt)

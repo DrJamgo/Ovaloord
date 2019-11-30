@@ -3,12 +3,12 @@ return {
   luaversion = "5.1",
   tiledversion = "1.2.4",
   orientation = "orthogonal",
-  renderorder = "right-down",
+  renderorder = "right-up",
   width = 10,
-  height = 4,
+  height = 8,
   tilewidth = 36,
   tileheight = 32,
-  nextlayerid = 21,
+  nextlayerid = 25,
   nextobjectid = 1,
   properties = {},
   tilesets = {
@@ -220,17 +220,65 @@ return {
           }
         }
       }
+    },
+    {
+      name = "rotating_orbs",
+      firstgid = 1087,
+      filename = "../sprites/effects/rotating_orbs.tsx",
+      tilewidth = 24,
+      tileheight = 24,
+      spacing = 0,
+      margin = 0,
+      columns = 4,
+      image = "../sprites/effects/rotating_orbs.png",
+      imagewidth = 96,
+      imageheight = 192,
+      tileoffset = {
+        x = 4,
+        y = -4
+      },
+      grid = {
+        orientation = "orthogonal",
+        width = 24,
+        height = 24
+      },
+      properties = {},
+      terrains = {},
+      tilecount = 32,
+      tiles = {
+        {
+          id = 4,
+          animation = {
+            {
+              tileid = 4,
+              duration = 100
+            },
+            {
+              tileid = 5,
+              duration = 100
+            },
+            {
+              tileid = 6,
+              duration = 100
+            },
+            {
+              tileid = 7,
+              duration = 100
+            }
+          }
+        }
+      }
     }
   },
   layers = {
     {
       type = "tilelayer",
-      id = 18,
+      id = 21,
       name = "Tile Layer 2",
       x = 0,
       y = 0,
       width = 10,
-      height = 4,
+      height = 8,
       visible = true,
       opacity = 1,
       offsetx = 8,
@@ -239,26 +287,34 @@ return {
       encoding = "lua",
       data = {
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        551, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        516, 551, 551, 551, 551, 455, 0, 0, 0, 0,
-        548, 487, 487, 516, 487, 582, 0, 550, 0, 0
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        551, 0, 551, 551, 551, 551, 455, 0, 0, 0,
+        516, 0, 487, 487, 516, 487, 582, 0, 550, 0
       }
     },
     {
       type = "tilelayer",
-      id = 19,
-      name = "Tile Layer 3",
+      id = 24,
+      name = "Spirits",
       x = 0,
       y = 0,
       width = 10,
-      height = 4,
+      height = 8,
       visible = true,
       opacity = 1,
       offsetx = 8,
-      offsety = 8,
+      offsety = 2,
       properties = {},
       encoding = "lua",
       data = {
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -267,12 +323,12 @@ return {
     },
     {
       type = "tilelayer",
-      id = 20,
+      id = 22,
       name = "Tile Layer 1",
       x = 0,
       y = 0,
       width = 10,
-      height = 4,
+      height = 8,
       visible = true,
       opacity = 1,
       offsetx = 8,
@@ -281,9 +337,13 @@ return {
       encoding = "lua",
       data = {
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 4, 0, 9, 18, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 550, 0, 550, 0
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        1, 0, 4, 0, 9, 18, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 550, 0, 550
       }
     }
   }

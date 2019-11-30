@@ -35,7 +35,7 @@ function Widget:draw()
   love.graphics.replaceTransform(self.transform)
   love.graphics.draw(self.canvas)
   love.graphics.pop()
-  love.graphics.rectangle("line",x,y,w,h)
+  --love.graphics.rectangle("line",x,y,w,h)
 end
 
 TiledWidget = class('TiledWidget', Widget)

@@ -27,10 +27,6 @@ function love.mousemoved(...)
   game.forwardMouseEvent(game, 'mousemoved', ...)
 end
 
-function love.wheelmoved(x, y)
-  game.zoom = math.max(1, math.min(4,game.zoom + y/2))
-end
-
 function love.load(arg)
   game:load("res/maps/untitled.lua")
 end
