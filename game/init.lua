@@ -30,8 +30,10 @@ end
 function Game:load(mapPath)
   self.guimap = STI('res/maps/gui_units.lua')
   self.combatmap = STI('res/maps/untitled.lua')
-  self.combat = Combat(self.combatmap)
+  self.combat = Combat(self.combatmap, self.control)
   self.control = ControlWidget(self.combat.fractions['Undead'], self.guimap, self.scale)
+  
+  self.combat.unitslayer.controlwidget = self.control
   
   self.widgets = {}
   self:addWidget(self.combat)

@@ -12,6 +12,9 @@ function ControlWidget:initialize(fraction, map, scale)
   self.map = map
   self.tile = nil
   
+  self.unitcap = 4
+  self.unitpool = {4,9,18}
+  
   self.spirits = {}
   self.spiritslayer = map:convertToCustomLayer('Spirits', nil)
   self.spiritslayer.spirits = self.spirits
@@ -21,6 +24,11 @@ function ControlWidget:initialize(fraction, map, scale)
   
   self:addSpirit(1)
   self:addSpirit(2)
+  self:addSpirit(2)
+  
+  for i=1,self.unitcap do
+    self:addUnit()
+  end
 end
 
 function updateSpirits(layer, dt)
@@ -45,6 +53,20 @@ function ControlWidget:addSpirit(tier)
   table.insert(self.spirits, spirit)
 end
 
+function ControlWidget:addUnit(id)
+  for i=1,self.unitcap do
+    local x = i+2
+    local y = 7
+    if not self.map.layers.Units.data[y][x] then
+      if not id then
+        id = self.unitpool[love.math.random(1, #self.unitpool)]
+      end
+      self.map:setLayerTile('Units', x, y, id)
+      return id
+    end
+  end
+end
+
 function ControlWidget:mousepressed(gx,gy,button,isTouch)
   local tile, layer, x, y = self:getTileAtPosition(gx, gy)
   if tile and tile.type and tile.type ~= '' and _G[tile.type] then
@@ -52,6 +74,7 @@ function ControlWidget:mousepressed(gx,gy,button,isTouch)
       self.fraction:addUnit(tile.type, self.fraction.spawn)
       self.map:setLayerTile(layer.name, x, y, 0)
       table.remove(self.spirits, 1)
+      self:addUnit()
     end
   end
 end

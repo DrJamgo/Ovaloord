@@ -161,7 +161,7 @@ function Unit:update(dt)
   if self.hp and self.hp <= 0 then
     self.prone = math.min(1, (self.prone or 0) + dt * 2)
     if self.prone == 1 and not self.dead then
-      self.dead = true
+      self.dead = 0
       if self.fraction.name ~= 'Undead' then
         self.map:addObject(
           SpiritEffect(self.map, self.pos, SpiritEffect.colors[self.tier]))
@@ -169,6 +169,8 @@ function Unit:update(dt)
         self.map:addObject(
           SpiritEffect(self.map, self.pos, {0.2,0.2,0.2,1}))
       end
+    elseif self.dead then
+      self.dead = self.dead + dt
     end
   elseif self.attack and self.attack:isActive() then
     local trigger = self.attack:update(dt)

@@ -3,17 +3,16 @@ require 'game/widget'
 require 'game/combat/unitslayer'
 require 'game/combat/gridlayer'
 Combat = class('Combat', TiledWidget)
-
+Combat.scale = 2
 local STI = require "sti/sti"
 
 function Combat:initialize(map)
-  TiledWidget.initialize(self, map, 0, 0, love.graphics:getWidth(), love.graphics:getHeight(), 3)
+  TiledWidget.initialize(self, map, 0, 0, love.graphics:getWidth(), love.graphics:getHeight(), self.scale)
   map.addObject = addObject
   map.removeObject = removeObject
   
   self.objects = {}
   self.fractions = {}
-  
   self.unitslayer = UnitsLayer(self.map)
   self.gridlayer = GridLayer(self.map, self.unitslayer.objects)
   
