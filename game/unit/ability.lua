@@ -2,8 +2,23 @@ require 'middleclass'
 
 ---------- Ability ----------
 
+local lookup = {}
+lookup.cooldown = {veryslow=2.0, slow=1.5, normal=1.0, fast=0.5}
+lookup.duration = {veryslow=2.0, slow=1.5, normal=1.0, fast=0.5}
+
 Ability = class('Ability')
 function Ability:initialize(unit, cooldown, duration, trigger)
+  
+  if type(duration) == 'string' then
+    assert(lookup.duration[duration], "value for duration="..duration.." not defined")
+    duration = lookup.duration[duration]
+    trigger = duration * 0.75
+  end
+  
+  if type(cooldown) == 'string' then
+    assert(lookup.cooldown[cooldown], "value for cooldown="..cooldown.." not defined")
+    cooldown = duration + lookup.cooldown[cooldown]
+  end
 
   self.cooldown = cooldown
   self.duration = duration or 0
