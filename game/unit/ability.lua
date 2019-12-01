@@ -80,12 +80,16 @@ end
 
 ---------- Move ----------
 Move = class('Move', Ability)
+function Move:getNode(grid, fromnode, location)
+  local node = grid:getNode(location)
+end
 
 ---------- Melee ----------
 Melee = class('Melee', Ability)
+Melee.minrange = 0.5
 function Melee:initialize(unit, dmg, range, anim, ...)
   Ability.initialize(self, unit, ...)
-  self.range = range
+  self.maxrange = range
   self.dmg = dmg
   self.anim = anim
 end
@@ -105,7 +109,11 @@ function Melee:update(dt)
 end
 
 function Melee:validateTarget(fromnode, target)
-  return target and self.unit.fraction:isEnemy(target) and target.hp and target.hp > 0 and vec2_dist(target.pos, fromnode.location) <= self.range
+  if target and self.unit.fraction:isEnemy(target) and target.hp and target.hp > 0 then
+    local dist = vec2_dist(target.pos, fromnode.location)
+    return dist <= self.maxrange and dist >= self.minrange
+  end
+  return false
 end
 
 function Melee:getNode(grid, fromnode, location)
@@ -120,6 +128,7 @@ function Melee:getNode(grid, fromnode, location)
         node.action = 'melee'
         return node
       end
+      return nil
   end
   return nil
 end
@@ -128,22 +137,22 @@ end
 require 'game/unit/projectile'
 
 Range = class('Range', Melee)
+Range.minrange = 1.1
 function Range:getNodes(grid, fromnode)
   local result = {}
   for _,delta in ipairs(grid.adjecentOffsets) do
     local loc = fromnode.location
-    for i=1,math.floor(self.range) do
+    for i=1,math.floor(self.maxrange) do
       if loc then
         loc = vec2_add(loc, delta)
-        local node = grid:getNode(loc)
-        if node and node.shoot then
-          if i > 1 and node.unit and self:validateTarget(fromnode, node.unit) then
+        local node, continue = self:getNode(grid, fromnode, loc)
+        if node then
             node.parent = fromnode
             node.action = 'range'
             self:_calculateCost(grid, node)
             table.insert(result, node)
-          end
-        else
+        end
+        if continue == false then
           loc = nil
         end
       end
@@ -152,8 +161,22 @@ function Range:getNodes(grid, fromnode)
   return result
 end
 
+function Range:getNode(grid, fromnode, location)
+  local node = grid:getNode(location)
+  if node and node.shoot then
+    if node.unit and self:validateTarget(fromnode, node.unit) then
+      node.parent = fromnode
+      node.action = 'range'
+      self:_calculateCost(grid, node)
+      return node, false
+    end
+    return nil, true
+  end
+  return nil, false
+end
+
 function Range:update(dt)
-  local trigger = Ability.update(self, dt) and self:validateTarget(self.unit, self.unit.node, self.target)
+  local trigger = Ability.update(self, dt) and self:validateTarget(self.unit.node, self.target)
   if trigger then
     self.unit.map:addObject(Arrow(self, self.unit, self.target))
   end
