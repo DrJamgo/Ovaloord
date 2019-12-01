@@ -31,7 +31,8 @@ function Unit:initialize(map, fraction, spawn)
   if self.range then
     self.range = Range(self, unpack(self.range))
   end
-  --self.move = Move(self)
+  self.move = Move(self)
+  self.idle = Ability(self, 1.0 + math.random(1,10)/10, 1.0, 1.0)
   
   -- appearance
   self.sprite = LPCSprite(self.spritepath)
@@ -89,6 +90,8 @@ function Unit:_moveToTile(dt, targetTile)
       self.nextNode = range[1]
       self.attack = self.range
       self:_faceNode(self.nextNode)
+    else
+      self.attack = nil
     end
   end
   
@@ -110,10 +113,7 @@ function Unit:_moveToTile(dt, targetTile)
       if self.map.layers.grid:claimNode(self.nextNode, self) then
         self.stuck = nil
         self.moving = true
-        if self:_move(dt, self.nextNode.location) then
-          self.node = self.nextNode
-          self.nextNode = nil
-        end
+        self.move:activate(self.nextNode.location)
       else
         if self.fraction:isEnemy(self.nextNode.unit) then
           self.path = nil
@@ -132,29 +132,8 @@ function Unit:_moveToTile(dt, targetTile)
         self.nextNode = nil
       end
     end
-  end
-end
-
-function Unit:_move(dt, location)
-  local diff = vec2_sub(location, self.pos)
-  local step = self.speed * dt
-  local distance
-  self.moveinc, distance = vec2_norm(diff, step)
-  if distance > step then
-    self.pos = vec2_add(self.pos, self.moveinc)
-    return false
   else
-    self.pos = vec2(location.x, location.y)
-    return true
-  end
-end
-
-function Unit:_update(dt, target)
-  if target[1] == 'move' then
-    self:_moveToTile(dt, target[2])
-  end
-  if target[1] == 'attack' then
-    -- TODO: implement attack
+    self.idle:activate()
   end
 end
 
@@ -178,12 +157,20 @@ function Unit:update(dt)
     elseif self.dead then
       self.dead = self.dead + dt
     end
+  elseif self.idle:isActive() then
+    self.idle:update(dt)
+  elseif self.move:isActive() then
+    local trigger = self.move:update(dt)
+    if trigger then
+      self.node = self.nextNode
+      self.nextNode = nil
+    end
   elseif self.attack and self.attack:isActive() then
     local trigger = self.attack:update(dt)
   else
     local target = self.fraction:getUnitTarget(self)
     if target then
-      self:_update(dt, target)
+      self:_moveToTile(dt, target[2])
     end
   end
   
@@ -210,14 +197,11 @@ function Unit:draw()
     self.sprite:drawAnimation(wx, wy, 'prone', 4, self.prone)
     self.node = nil
     self.nextNode = nil
-  elseif self.moving then
-    local _, diff = vec2_norm(self.moveinc or {x=0, y=0})
-    self.movedist = (self.movedist or 0) + diff
-    self.sprite:drawAnimation(wx, wy, (self.stuck and 'stand') or 'move', self.dir, self.movedist)
   elseif self.attack then
     self.sprite:drawAnimation(wx, wy, self.attack.anim, self.dir, self.attack:getProgress())
   else
-    self.sprite:drawAnimation(wx, wy, 'stand', self.dir, 0)
+    self.movedist = math.min(1, self.move:getProgress())
+    self.sprite:drawAnimation(wx, wy, (self.stuck and 'stand') or 'move', self.dir, self.movedist)
   end
   
   --love.graphics.print(tostring(self.id), wx, wy)

@@ -100,6 +100,9 @@ function GridLayer:draw()
           if unit.attack then
             text = text .. string.format("%s %.1f/%.1f/%.1f\n",unit.attack.class.name, unit.attack.time, unit.attack.trigger, unit.attack.cooldown)
           end
+          if unit.idle and unit.idle:isActive() then
+            text = text .. string.format("idle %.1f/%.1f\n", unit.idle.time, unit.idle.cooldown)
+          end
           love.graphics.print(text, wx, wy,0,0.8,0.8,32,128)
         end
       end

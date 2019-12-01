@@ -3,8 +3,8 @@ require 'middleclass'
 ---------- Ability ----------
 
 local lookup = {}
-lookup.cooldown = {veryslow=2.0, slow=1.5, normal=1.0, fast=0.5}
-lookup.duration = {veryslow=2.0, slow=1.5, normal=1.0, fast=0.5}
+lookup.cooldown = {veryslow=2.0, slow=1.5, normal=1.0, fast=0.75, veryfast=0.5}
+lookup.duration = lookup.cooldown
 
 Ability = class('Ability')
 function Ability:initialize(unit, cooldown, duration, trigger)
@@ -97,6 +97,31 @@ end
 Move = class('Move', Ability)
 function Move:getNode(grid, fromnode, location)
   local node = grid:getNode(location)
+end
+
+function Move:activate(target)
+  if self:isReady() then
+    self.from = self.unit.pos
+    self.target = target
+    local dist = vec2_dist(self.from, self.target)
+    self.duration = dist / self.unit.speed
+    self.cooldown = self.duration
+    self.trigger = self.duration
+    Ability.activate(self)
+    return true
+  end
+  return false
+end
+
+function Move:update(dt)
+  local trigger = Ability.update(self, dt)
+  if trigger then
+    self.unit.pos = vec2(self.target.x, self.target.y)
+  else
+    local progress = self:getProgress()
+    self.unit.pos = vec2_add(vec2_mul(self.from, 1 - progress),  vec2_mul(self.target,progress))
+  end
+  return trigger
 end
 
 ---------- Melee ----------
