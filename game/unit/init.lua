@@ -26,11 +26,12 @@ function Unit:initialize(map, fraction, spawn)
   self.node = self.map.layers.grid:getNode(spawn)
   self.map.layers.grid:claimNode(self.node, self)
   if self.melee then
-    self.melee = Melee(unpack(self.melee))
+    self.melee = Melee(self, unpack(self.melee))
   end
   if self.range then
-    self.range = Range(unpack(self.range))
+    self.range = Range(self, unpack(self.range))
   end
+  --self.move = Move(self)
   
   -- appearance
   self.sprite = LPCSprite(self.spritepath)
@@ -42,8 +43,8 @@ end
 --
 function Unit:getAdjacentNodes(curnode, dest)
   local move = self.map.layers.grid:getAdjacentNodes(curnode, dest)
-  local melee = self.melee and self.melee:getNodes(self.map.layers.grid, self, self.node) or {}
-  local range = self.range and self.range:getNodes(self.map.layers.grid, self, self.node) or {}
+  local melee = self.melee and self.melee:getNodes(self.map.layers.grid, self.node) or {}
+  local range = self.range and self.range:getNodes(self.map.layers.grid, self.node) or {}
   return move, melee, range
 end
 
@@ -125,8 +126,8 @@ function Unit:_moveToTile(dt, targetTile)
         end
       end
     elseif self.nextNode.action and self.attack then
-      if self.attack:validateTarget(self, self.node, self.nextNode.unit) then
-        self.attack:activate(self, self.nextNode.unit)
+      if self.attack:validateTarget(self.node, self.nextNode.unit) then
+        self.attack:activate(self.nextNode.unit)
       else
         self.nextNode = nil
       end

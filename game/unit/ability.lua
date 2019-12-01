@@ -1,12 +1,15 @@
 require 'middleclass'
-Ability = class('Ability')
 
-function Ability:initialize(cooldown, duration, trigger)
+---------- Ability ----------
+
+Ability = class('Ability')
+function Ability:initialize(unit, cooldown, duration, trigger)
 
   self.cooldown = cooldown
   self.duration = duration or 0
   self.trigger = trigger or 0
   
+  self.unit = unit
   self.time = 0
   self.active = false
   
@@ -56,44 +59,44 @@ function Ability:getProgress()
   return self.time / math.max(self.duration, 0.0001)
 end
 
-function Ability:_calculateCost(grid, unit, node)
+function Ability:_calculateCost(grid, node)
   local emCost = 1
   node.mCost = node.mCost + (node.parent.mCost or 0)
   node.score = node.mCost + emCost
 end
 
-function Ability:getNodes(grid, unit, fromnode)
+function Ability:getNodes(grid, fromnode)
   local result = {}
   for _,delta in ipairs(grid.adjecentOffsets) do
-    local n = self:getNode(grid, unit, fromnode, vec2_add(fromnode.location, delta))
+    local n = self:getNode(grid, fromnode, vec2_add(fromnode.location, delta))
     if n then
       n.parent = fromnode
-      self:_calculateCost(grid, unit, n)
+      self:_calculateCost(grid, n)
       table.insert(result, n)
     end
   end
   return result
 end
 
----------- Melee ----------
-require 'game/unit/projectile'
+---------- Move ----------
+Move = class('Move', Ability)
 
+---------- Melee ----------
 Melee = class('Melee', Ability)
-function Melee:initialize(dmg, range, anim, ...)
-  Ability.initialize(self, ...)
+function Melee:initialize(unit, dmg, range, anim, ...)
+  Ability.initialize(self, unit, ...)
   self.range = range
   self.dmg = dmg
   self.anim = anim
 end
 
-function Melee:activate(unit, target)
-  self.unit = unit
+function Melee:activate(target)
   self.target = target
   return Ability.activate(self)
 end
 
 function Melee:update(dt)
-  local trigger = Ability.update(self, dt) and self:validateTarget(self.unit, self.unit.node, self.target)
+  local trigger = Ability.update(self, dt) and self:validateTarget(self.unit.node, self.target)
   if trigger then
     -- todo: DMG calculation
     self.target:hit(self.dmg, self.unit)
@@ -101,16 +104,16 @@ function Melee:update(dt)
   return trigger 
 end
 
-function Melee:validateTarget(unit, fromnode, target)
-  return target and unit.fraction:isEnemy(target) and target.hp and target.hp > 0 and vec2_dist(target.pos, fromnode.location) <= self.range
+function Melee:validateTarget(fromnode, target)
+  return target and self.unit.fraction:isEnemy(target) and target.hp and target.hp > 0 and vec2_dist(target.pos, fromnode.location) <= self.range
 end
 
-function Melee:getNode(grid, unit, fromnode, location)
+function Melee:getNode(grid, fromnode, location)
   -- Here you make sure the requested node is valid (i.e. on the map, not blocked)
   local x,y = location.x,location.y
   if y >= 1 and y <= #grid.static then
       local target = grid.dynamic[y][x]
-      if self:validateTarget(unit, fromnode, target) then
+      if self:validateTarget(fromnode, target) then
         local node = Node(location, 1, grid.static[y][x].id + grid.numtiles)
         node.unit = target
         node.cost = 1
@@ -122,8 +125,10 @@ function Melee:getNode(grid, unit, fromnode, location)
 end
 
 ---------- Range ----------
+require 'game/unit/projectile'
+
 Range = class('Range', Melee)
-function Range:getNodes(grid, unit, fromnode)
+function Range:getNodes(grid, fromnode)
   local result = {}
   for _,delta in ipairs(grid.adjecentOffsets) do
     local loc = fromnode.location
@@ -132,10 +137,10 @@ function Range:getNodes(grid, unit, fromnode)
         loc = vec2_add(loc, delta)
         local node = grid:getNode(loc)
         if node and node.shoot then
-          if i > 1 and node.unit and self:validateTarget(unit, fromnode, node.unit) then
+          if i > 1 and node.unit and self:validateTarget(fromnode, node.unit) then
             node.parent = fromnode
             node.action = 'range'
-            self:_calculateCost(grid, unit, node)
+            self:_calculateCost(grid, node)
             table.insert(result, node)
           end
         else
