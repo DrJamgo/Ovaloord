@@ -214,7 +214,7 @@ function Unit:draw()
     local _, diff = vec2_norm(self.moveinc or {x=0, y=0})
     self.movedist = (self.movedist or 0) + diff
     self.sprite:drawAnimation(wx, wy, (self.stuck and 'stand') or 'move', self.dir, self.movedist)
-  elseif self.attack and self.attack:isActive() then
+  elseif self.attack then
     self.sprite:drawAnimation(wx, wy, self.attack.anim, self.dir, self.attack:getProgress())
   else
     self.sprite:drawAnimation(wx, wy, 'stand', self.dir, 0)

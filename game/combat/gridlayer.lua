@@ -90,6 +90,18 @@ function GridLayer:draw()
         local wx,wy = self.map:convertTileToPixel(x,y)
         love.graphics.rectangle("line", wx, wy, -self.map.tilewidth, -self.map.tileheight)
         love.graphics.print(x .. ',' .. y, wx, wy)
+        
+        if unit then
+          local text = unit.class.name ..'\n'
+          text = text .. string.format("hp %.1f/%.1f\n",unit.hp, unit.class.hp)
+          if unit.stuck then
+            text = text .. string.format("stuck %.1f\n",unit.stuck)
+          end
+          if unit.attack then
+            text = text .. string.format("%s %.1f/%.1f/%.1f\n",unit.attack.class.name, unit.attack.time, unit.attack.trigger, unit.attack.cooldown)
+          end
+          love.graphics.print(text, wx, wy,0,0.8,0.8,32,128)
+        end
       end
     end
   end
