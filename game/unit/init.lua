@@ -13,6 +13,7 @@ Unit.radius = 0.45
 Unit.spritepath = 'res/sprites/default.png'
 Unit.stuckpatience = 2
 Unit.tier = 0
+Unit.sight = 6
 
 function Unit:initialize(map, fraction, spawn)
   -- references
@@ -113,6 +114,10 @@ function Unit:_moveToTile(dt, targetTile)
           self.nextNode = nil
         end
       else
+        if self.fraction:isEnemy(self.nextNode.unit) then
+          self.path = nil
+          self.nextNode = nil
+        end
         self.stuck = (self.stuck or 0) + dt
         if self.stuck > self.stuckpatience then
           self.path = nil

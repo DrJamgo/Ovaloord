@@ -37,7 +37,7 @@ function Combat:update(dt)
     --self:_setFocus(undead.spawn)
   end
   self.gridlayer.cursor = self.cursorl
-  self.map:update(dt)
+  self.map:update((options['p'] and 0) or dt)
 end
 
 function Combat:draw()

@@ -29,7 +29,22 @@ function Fraction:getUnitTarget(unit)
 end
 
 function Fraction:isEnemy(unit)
-  return unit.fraction ~= self
+  return unit and unit.fraction ~= self
+end
+
+function Fraction:findClosestEnemy(unit)
+  local enemy = nil
+  local enemydist
+  for _,object in pairs(self.game.unitslayer.objects) do
+    if object.fraction and object.fraction ~= self then
+      local dist = vec2_dist(unit.pos, object.pos)
+      if dist < (enemydist or unit.sight) then
+        enemy = object
+        enemydist = dist
+      end
+    end
+  end
+  return enemy
 end
 
 ---------- Undead ----------
@@ -68,3 +83,11 @@ end
 ---------- Human ----------
 
 Human = class('Human', Fraction)
+function Human:getUnitTarget(unit)
+  local enemy = self:findClosestEnemy(unit)
+  if enemy then
+    local pos = (enemy.node and enemy.node.location)
+    if pos then return {'move', pos} end
+  end
+  return {'move', unit.spawn}
+end

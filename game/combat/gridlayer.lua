@@ -28,8 +28,8 @@ function GridLayer:initialize(map)
       local cost = COST.OTHER
       for _,layer in ipairs(self.map.layers) do
         if layer.data and layer.data[y][x] then
-            walk = layer.properties.nowalk == nil
-            shoot = layer.properties.noshoot == nil
+            walk = walk and layer.properties.nowalk == nil
+            shoot = shoot and layer.properties.noshoot == nil
         end
         if layer.data and layer.data[y][x] and layer.data[y][x].type == 'road' then
           cost = COST.ROAD
