@@ -8,10 +8,10 @@ require 'game/unit/lpcsprite'
 require 'game/unit/ability'
 require 'astar/astar'
 
-Unit.speed = 1.1
+Unit.speed = 2
 Unit.radius = 0.45
 Unit.spritepath = 'res/sprites/default.png'
-Unit.stuckpatience = 2
+Unit.stuckpatience = 0.5
 Unit.tier = 0
 Unit.sight = 6
 
