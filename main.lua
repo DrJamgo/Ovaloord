@@ -1,6 +1,7 @@
 --
 -- Copyright DrJamgo@hotmail.com 2019
 --
+APPLICATIONNAME = 'YesMaster'
 
 if arg[#arg] == "-debug" then require("mobdebug").start() end
 

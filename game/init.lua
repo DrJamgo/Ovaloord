@@ -1,5 +1,6 @@
 require 'utils/camera'
 require 'utils/map'
+require 'utils/table'
 require 'game/unit/fraction'
 require 'game/combat/combat'
 require 'game/control/controlwidget'
@@ -9,7 +10,25 @@ require 'middleclass'
 local STI = require "sti/sti"
 Game = class('Game')
 
+function newGameState()
+  local state = {}
+  state.levels = {'untitled'}
+  state.souls = {3}
+  return state
+end
+
+function Game:loadGame()
+  local filepath = love.filesystem.getAppdataDirectory()..'/'..APPLICATIONNAME..'/save.lua'
+  if love.filesystem.getInfo(filepath) then
+    self.state = love.filesystem.load(filepath)
+  else
+    self.state = newGameState()
+    love.filesystem.write(filepath, self.state)
+  end
+end
+
 function Game:initialize()
+  self:loadGame()
   self.scale = 2
   return self
 end

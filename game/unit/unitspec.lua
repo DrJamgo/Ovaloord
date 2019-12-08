@@ -11,7 +11,8 @@ local unitcatalogue = {
       Peasant  ={hp= 5, melee={0.5,1.1,'slash','fast','fast'}, }
     },
     { -- T2
-      Militia  ={hp= 7, melee={1.0,1.1,'slash','fast','fast'}, }
+      Militia  ={hp= 7, melee={1.0,1.1,'slash','fast','fast'}, },
+      Ranger   ={hp= 7, range={4.0,5.1,'shoot','veryslow','fast'}, }
     }
   },
   Undead = {
@@ -22,7 +23,7 @@ local unitcatalogue = {
     },
     { -- T3
       Revenant ={hp= 5, melee={2.0,1.1,'thrust','normal','slow'}, },
-      Hitter   ={hp= 5, range={4.0,5.1,'shoot','veryslow','fast'}, },
+      Hitter   ={hp= 5, range={4.0,5.1,'shoot','veryslow','normal'}, },
     }
   }
 }

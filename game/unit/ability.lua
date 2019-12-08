@@ -3,7 +3,7 @@ require 'middleclass'
 ---------- Ability ----------
 
 local lookup = {}
-lookup.cooldown = {veryslow=2.0, slow=1.5, normal=1.0, fast=0.75, veryfast=0.5}
+lookup.cooldown = {veryslow=1.5, slow=1.25, normal=1.0, fast=0.75, veryfast=0.5}
 lookup.duration = lookup.cooldown
 
 Ability = class('Ability')
