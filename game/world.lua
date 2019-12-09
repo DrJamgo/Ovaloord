@@ -8,10 +8,12 @@ World.player.image = love.graphics.newImage('res/sprites/playertoken.png')
 World.player.image:setFilter('nearest','nearest')
 World.player.offset = vec2(12, 32)
 
+World.content = vec2(240,160)
+
 function World:initialize(game)
   self.game = game
   self.map = STI('res/maps/worldmap.lua')
-  TiledWidget.initialize(self, self.map, 0,0,love.graphics.getWidth(), love.graphics.getHeight(), self.scale)
+  TiledWidget.initialize(self, self.map, 0,0,love.graphics.getWidth(), love.graphics.getHeight())
   
   self.map.layers.UI.visible = false
   self.cursortext = ''
@@ -49,7 +51,7 @@ end
 function World:_updatePlayerPos(smooth)
   local level = self:_getObjectFromLevel(self.game.state.currentlevel)
   self.player.pos = vec2( level.x+level.width/2, level.y+level.height/2)
-  self.camera:setFromWorld(self.map, self.player.pos.x, self.player.pos.y, self.scale, smooth)
+  self.camera:setFromWorld(self.map, self.player.pos.x, self.player.pos.y, 1, smooth)
 end
 
 function World:update(dt)
@@ -87,7 +89,7 @@ function World:draw()
   love.graphics.replaceTransform(self.camera:getTransform())
   love.graphics.draw(self.player.image, self.player.pos.x, self.player.pos.y, nil,nil,nil,self.player.offset.x, self.player.offset.y)
   if self.cursor then
-    love.graphics.printf(self.cursortext, self.cursor[1]-200 / self.scale, self.cursor[2], 400, "center",0, 1.0 / self.scale)
+    love.graphics.printf(self.cursortext, self.cursor[1]-200, self.cursor[2], 400, "center",0, 1.0)
   end
   love.graphics.pop()
   

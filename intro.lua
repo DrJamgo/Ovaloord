@@ -29,7 +29,7 @@ function Intro:update(dt)
       self.transform = love.math.newTransform(center.x,center.y,0,scale,scale,origin.x,origin.y)
     end
     if love.mouse.isDown(1) and screen.skip then
-      self.time = screen.fadein + screen.time
+      self.time = math.max(self.time, screen.fadein + screen.time)
     end
     self.alpha = math.min(1, self.time / screen.fadein)
     self.alpha = math.min(self.alpha, self.alpha - math.max(-1, (self.time - screen.fadein - screen.time)) / screen.fadeout)
@@ -50,5 +50,4 @@ function Intro:draw()
     love.graphics.setColor(1,1,1,self.alpha)
     love.graphics.draw(screen.image)
   end
-  
 end

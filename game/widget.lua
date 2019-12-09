@@ -1,10 +1,12 @@
 require('middleclass')
 Widget = class('Widget')
+Widget.content = vec2(320,240)
 
 function Widget:initialize(x, y, w, h, scale)
   self.rect = {x, y, w, h}
-  self.scale = scale
-  self.canvas = love.graphics.newCanvas(w / scale, h / scale)
+  self.scale = scale or math.floor(math.min(h / self.content.y, w / self.content.x))
+  
+  self.canvas = love.graphics.newCanvas(w / self.scale, h / self.scale)
   self.canvas:setFilter('nearest', 'nearest')
   
   local hscale = self:getWidth() / self.canvas:getWidth()

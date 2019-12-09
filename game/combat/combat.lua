@@ -3,11 +3,11 @@ require 'game/widget'
 require 'game/combat/unitslayer'
 require 'game/combat/gridlayer'
 Combat = class('Combat', TiledWidget)
-Combat.scale = 2
+Combat.content = vec2(320,240)
 local STI = require "sti/sti"
 
 function Combat:initialize(map)
-  TiledWidget.initialize(self, map, 0, 0, love.graphics:getWidth(), love.graphics:getHeight(), self.scale)
+  TiledWidget.initialize(self, map, 0, 0, love.graphics:getWidth(), love.graphics:getHeight())
   map.addObject = addObject
   map.removeObject = removeObject
   
@@ -44,7 +44,6 @@ function Combat:update(dt)
 end
 
 function Combat:draw()
-
   -- save current canvas
   local targetCanvas = love.graphics.getCanvas()
   
