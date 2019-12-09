@@ -7,6 +7,7 @@ if arg[#arg] == "-debug" then require("mobdebug").start() end
 
 require 'game'
 require 'intro'
+require 'utils/table'
 
 local intro = Intro()
 local game = Game()
@@ -43,7 +44,22 @@ function love.mousemoved(...)
 end
 
 function love.load(arg)
-  --
+
+end
+
+local erroroccured = false
+function errorHandler( err )
+  print( "ERROR:", err )
+  if false == erroroccured then
+    local dump = {}
+    dump.err = err
+    dump.game = game
+    dump.stack = debug.traceback()
+    table.save(dump, 'errordump')
+    erroroccured = true
+    love.system.openURL("mailto:drjamgo@hotmail.com?subject="..APPLICATIONNAME.." crashed.&body=Hello,%0A%0AMy '"..APPLICATIONNAME.."' game has crashed, please see my dump-file attached.. [please attach errordump file before sending!]%0A%0AThanks!")
+    love.event.quit()
+  end
 end
 
 function love.update(dt)
@@ -51,10 +67,10 @@ function love.update(dt)
     game:enterWorldMap()
     main = game
   end
-  main:update(dt)
+  xpcall(main.update, errorHandler, main, dt)
 end
 
 function love.draw()
-  main:draw()
+  xpcall(main.draw, errorHandler, main)
 end
 
