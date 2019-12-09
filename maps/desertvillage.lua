@@ -15,13 +15,13 @@ return {
     {
       name = "terrain_atlas",
       firstgid = 1,
-      filename = "../tilesets/terrain_atlas.tsx",
+      filename = "../res/tilesets/terrain_atlas.tsx",
       tilewidth = 32,
       tileheight = 32,
       spacing = 0,
       margin = 0,
       columns = 32,
-      image = "../sprites/terrain_atlas.png",
+      image = "../assets/tilesets/terrain_atlas.png",
       imagewidth = 1024,
       imageheight = 1024,
       tileoffset = {
@@ -76,13 +76,13 @@ return {
     {
       name = "human",
       firstgid = 1025,
-      filename = "../tilesets/human.tsx",
+      filename = "../res/tilesets/human.tsx",
       tilewidth = 64,
       tileheight = 64,
       spacing = 0,
       margin = 0,
       columns = 5,
-      image = "../tilesets/human.png",
+      image = "../assets/tilesets/human.png",
       imagewidth = 320,
       imageheight = 640,
       tileoffset = {
@@ -115,13 +115,13 @@ return {
     {
       name = "undead",
       firstgid = 1075,
-      filename = "../tilesets/undead.tsx",
+      filename = "../res/tilesets/undead.tsx",
       tilewidth = 64,
       tileheight = 64,
       spacing = 0,
       margin = 0,
       columns = 5,
-      image = "../tilesets/undead.png",
+      image = "../assets/tilesets/undead.png",
       imagewidth = 320,
       imageheight = 640,
       tileoffset = {

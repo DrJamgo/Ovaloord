@@ -1,7 +1,7 @@
 require 'middleclass'
 Projectile = class('Projectile')
 
-Projectile.spriteimage = love.graphics.newImage('res/sprites/arrow.png')
+Projectile.spriteimage = love.graphics.newImage('assets/sprites/arrow.png')
 Projectile.speed = 15
 Projectile.scale = 1
 Projectile.offset = vec2(16, 16)
@@ -46,6 +46,6 @@ function Projectile:draw()
 end
 
 Arrow = class('Arrow', Projectile)
-Arrow.spriteimage = love.graphics.newImage('res/sprites/arrow.png')
+Arrow.spriteimage = love.graphics.newImage('assets/sprites/arrow.png')
 Arrow.speed = 15
 Arrow.curve = 8

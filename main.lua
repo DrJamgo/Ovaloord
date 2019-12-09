@@ -9,6 +9,7 @@ require 'game'
 require 'intro'
 require 'utils/table'
 
+
 local intro = Intro()
 local game = Game()
 local main = intro
@@ -19,13 +20,16 @@ S = {
   attack='\001',
   move='\002',
   locked='\003',
-  }
+  info='\004'
+}
+require 'text_en'
 
-local font = love.graphics.newImageFont("res/love2d_font.png",
+local font = love.graphics.newImageFont("assets/love2d_font.png",
     " abcdefghijklmnopqrstuvwxyz" ..
     "ABCDEFGHIJKLMNOPQRSTUVWXYZ0" ..
-    "123456789.,!?-+/():;%&`'*#=[]\""..S.attack..S.move..S.locked)
-  
+    "123456789.,!?-+/():;%&`'*#=[]\""..S.attack..S.move..S.locked..S.info)
+
+font:setFilter( 'nearest', 'nearest', 0 )
 love.graphics.setFont(font)
 
 function love.keypressed( key, scancode, isrepeat )
@@ -55,9 +59,10 @@ function errorHandler( err )
     dump.err = err
     dump.game = game
     dump.stack = debug.traceback()
+    print(dump.stack)
     table.save(dump, 'errordump')
     erroroccured = true
-    love.system.openURL("mailto:drjamgo@hotmail.com?subject="..APPLICATIONNAME.." crashed.&body=Hello,%0A%0AMy '"..APPLICATIONNAME.."' game has crashed, please see my dump-file attached.. [please attach errordump file before sending!]%0A%0AThanks!")
+    --love.system.openURL("mailto:drjamgo@hotmail.com?subject="..APPLICATIONNAME.." crashed.&body=Hello,%0A%0AMy '"..APPLICATIONNAME.."' game has crashed, please see my dump-file attached.. [please attach errordump file before sending!]%0A%0AThanks!")
     love.event.quit()
   end
 end

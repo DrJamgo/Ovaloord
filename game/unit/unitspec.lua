@@ -33,7 +33,7 @@ for fraction, unitlist in pairs(unitcatalogue) do
     for name,spec in pairs(units) do
       _G[name] = class(name, Unit)
       if not spec.spritepath then
-        _G[name].spritepath = 'res/sprites/'..fraction..'/'..name..'.png'
+        _G[name].spritepath = 'assets/sprites/'..fraction..'/'..name..'.png'
       end
       _G[name].tier = tier
       for k,v in pairs(spec) do

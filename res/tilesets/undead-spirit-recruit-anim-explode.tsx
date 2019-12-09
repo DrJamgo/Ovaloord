@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tileset version="1.2" tiledversion="1.2.4" name="undead-spirit-recruit-anim-explode" tilewidth="64" tileheight="128" tilecount="12" columns="12">
  <tileoffset x="-16" y="0"/>
- <image source="undead-spirit-recruit-anim-explode.png" width="768" height="128"/>
+ <image source="../../assets/sprites/effects/undead-spirit-recruit-anim-explode.png" width="768" height="128"/>
  <tile id="0">
   <animation>
    <frame tileid="0" duration="100"/>

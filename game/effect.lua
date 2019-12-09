@@ -36,7 +36,7 @@ end
 ---------- SpriritEffect -----------
 
 SpiritEffect = class('SpiritEffect', StationaryEffect)
-SpiritEffect.spriteimage = love.graphics.newImage('res/sprites/effects/undead-spirit-recruit-anim-explode.png')
+SpiritEffect.spriteimage = love.graphics.newImage('assets/sprites/effects/undead-spirit-recruit-anim-explode.png')
 SpiritEffect.spriteimage:setFilter('nearest','nearest')
 SpiritEffect.scale = 1
 SpiritEffect.origin = vec2(32, 128)
@@ -53,7 +53,7 @@ SpiritEffect.colors = {
 ---------- SpiritOrb -----------
 
 SpiritOrb = class('SpiritOrb', StationaryEffect)
-SpiritOrb.spriteimage = love.graphics.newImage('res/sprites/effects/rotating_orbs.png')
+SpiritOrb.spriteimage = love.graphics.newImage('assets/sprites/effects/rotating_orbs.png')
 SpiritOrb.spriteimage:setFilter('nearest','nearest')
 SpiritOrb.scale = 1
 SpiritOrb.origin = vec2(6, 12)

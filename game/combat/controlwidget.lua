@@ -1,7 +1,9 @@
+local STI = require 'sti/sti'
 require 'game/widget'
 ControlWidget = class('ControlWidget', TiledWidget)
 
-function ControlWidget:initialize(fraction, map, scale)
+function ControlWidget:initialize(fraction, scale)
+  local map = STI('maps/gui_units.lua')
   local w,h = map.tilewidth * map.width * scale, map.tileheight * map.height * scale
   local y = love.graphics:getHeight() - h
   
@@ -9,7 +11,7 @@ function ControlWidget:initialize(fraction, map, scale)
   
   self.camera:fit(map)
   self.fraction = fraction
-  self.map = map
+
   self.tile = nil
   
   self.unitcap = 4

@@ -3,7 +3,7 @@ require 'game/widget'
 Intro = class('Intro')
 
 Intro.screens = {
-  {path='res/splash/powered_by_love.png', fadein=1.0, time=3.0, fadeout=1.0, skip=true}
+  {path='assets/splash/powered_by_love.png', fadein=1.0, time=3.0, fadeout=1.0, skip=true}
 }
 
 function Intro:initialize()

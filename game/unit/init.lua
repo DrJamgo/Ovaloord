@@ -10,7 +10,7 @@ require 'astar/astar'
 
 Unit.speed = 2
 Unit.radius = 0.45
-Unit.spritepath = 'res/sprites/default.png'
+Unit.spritepath = 'assets/sprites/default.png'
 Unit.stuckpatience = 0.5
 Unit.tier = 0
 Unit.sight = 6

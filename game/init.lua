@@ -12,7 +12,7 @@ Game = class('Game')
 
 function newGameState()
   local state = {}
-  state.levels = {desert_town={}}
+  state.levels = {desertvillage={}}
   state.currentlevel = 'pyramid'
   state.souls = {3}
   return state
@@ -54,10 +54,9 @@ function Game:enterWorldMap()
 end
 
 function Game:enterCombat()
-  self.guimap = STI('res/maps/gui_units.lua')
-  self.combatmap = STI('res/maps/'..self.state.currentlevel..'.lua')
+  self.combatmap = STI('maps/'..self.state.currentlevel..'.lua')
   self.combat = Combat(self.combatmap, self.control)
-  self.control = ControlWidget(self.combat.fractions['Undead'], self.guimap, self.scale)
+  self.control = ControlWidget(self.combat.fractions['Undead'], self.scale)
   
   self.combat.unitslayer.controlwidget = self.control
   

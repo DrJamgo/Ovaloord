@@ -2,8 +2,8 @@
 <map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-up" width="10" height="8" tilewidth="36" tileheight="32" infinite="0" nextlayerid="25" nextobjectid="1">
  <tileset firstgid="1" source="../tilesets/undead.tsx"/>
  <tileset firstgid="51" source="../tilesets/terrain_atlas.tsx"/>
- <tileset firstgid="1075" source="../sprites/effects/undead-spirit-recruit-anim-explode.tsx"/>
- <tileset firstgid="1087" source="../sprites/effects/rotating_orbs.tsx"/>
+ <tileset firstgid="1075" source="../tilesets/undead-spirit-recruit-anim-explode.tsx"/>
+ <tileset firstgid="1086" source="../tilesets/rotating_orbs.tsx"/>
  <layer id="21" name="Tile Layer 2" width="10" height="8" offsetx="8" offsety="16">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,

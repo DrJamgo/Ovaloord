@@ -8,6 +8,7 @@ function Widget:initialize(x, y, w, h, scale)
   
   self.canvas = love.graphics.newCanvas(w / self.scale, h / self.scale)
   self.canvas:setFilter('nearest', 'nearest')
+  self.cursor = Cursor(self)
   
   local hscale = self:getWidth() / self.canvas:getWidth()
   local vscale = self:getHeight() / self.canvas:getHeight()
@@ -53,6 +54,7 @@ end
 
 function TiledWidget:update(dt)
   self.camera:update(dt)
+  self.cursor:update(dt)
 end
 
 function TiledWidget:getMapFromScreen(screenx, screeny)
@@ -60,6 +62,11 @@ function TiledWidget:getMapFromScreen(screenx, screeny)
   local canvasx, canvasy = self.transform:inverseTransformPoint(screenx, screeny)
   -- transform from canvas to map pixels
   return self.camera.transform:inverseTransformPoint(canvasx, canvasy)
+end
+
+function TiledWidget:convertMapToScreen(mx, my)
+  local canvasx, canvasy = self.camera.transform:transformPoint(mx, my)
+  return self.transform:transformPoint(canvasx, canvasy)
 end
 
 function TiledWidget:getTileAtPosition(...)
@@ -83,16 +90,7 @@ function TiledWidget:getTileAtPosition(...)
   return nil
 end
 
-function TiledWidget:mousemoved(gx,gy)
-  local tile, layer, tx, ty = self:getTileAtPosition(gx, gy)
-  self.cursortile = tile
-  self.cursorl = {tx, ty}
-  self.cursor = {gx, gy}
-  if tx and ty then
-    self.cursor = {self.map:convertTileToPixel(tx, ty)}
-  end
-  if tile and tile.x and tile.y then
-    self.cursor = {math.floor(tile.x + tile.width / 2), math.floor(tile.y + tile.height / 2)}
-  end
-  return self.tile ~= nil
+function TiledWidget:draw()
+  Widget.draw(self)
+  self.cursor:draw()
 end
