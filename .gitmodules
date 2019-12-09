@@ -4,3 +4,6 @@
 [submodule "astar"]
 	path = astar
 	url = https://github.com/GloryFish/lua-astar.git
+[submodule "lua/sti"]
+	path = lua/sti
+	url = git@github.com:DrJamgo/Simple-Tiled-Implementation.git
