@@ -80,6 +80,7 @@ function ControlWidget:mousepressed(gx,gy,button,isTouch)
 end
 
 function ControlWidget:update(dt)
+  TiledWidget.update(self, dt)
   self.map:update(dt)
 end
 

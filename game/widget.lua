@@ -29,6 +29,9 @@ function Widget:test(mx,my)
   return mx >= x and mx <= x + w and my >= y and my <= y + h
 end
 
+function Widget:update(dt)
+end
+
 function Widget:draw()
   love.graphics.push()
   local x,y,w,h = unpack(self.rect)
@@ -38,15 +41,16 @@ function Widget:draw()
   --love.graphics.rectangle("line",x,y,w,h)
 end
 
-function Widget:update(dt)
-end
-
 TiledWidget = class('TiledWidget', Widget)
 
 function TiledWidget:initialize(map, ...)  
   Widget.initialize(self, ...)
   self.map = map
   self.camera = Camera(self.canvas)
+end
+
+function TiledWidget:update(dt)
+  self.camera:update(dt)
 end
 
 function TiledWidget:getMapFromScreen(screenx, screeny)

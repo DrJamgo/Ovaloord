@@ -15,6 +15,8 @@ function World:initialize(game)
   
   self.map.layers.UI.visible = false
   self.cursortext = ''
+  
+  self:_updatePlayerPos()
 end
 
 function World:_getObjectFromLevel(levelname)
@@ -44,10 +46,15 @@ function World:_getAction(objectname)
   end
 end
 
-function World:update(dt)
+function World:_updatePlayerPos(smooth)
   local level = self:_getObjectFromLevel(self.game.state.currentlevel)
   self.player.pos = vec2( level.x+level.width/2, level.y+level.height/2)
-  self.camera:setFromWorld(self.map, self.player.pos.x, self.player.pos.y, self.scale)
+  self.camera:setFromWorld(self.map, self.player.pos.x, self.player.pos.y, self.scale, smooth)
+end
+
+function World:update(dt)
+  TiledWidget.update(self, dt)
+  self:_updatePlayerPos(true)
   if self.cursortile and self.cursortile.name then
     local _,text = self:_getAction(self.cursortile.name)
     self.cursortext = text
@@ -58,7 +65,7 @@ end
 
 function World:mousepressed(gx,gy,button,isTouch)
   local tileOrObject, layer, x, y = self:getTileAtPosition(gx, gy)
-  if tileOrObject.shape and tileOrObject.name then
+  if tileOrObject and tileOrObject.shape and tileOrObject.name then
     local action = self:_getAction(tileOrObject.name)
     if action == 'attack' then
       self.game:enterCombat()
@@ -79,7 +86,9 @@ function World:draw()
   love.graphics.push()
   love.graphics.replaceTransform(self.camera:getTransform())
   love.graphics.draw(self.player.image, self.player.pos.x, self.player.pos.y, nil,nil,nil,self.player.offset.x, self.player.offset.y)
-  love.graphics.printf(self.cursortext, self.cursor[1]-200 / self.scale, self.cursor[2], 400, "center",0, 1.0 / self.scale)
+  if self.cursor then
+    love.graphics.printf(self.cursortext, self.cursor[1]-200 / self.scale, self.cursor[2], 400, "center",0, 1.0 / self.scale)
+  end
   love.graphics.pop()
   
   -- restore target canvas and draw to it

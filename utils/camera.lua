@@ -1,5 +1,6 @@
 Camera = {}
 Camera.__index = Camera
+Camera.speed = 3
 
 setmetatable(Camera, {
   __call = function (cls, ...)
@@ -18,17 +19,38 @@ function Camera:_init(canvas)
   return self
 end
 
-function Camera:setFromTile(map,tx,ty,zoom)
-  local wx,wy = gamemap.getPixelFromTile(map, {x=tx, y=ty})
-  return self:setFromWorld(map, wx, wy, zoom or self.scale)
+function Camera:update(dt)
+  if self.target then
+    local diffx, diffy = self.target.x - self.offsetx, self.target.y - self.offsety
+    if diffx ~= 0 or diffy ~= 0 then
+      local step = math.ceil(self.speed * dt)
+      diffx = math.max(-step, math.min(step, diffx))
+      diffy = math.max(-step, math.min(step, diffy))
+      self.offsetx = self.offsetx + diffx
+      self.offsety = self.offsety + diffy
+      self:_updateTransform()
+    else
+      self.target = nil
+    end
+  end
 end
 
-function Camera:setFromWorld(map,wx,wy,zoom)
+function Camera:setFromTile(map,tx,ty,zoom,smooth)
+  local wx,wy = gamemap.getPixelFromTile(map, {x=tx, y=ty})
+  return self:setFromWorld(map, wx, wy, zoom or self.scale, smooth)
+end
+
+function Camera:setFromWorld(map,wx,wy,zoom,smooth)
   local canvas = self.canvas
+  self.target = {}
   self.scale   = zoom or self.scale
-  self.offsetx = math.floor(-wx + canvas:getWidth() / 2 / self.scale)
-  self.offsety = math.floor(-wy + canvas:getHeight() / 2 / self.scale)
-  
+  self.target = vec2(math.floor(-wx + canvas:getWidth() / 2 / self.scale),
+    math.floor(-wy + canvas:getHeight() / 2 / self.scale))
+  if not smooth then
+    self.offsetx = self.target.x
+    self.offsety = self.target.y
+    self.target = nil
+  end
   self:_limitToMap(map)
   self:_updateTransform()
 end

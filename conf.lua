@@ -3,5 +3,5 @@
 function love.conf(t)
   t.identity = nil
   t.window.title = "YesMaster"
-  t.window.fullscreen = true
+  t.window.fullscreen = false
 end

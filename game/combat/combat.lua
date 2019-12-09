@@ -22,36 +22,29 @@ function Combat:initialize(map)
       self.fractions[fraction] = _G[fraction](self, layer)
     end
   end
+  local undead = self.fractions['Undead']
+  self.camera:setFromTile(self.map, undead.spawn.x, undead.spawn.y, 1)
 end
 
-function Combat:_setFocus(focus)
-  self.focus = focus
-end
 
 function Combat:update(dt)
+  TiledWidget.update(self, dt)
   local undead = self.fractions['Undead']
   local leader = self.fractions['Undead']:getLeadingUnit()
   if leader then
-    self:_setFocus(leader.pos)
+    self.camera:setFromTile(self.map, leader.pos.x, leader.pos.y, 1, true)
   else
-    --self:_setFocus(undead.spawn)
+    local x,y = unpack(undead.spawn)
+    self.camera:setFromTile(self.map, undead.spawn.x, undead.spawn.y, 1, true)
   end
+  self.gridlayer.visible = options['g']
+
   self.gridlayer.cursor = self.cursorl
   self.map:update((options['p'] and 0) or dt)
 end
 
-function Combat:preDraw()
-  self.gridlayer.visible = options['g']
-  
-  if self.focus then
-    self.camera:setFromTile(self.map, self.focus.x, self.focus.y, 1)
-  else
-    self.camera:setFromTile(self.map, 1, 1, 1)
-  end
-end
-
 function Combat:draw()
-  self:preDraw()
+
   -- save current canvas
   local targetCanvas = love.graphics.getCanvas()
   
