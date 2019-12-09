@@ -3,7 +3,7 @@ require 'game/widget'
 ControlWidget = class('ControlWidget', TiledWidget)
 
 function ControlWidget:initialize(fraction, scale)
-  local map = STI('maps/gui_units.lua')
+  local map = STI('lua/maps/gui_units.lua')
   local w,h = map.tilewidth * map.width * scale, map.tileheight * map.height * scale
   local y = love.graphics:getHeight() - h
   

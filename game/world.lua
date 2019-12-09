@@ -15,7 +15,7 @@ World.content = vec2(256,192)
 
 function World:initialize(game)
   self.game = game
-  self.map = STI('maps/worldmap.lua')
+  self.map = STI('lua/maps/worldmap.lua')
   TiledWidget.initialize(self, self.map, 0,0,love.graphics.getWidth(), love.graphics.getHeight())
   
   self.map.layers.UI.visible = false

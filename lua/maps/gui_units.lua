@@ -15,13 +15,13 @@ return {
     {
       name = "undead",
       firstgid = 1,
-      filename = "../res/tilesets/undead.tsx",
+      filename = "../../res/tilesets/undead.tsx",
       tilewidth = 64,
       tileheight = 64,
       spacing = 0,
       margin = 0,
       columns = 5,
-      image = "../assets/tilesets/undead.png",
+      image = "../../assets/tilesets/undead.png",
       imagewidth = 320,
       imageheight = 640,
       tileoffset = {
@@ -58,13 +58,13 @@ return {
     {
       name = "terrain_atlas",
       firstgid = 51,
-      filename = "../res/tilesets/terrain_atlas.tsx",
+      filename = "../../res/tilesets/terrain_atlas.tsx",
       tilewidth = 32,
       tileheight = 32,
       spacing = 0,
       margin = 0,
       columns = 32,
-      image = "../assets/tilesets/terrain_atlas.png",
+      image = "../../assets/tilesets/terrain_atlas.png",
       imagewidth = 1024,
       imageheight = 1024,
       tileoffset = {
@@ -119,13 +119,13 @@ return {
     {
       name = "undead-spirit-recruit-anim-explode",
       firstgid = 1075,
-      filename = "../res/tilesets/undead-spirit-recruit-anim-explode.tsx",
+      filename = "../../res/tilesets/undead-spirit-recruit-anim-explode.tsx",
       tilewidth = 64,
       tileheight = 128,
       spacing = 0,
       margin = 0,
       columns = 12,
-      image = "../assets/sprites/effects/undead-spirit-recruit-anim-explode.png",
+      image = "../../assets/sprites/effects/undead-spirit-recruit-anim-explode.png",
       imagewidth = 768,
       imageheight = 128,
       tileoffset = {
@@ -224,13 +224,13 @@ return {
     {
       name = "rotating_orbs",
       firstgid = 1087,
-      filename = "../res/tilesets/rotating_orbs.tsx",
+      filename = "../../res/tilesets/rotating_orbs.tsx",
       tilewidth = 24,
       tileheight = 24,
       spacing = 0,
       margin = 0,
       columns = 4,
-      image = "../assets/sprites/effects/rotating_orbs.png",
+      image = "../../assets/sprites/effects/rotating_orbs.png",
       imagewidth = 96,
       imageheight = 192,
       tileoffset = {

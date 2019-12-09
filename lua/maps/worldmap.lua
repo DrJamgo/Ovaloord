@@ -15,13 +15,13 @@ return {
     {
       name = "overworld",
       firstgid = 1,
-      filename = "../res/tilesets/overworld.tsx",
+      filename = "../../res/tilesets/overworld.tsx",
       tilewidth = 16,
       tileheight = 16,
       spacing = 0,
       margin = 0,
       columns = 26,
-      image = "../assets/tilesets/LPC Overworld/LPC_overworld_assembly.png",
+      image = "../../assets/tilesets/LPC Overworld/LPC_overworld_assembly.png",
       imagewidth = 416,
       imageheight = 480,
       tileoffset = {
@@ -41,13 +41,13 @@ return {
     {
       name = "terrain_atlas",
       firstgid = 781,
-      filename = "../res/tilesets/terrain_atlas.tsx",
+      filename = "../../res/tilesets/terrain_atlas.tsx",
       tilewidth = 32,
       tileheight = 32,
       spacing = 0,
       margin = 0,
       columns = 32,
-      image = "../assets/tilesets/terrain_atlas.png",
+      image = "../../assets/tilesets/terrain_atlas.png",
       imagewidth = 1024,
       imageheight = 1024,
       tileoffset = {

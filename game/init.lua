@@ -54,7 +54,7 @@ function Game:enterWorldMap()
 end
 
 function Game:enterCombat()
-  self.combatmap = STI('maps/'..self.state.currentlevel..'.lua')
+  self.combatmap = STI('lua/maps/'..self.state.currentlevel..'.lua')
   self.combat = Combat(self.combatmap, self.control)
   self.control = ControlWidget(self.combat.fractions['Undead'], self.scale)
   
