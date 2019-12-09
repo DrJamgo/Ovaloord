@@ -6,5 +6,9 @@
 ## Game
 TODO
 
+### Bugs
+diagonal shoot after target acqired
+
+
 ## Licenses
 TODO

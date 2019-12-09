@@ -20,14 +20,15 @@ end
 
 function Camera:setFromTile(map,tx,ty,zoom)
   local wx,wy = gamemap.getPixelFromTile(map, {x=tx, y=ty})
-  return self:setFromWorld(map, wx, wy, zoom)
+  return self:setFromWorld(map, wx, wy, zoom or self.scale)
 end
 
 function Camera:setFromWorld(map,wx,wy,zoom)
-  local canvas = love.graphics.getCanvas() or love.graphics
-  self.offsetx = math.floor(-wx + canvas:getWidth() / 2 / zoom)
-  self.offsety = math.floor(-wy + canvas:getHeight() / 2 / zoom)
-  self.scale   = zoom
+  local canvas = self.canvas
+  self.scale   = zoom or self.scale
+  self.offsetx = math.floor(-wx + canvas:getWidth() / 2 / self.scale)
+  self.offsety = math.floor(-wy + canvas:getHeight() / 2 / self.scale)
+  
   self:_limitToMap(map)
   self:_updateTransform()
 end

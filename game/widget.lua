@@ -38,6 +38,9 @@ function Widget:draw()
   --love.graphics.rectangle("line",x,y,w,h)
 end
 
+function Widget:update(dt)
+end
+
 TiledWidget = class('TiledWidget', Widget)
 
 function TiledWidget:initialize(map, ...)  
@@ -46,20 +49,29 @@ function TiledWidget:initialize(map, ...)
   self.camera = Camera(self.canvas)
 end
 
-function TiledWidget:getTileAtPosition(screenx, screeny)
+function TiledWidget:getMapFromScreen(screenx, screeny)
   -- transform from screen to canvas pixels
   local canvasx, canvasy = self.transform:inverseTransformPoint(screenx, screeny)
   -- transform from canvas to map pixels
-  local mapx, mapy = self.camera.transform:inverseTransformPoint(canvasx, canvasy)
+  return self.camera.transform:inverseTransformPoint(canvasx, canvasy)
+end
+
+function TiledWidget:getTileAtPosition(...)
+  local mapx, mapy = self:getMapFromScreen(...)
   -- transform from map pixels to map tiles
   local tx, ty = self.map:convertPixelToTile(mapx, mapy)
   tx = math.floor(tx + 1)
   ty = math.floor(ty + 1)
   for i=1,#self.map.layers do
     local layer = self.map.layers[#self.map.layers + 1 - i]
-    if layer.data then
+    if layer.data and layer.data[ty] then
       local tile = layer.data[ty][tx]
       if tile then return tile, layer, tx, ty end
+    end
+    for _,object in ipairs(layer.objects or {}) do
+      if object.x and mapx >= object.x and mapx <= object.x + object.width and mapy >= object.y and mapy <= object.y + object.height then
+        return object, layer
+      end
     end
   end
   return nil

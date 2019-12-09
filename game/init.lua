@@ -3,8 +3,8 @@ require 'utils/map'
 require 'utils/table'
 require 'game/unit/fraction'
 require 'game/combat/combat'
-require 'game/control/controlwidget'
-
+require 'game/combat/controlwidget'
+require 'game/world'
 require 'middleclass'
 
 local STI = require "sti/sti"
@@ -12,18 +12,19 @@ Game = class('Game')
 
 function newGameState()
   local state = {}
-  state.levels = {'untitled'}
+  state.levels = {pyramid={}, desert_town={}}
+  state.currentlevel = 'pyramid'
   state.souls = {3}
   return state
 end
 
 function Game:loadGame()
-  local filepath = love.filesystem.getAppdataDirectory()..'/'..APPLICATIONNAME..'/save.lua'
+  local filepath = 'save.lua'
   if love.filesystem.getInfo(filepath) then
-    self.state = love.filesystem.load(filepath)
+    self.state = table.load(filepath)
   else
     self.state = newGameState()
-    love.filesystem.write(filepath, self.state)
+    --table.save(self.state, filepath)
   end
 end
 
@@ -46,9 +47,15 @@ function removeObject(map, object)
   objects[object.id] = nil
 end
 
-function Game:load(mapPath)
+function Game:enterWorldMap()
+  self.world = World(self)
+  self.widgets = {}
+  self:addWidget(self.world)
+end
+
+function Game:enterCombat()
   self.guimap = STI('res/maps/gui_units.lua')
-  self.combatmap = STI('res/maps/untitled.lua')
+  self.combatmap = STI('res/maps/'..self.state.currentlevel..'.lua')
   self.combat = Combat(self.combatmap, self.control)
   self.control = ControlWidget(self.combat.fractions['Undead'], self.guimap, self.scale)
   
@@ -59,6 +66,11 @@ function Game:load(mapPath)
   self:addWidget(self.control)
   
   --require('utils/microscope')('Game.dot', self, 2, 'nometatables')
+end
+
+function Game:exitCombat()
+  -- TODO: do something on combat exit
+  self.enterWorldMap()
 end
 
 function Game:addWidget(widget)

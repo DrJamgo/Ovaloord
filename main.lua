@@ -5,9 +5,6 @@ APPLICATIONNAME = 'YesMaster'
 
 if arg[#arg] == "-debug" then require("mobdebug").start() end
 
---love.window.setMode(800, 600, flags)
-love.window.setMode(0, 0, flags)
-
 require 'game'
 
 local game = Game()
@@ -29,7 +26,7 @@ function love.mousemoved(...)
 end
 
 function love.load(arg)
-  game:load("res/maps/untitled.lua")
+  game:enterWorldMap()
 end
 
 function love.update(dt)
