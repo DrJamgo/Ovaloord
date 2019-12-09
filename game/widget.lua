@@ -82,5 +82,11 @@ function TiledWidget:mousemoved(gx,gy)
   self.cursortile = tile
   self.cursorl = {tx, ty}
   self.cursor = {gx, gy}
+  if tx and ty then
+    self.cursor = {self.map:convertTileToPixel(tx, ty)}
+  end
+  if tile and tile.x and tile.y then
+    self.cursor = {math.floor(tile.x + tile.width / 2), math.floor(tile.y + tile.height / 2)}
+  end
   return self.tile ~= nil
 end

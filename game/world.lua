@@ -79,10 +79,11 @@ function World:draw()
   love.graphics.push()
   love.graphics.replaceTransform(self.camera:getTransform())
   love.graphics.draw(self.player.image, self.player.pos.x, self.player.pos.y, nil,nil,nil,self.player.offset.x, self.player.offset.y)
+  love.graphics.printf(self.cursortext, self.cursor[1]-200 / self.scale, self.cursor[2], 400, "center",0, 1.0 / self.scale)
   love.graphics.pop()
   
   -- restore target canvas and draw to it
   love.graphics.setCanvas(targetCanvas)
   Widget.draw(self)
-  love.graphics.print(self.cursortext, self.cursor[1], self.cursor[2], 0, 2)
+
 end
