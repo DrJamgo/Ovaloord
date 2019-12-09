@@ -12,7 +12,7 @@ Game = class('Game')
 
 function newGameState()
   local state = {}
-  state.levels = {pyramid={}, desert_town={}}
+  state.levels = {desert_town={}}
   state.currentlevel = 'pyramid'
   state.souls = {3}
   return state

@@ -10,6 +10,19 @@ require 'game'
 local game = Game()
 options = {}
 
+--symbolic values
+S = {
+  attack='\001',
+  move='\002'
+  }
+
+local font = love.graphics.newImageFont("res/love2d_font.png",
+    " abcdefghijklmnopqrstuvwxyz" ..
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZ0" ..
+    "123456789.,!?-+/():;%&`'*#=[]\""..S.attack..S.move)
+  
+love.graphics.setFont(font)
+
 function love.keypressed( key, scancode, isrepeat )
   options[key] = ((options[key] == nil) and true) or nil
   if key == "escape" then

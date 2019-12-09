@@ -14,6 +14,7 @@ function World:initialize(game)
   TiledWidget.initialize(self, self.map, 0,0,love.graphics.getWidth(), love.graphics.getHeight(), self.scale)
   
   self.map.layers.UI.visible = false
+  self.cursortext = ''
 end
 
 function World:_getObjectFromLevel(levelname)
@@ -24,19 +25,46 @@ function World:_getObjectFromLevel(levelname)
   end
 end
 
+
+-- can return
+--  move
+--  attack
+--  locked
+--  nil
+function World:_getAction(objectname)
+  local level = self.game.state.levels[objectname]
+  if level then
+    if objectname == self.game.state.currentlevel then
+      return 'attack', S.attack..objectname
+    else
+      return 'move', S.move..objectname
+    end
+  else
+    return 'locked', objectname
+  end
+  return nil, objectname
+end
+
 function World:update(dt)
   local level = self:_getObjectFromLevel(self.game.state.currentlevel)
   self.player.pos = vec2( level.x+level.width/2, level.y+level.height/2)
   self.camera:setFromWorld(self.map, self.player.pos.x, self.player.pos.y, self.scale)
+  if self.cursortile and self.cursortile.name then
+    local _,text = self:_getAction(self.cursortile.name)
+    self.cursortext = text
+  else
+    self.cursortext = ''
+  end
 end
 
 function World:mousepressed(gx,gy,button,isTouch)
   local tileOrObject, layer, x, y = self:getTileAtPosition(gx, gy)
   if tileOrObject.shape and tileOrObject.name then
-    local level = self.game.state.levels[tileOrObject.name]
-    if tileOrObject.name == self.game.state.currentlevel then
+    local action = self:_getAction(tileOrObject.name)
+    if action == 'attack' then
       self.game:enterCombat()
-    else
+    end
+    if action == 'move' then
       self.game.state.currentlevel = tileOrObject.name
     end
   end
@@ -57,8 +85,5 @@ function World:draw()
   -- restore target canvas and draw to it
   love.graphics.setCanvas(targetCanvas)
   Widget.draw(self)
-  if self.cursortile and self.cursortile.name then
-    love.graphics.setColor(0,0,0,1)
-    love.graphics.print(self.cursortile.name, self.cursor[1], self.cursor[2], 0, 2)
-  end
+  love.graphics.print(self.cursortext, self.cursor[1], self.cursor[2], 0, 2)
 end
