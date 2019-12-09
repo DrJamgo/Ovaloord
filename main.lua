@@ -13,13 +13,14 @@ options = {}
 --symbolic values
 S = {
   attack='\001',
-  move='\002'
+  move='\002',
+  locked='\003',
   }
 
 local font = love.graphics.newImageFont("res/love2d_font.png",
     " abcdefghijklmnopqrstuvwxyz" ..
     "ABCDEFGHIJKLMNOPQRSTUVWXYZ0" ..
-    "123456789.,!?-+/():;%&`'*#=[]\""..S.attack..S.move)
+    "123456789.,!?-+/():;%&`'*#=[]\""..S.attack..S.move..S.locked)
   
 love.graphics.setFont(font)
 

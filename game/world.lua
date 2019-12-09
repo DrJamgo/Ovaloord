@@ -40,9 +40,8 @@ function World:_getAction(objectname)
       return 'move', S.move..objectname
     end
   else
-    return 'locked', objectname
+    return 'locked', S.locked..objectname
   end
-  return nil, objectname
 end
 
 function World:update(dt)
