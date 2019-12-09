@@ -6,8 +6,11 @@ APPLICATIONNAME = 'YesMaster'
 if arg[#arg] == "-debug" then require("mobdebug").start() end
 
 require 'game'
+require 'intro'
 
+local intro = Intro()
 local game = Game()
+local main = intro
 options = {}
 
 --symbolic values
@@ -32,22 +35,26 @@ function love.keypressed( key, scancode, isrepeat )
 end
 
 function love.mousepressed(...)
-  game.forwardMouseEvent(game, 'mousepressed', ...)
+  if main.forwardMouseEvent then main:forwardMouseEvent('mousepressed', ...) end
 end
 
 function love.mousemoved(...)
-  game.forwardMouseEvent(game, 'mousemoved', ...)
+  if main.forwardMouseEvent then main:forwardMouseEvent('mousemoved', ...) end
 end
 
 function love.load(arg)
-  game:enterWorldMap()
+  --
 end
 
 function love.update(dt)
-  game:update(dt)
+  if main == intro and not intro:isActive() then
+    game:enterWorldMap()
+    main = game
+  end
+  main:update(dt)
 end
 
 function love.draw()
-  game:draw()
+  main:draw()
 end
 
