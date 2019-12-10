@@ -1,4 +1,4 @@
-T = {}
+local T = {}
 T.player = {'This is you!'}
 
 -- worldmap objects and levels
@@ -10,9 +10,14 @@ T.desertvillage = {'\1Desert Village', 'Lets see if there are some souls to harv
 -- level objects
 T.road = {'Road'}
 
-function T.get(name)
-  if T[name] then
-    return T[name][1],T[name][2]
-  end
-  return '%'..tostring(name)..'%',nil
-end
+-- Unit stats
+T.melee = {'Melee Attack'}
+T.range = {'Range Attack'}
+T.move  = {'Speed'}
+
+-- Unit descriptions
+T.Canibal = {'Canibal', 'Tough, strong, slow..'}
+T.Hitter = {'Hitter', 'Shoots from distance'}
+T.Revenant = {'Revenant', 'Comes to get you..'}
+
+return T

@@ -5,7 +5,7 @@ require 'game/unit'
 --
 -- melee/range (dmg, range, anim, cooldown, duration, trigger)
 --
-local unitcatalogue = {
+unitcatalogue = {
   Human = {
     { -- T1
       Peasant  ={hp= 5, melee={0.5,1.1,'slash','fast','fast'}, }
@@ -32,6 +32,8 @@ for fraction, unitlist in pairs(unitcatalogue) do
   for tier,units in ipairs(unitlist) do
     for name,spec in pairs(units) do
       _G[name] = class(name, Unit)
+      _G[name].brief, _G[name].long = T.get(name)
+      _G[name].brief = S.tier[tier].._G[name].brief
       if not spec.spritepath then
         _G[name].spritepath = 'assets/sprites/'..fraction..'/'..name..'.png'
       end

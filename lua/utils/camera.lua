@@ -1,6 +1,6 @@
 Camera = {}
 Camera.__index = Camera
-Camera.speed = 3
+Camera.speed = 150
 
 setmetatable(Camera, {
   __call = function (cls, ...)

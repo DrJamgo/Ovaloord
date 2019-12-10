@@ -16,6 +16,7 @@ function LPCSprite:initialize(filepath)
     library[filepath]:setFilter('nearest','nearest')
   end
   self.spriteimage = library[filepath]
+  self.drawpos = vec2(0,0)
 end
 
 LPCSprite.size = vec2(64,64)
@@ -51,6 +52,11 @@ local dir_offset = {
   0
 }
 
+function LPCSprite:_updateSpriteRect()
+  self.x, self.y = self.drawpos.x - self.offset.x, self.drawpos.y - self.offset.y
+  self.width, self.height = self.size.x,self.size.y
+end
+
 function LPCSprite:drawAnimation(wx, wy, animation, direction, animtime)
   local anim_offset = self.anim[animation] or self.anim['stand']
   if anim_offset then
@@ -59,11 +65,13 @@ function LPCSprite:drawAnimation(wx, wy, animation, direction, animtime)
     local quad = love.graphics.newQuad(anim_offset.x + anim_time_offset, anim_offset.y + dir_offset[direction or 2], self.size.x, self.size.y, self.spriteimage:getDimensions())
     
     if not self.drawpos or self.drawframe ~= drawframe or self.dir ~= direction then
-      self.drawpos = vec2(wx, wy)
+      self.drawpos.x = wx
+      self.drawpos.y = wy
     end
     love.graphics.draw(self.spriteimage, quad, self.drawpos.x, self.drawpos.y, 0, self.scale, self.scale, self.offset.x, self.offset.y)
     
     self.drawframe = drawframe
     self.dir = direction
+    self:_updateSpriteRect()
   end
 end

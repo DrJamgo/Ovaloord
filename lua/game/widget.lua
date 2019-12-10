@@ -81,8 +81,14 @@ function TiledWidget:getTileAtPosition(...)
       local tile = layer.data[ty][tx]
       if tile then return tile, layer, tx, ty end
     end
-    for _,object in ipairs(layer.objects or {}) do
-      if object.x and mapx >= object.x and mapx <= object.x + object.width and mapy >= object.y and mapy <= object.y + object.height then
+    for _,object in pairs(layer.objects or {}) do
+      local x,y = object.x, object.y
+      local w,h = object.width, object.height
+      if object.sprite then
+        x,y = object.sprite.x, object.sprite.y
+        w,h = object.sprite.width, object.sprite.height
+      end
+      if x and mapx >= x and mapx <= x + w and mapy >= y and mapy <= y + h then
         return object, layer
       end
     end
@@ -91,9 +97,14 @@ function TiledWidget:getTileAtPosition(...)
 end
 
 function TiledWidget:getObjectDecription(object)
-  if object.name then
+  if object.brief then
+    return object.brief, object.long
+  elseif object.name then
     return T.get(object.name)
   elseif object.type and object.type ~= '' then
+    if _G[object.type] and _G[object.type].brief then
+      return _G[object.type].brief, _G[object.type].long
+    end
     return T.get(object.type)
   end
 end

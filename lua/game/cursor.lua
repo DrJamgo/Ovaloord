@@ -48,10 +48,10 @@ end
 
 function Cursor:draw()
   if self.brief then
-    love.graphics.printf(self.brief, self.pos.x-(Cursor.textbox/2)*self.scale, self.pos.y-Cursor.charheight/2, Cursor.textbox, 'center', 0,self.scale)
+    love.graphics.printf(self.brief, self.pos.x-(Cursor.textbox/2)*self.scale, self.pos.y-Cursor.charheight*self.scale, Cursor.textbox, 'center', 0,self.scale)
   end
   if self.brief and self.long and self.time > self.tooltipdelay then
     local scale = 1.5
-    love.graphics.printf(self.long, self.pos.x-(Cursor.textbox/2)*scale, self.pos.y+Cursor.charheight*self.scale, Cursor.textbox, 'center', 0,scale)
+    love.graphics.printf(self.long, self.pos.x-(Cursor.textbox/2)*scale, self.pos.y, Cursor.textbox, 'center', 0,scale)
   end
 end

@@ -5,6 +5,7 @@ APPLICATIONNAME = 'YesMaster'
 
 if arg[#arg] == "-debug" then require("mobdebug").start() end
 
+require 'text'
 require 'game'
 require 'intro'
 require 'utils/table'
@@ -15,27 +16,7 @@ local game = Game()
 local main = intro
 options = {}
 
---symbolic values
-S = {
-  tier1='\1',
-  tier2='\2',
-  tier3='\3',
-  tier4='\4',
-  attack='\5',
-  move='\6',
-  locked='\7',
-  info='\8',
-  
-}
-require 'text_en'
 
-local font = love.graphics.newImageFont("assets/love2d_font.png",
-    " abcdefghijklmnopqrstuvwxyz" ..
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZ0" ..
-    "123456789.,!?-+/():;%&`'*#=[]\""..S.attack..S.move..S.locked..S.info..S.tier1)
-
-font:setFilter( 'nearest', 'nearest', 0 )
-love.graphics.setFont(font)
 
 function love.keypressed( key, scancode, isrepeat )
   options[key] = ((options[key] == nil) and true) or nil

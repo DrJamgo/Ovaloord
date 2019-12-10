@@ -20,6 +20,7 @@ function Unit:initialize(map, fraction, spawn)
   self.map = map
   self.fraction = fraction
   self.spawn = spawn
+  self.type = self.class.name
   
   -- physics
   self.pos = vec2(spawn.x, spawn.y)
