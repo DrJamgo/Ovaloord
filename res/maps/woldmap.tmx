@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-up" width="32" height="32" tilewidth="16" tileheight="16" infinite="0" nextlayerid="33" nextobjectid="8">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-up" width="32" height="32" tilewidth="16" tileheight="16" infinite="0" nextlayerid="33" nextobjectid="10">
  <tileset firstgid="1" source="../tilesets/overworld.tsx"/>
  <tileset firstgid="781" source="../tilesets/terrain_atlas.tsx"/>
  <layer id="27" name="Base" width="32" height="32">
@@ -257,8 +257,10 @@
  <objectgroup id="30" name="UI">
   <object id="3" name="village" type="level" x="144" y="288" width="48" height="32"/>
   <object id="4" name="desertvillage" type="level" x="64" y="368" width="48" height="32"/>
-  <object id="5" name="pyramid" x="118.875" y="407" width="37.25" height="18.5"/>
+  <object id="5" name="yourpyramid" x="118.875" y="407" width="37.25" height="18.5"/>
   <object id="6" name="rangervillage" type="level" x="64" y="208" width="48" height="32"/>
-  <object id="7" name="driedoutoasis" x="108.5" y="425.375" width="58.75" height="24.875"/>
+  <object id="7" name="driedoutoasis" x="108.5" y="422.375" width="58.75" height="31.875"/>
+  <object id="8" name="endlessdesert" x="1" y="425.667" width="106" height="85.6667"/>
+  <object id="9" name="endlessdesert" x="108.333" y="456.667" width="133.667" height="55.3334"/>
  </objectgroup>
 </map>

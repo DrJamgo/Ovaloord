@@ -17,17 +17,22 @@ options = {}
 
 --symbolic values
 S = {
-  attack='\001',
-  move='\002',
-  locked='\003',
-  info='\004'
+  tier1='\1',
+  tier2='\2',
+  tier3='\3',
+  tier4='\4',
+  attack='\5',
+  move='\6',
+  locked='\7',
+  info='\8',
+  
 }
 require 'text_en'
 
 local font = love.graphics.newImageFont("assets/love2d_font.png",
     " abcdefghijklmnopqrstuvwxyz" ..
     "ABCDEFGHIJKLMNOPQRSTUVWXYZ0" ..
-    "123456789.,!?-+/():;%&`'*#=[]\""..S.attack..S.move..S.locked..S.info)
+    "123456789.,!?-+/():;%&`'*#=[]\""..S.attack..S.move..S.locked..S.info..S.tier1)
 
 font:setFilter( 'nearest', 'nearest', 0 )
 love.graphics.setFont(font)

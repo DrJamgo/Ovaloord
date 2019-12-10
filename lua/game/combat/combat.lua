@@ -54,5 +54,5 @@ function Combat:draw()
   
   -- restore target canvas and draw to it
   love.graphics.setCanvas(targetCanvas)
-  Widget.draw(self)
+  TiledWidget.draw(self)
 end

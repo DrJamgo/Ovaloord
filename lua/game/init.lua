@@ -12,8 +12,8 @@ Game = class('Game')
 
 function newGameState()
   local state = {}
-  state.levels = {desertvillage={}}
-  state.currentlevel = 'pyramid'
+  state.levels = {desertvillage=0}
+  state.currentlevel = 'yourpyramid'
   state.souls = {3}
   return state
 end

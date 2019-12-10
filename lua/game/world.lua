@@ -56,6 +56,15 @@ function World:getActionFromObject(object)
   return 'info'
 end
 
+function World:getObjectDecription(object)
+  if object.name then
+    local action = self:getActionFromObject(object)
+    local brief, long = T.get(object.name)
+    brief = (brief or '')..(S[action] or '')
+    return brief, long
+  end
+end
+
 function World:_updatePlayerPos(smooth)
   local level = self:_getObjectFromLevel(self.game.state.currentlevel)
   local centerx, centery = level.x+level.width/2, level.y+level.height/2

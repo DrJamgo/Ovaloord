@@ -9,7 +9,7 @@ return {
   tilewidth = 16,
   tileheight = 16,
   nextlayerid = 33,
-  nextobjectid = 8,
+  nextobjectid = 10,
   properties = {},
   tilesets = {
     {
@@ -483,7 +483,7 @@ return {
         },
         {
           id = 5,
-          name = "pyramid",
+          name = "yourpyramid",
           type = "",
           shape = "rectangle",
           x = 118.875,
@@ -513,9 +513,35 @@ return {
           type = "",
           shape = "rectangle",
           x = 108.5,
-          y = 425.375,
+          y = 422.375,
           width = 58.75,
-          height = 24.875,
+          height = 31.875,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 8,
+          name = "endlessdesert",
+          type = "",
+          shape = "rectangle",
+          x = 1,
+          y = 425.667,
+          width = 106,
+          height = 85.6667,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 9,
+          name = "endlessdesert",
+          type = "",
+          shape = "rectangle",
+          x = 108.333,
+          y = 456.667,
+          width = 133.667,
+          height = 55.3334,
           rotation = 0,
           visible = true,
           properties = {}

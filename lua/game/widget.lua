@@ -90,6 +90,14 @@ function TiledWidget:getTileAtPosition(...)
   return nil
 end
 
+function TiledWidget:getObjectDecription(object)
+  if object.name then
+    return T.get(object.name)
+  elseif object.type and object.type ~= '' then
+    return T.get(object.type)
+  end
+end
+
 function TiledWidget:draw()
   Widget.draw(self)
   self.cursor:draw()

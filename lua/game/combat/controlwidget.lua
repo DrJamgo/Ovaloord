@@ -93,11 +93,7 @@ function ControlWidget:draw()
   love.graphics.setCanvas(self.canvas)
   love.graphics.clear(0,0,0,0)
   self.map:draw(self.camera:getMapArgs())
-  if self.cursortile and self.cursortile.type then
-    love.graphics.printf(self.cursortile.type, self.cursor[1]-200, self.cursor[2], 400, 'center',0, 1)
-  end
-  
   -- restore target canvas and draw to it
   love.graphics.setCanvas(targetCanvas)
-  Widget.draw(self)
+  TiledWidget.draw(self)
 end

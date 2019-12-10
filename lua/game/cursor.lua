@@ -19,36 +19,39 @@ function Cursor:update(dt)
     self.screen.x, self.screen.y = x,y
     local tileOrObject = self.widget:getTileAtPosition(self.screen.x, self.screen.y)
     
-    if tileOrObject and tileOrObject.name and self.widget.getActionFromObject then
-      local action = self.widget:getActionFromObject(tileOrObject)
-      local brief, long = T.get(tileOrObject.name)
-      self.brief = S[action]..(brief or '')
-      self.long = long
-      if self.object == tileOrObject then
-        self.time = (self.time or 0) + dt
-      else
-        self.time = 0
+    if tileOrObject and (tileOrObject.name or tileOrObject.type) then
+      self.brief, self.long = self.widget:getObjectDecription(tileOrObject)
+      if self.brief then
+        if self.object == tileOrObject then
+          self.time = (self.time or 0) + dt
+        else
+          self.time = 0
+        end
+        self.object = tileOrObject
+        local ox, oy
+        if tileOrObject.x and tileOrObject.y then
+          ox, oy = math.ceil(tileOrObject.x + tileOrObject.width/2) , math.ceil(tileOrObject.y + tileOrObject.height/2)
+          self.pos.x, self.pos.y = self.widget:convertMapToScreen(ox, oy)
+        else
+          self.pos.x, self.pos.y = x,y
+        end
       end
-      self.object = tileOrObject
-      local ox, oy = math.ceil(tileOrObject.x + tileOrObject.width/2)
-      , math.ceil(tileOrObject.y + tileOrObject.height/2)
-      self.pos.x, self.pos.y = self.widget:convertMapToScreen(ox, oy)
     else
       self.brief = nil
+      self.object = nil
     end
   else
     self.brief = nil
+    self.object = nil
   end
 end
 
 function Cursor:draw()
   if self.brief then
-    love.graphics.printf(self.brief, self.pos.x-(Cursor.textbox/2)*self.scale, self.pos.y, Cursor.textbox, 'center', 0,self.scale)
+    love.graphics.printf(self.brief, self.pos.x-(Cursor.textbox/2)*self.scale, self.pos.y-Cursor.charheight/2, Cursor.textbox, 'center', 0,self.scale)
   end
   if self.brief and self.long and self.time > self.tooltipdelay then
-    local scale = self.scale / 1.5
+    local scale = 1.5
     love.graphics.printf(self.long, self.pos.x-(Cursor.textbox/2)*scale, self.pos.y+Cursor.charheight*self.scale, Cursor.textbox, 'center', 0,scale)
   end
-
-  
 end
