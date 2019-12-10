@@ -1,7 +1,7 @@
 require 'middleclass'
 Cursor = class("Cursor")
-Cursor.scale = 2
-Cursor.textbox = 200
+Cursor.scale = T.defaultscale
+Cursor.textbox = 120 * T.defaultscale
 Cursor.tooltipdelay = 2
 Cursor.charheight = 17
 
@@ -11,6 +11,7 @@ function Cursor:initialize(widget)
   self.screen = vec2(0,0)
   self.pos = vec2(0,0)
   self.object = nil
+  self.time = 0
 end
 
 function Cursor:update(dt)
@@ -22,6 +23,9 @@ function Cursor:update(dt)
     if tileOrObject and (tileOrObject.name or tileOrObject.type) then
       self.brief, self.long = self.widget:getObjectDecription(tileOrObject)
       if self.brief then
+        if love.mouse.isDown(1) then
+          self.time = 0
+        end
         if self.object == tileOrObject then
           self.time = (self.time or 0) + dt
         else
@@ -37,6 +41,7 @@ function Cursor:update(dt)
         end
       end
     else
+      self.time = 0
       self.brief = nil
       self.object = nil
     end
@@ -47,11 +52,16 @@ function Cursor:update(dt)
 end
 
 function Cursor:draw()
+  local scale = self.scale * (1 + 0.1 * math.sin(math.min(math.pi, (self.time or 0) * 10)))
+  local x,y = self.pos.x-(Cursor.textbox/2)*scale, self.pos.y-Cursor.charheight*scale
+  x = math.floor(math.max(x,0))
+  y = math.floor(math.max(y,0))
+  
   if self.brief then
-    love.graphics.printf(self.brief, self.pos.x-(Cursor.textbox/2)*self.scale, self.pos.y-Cursor.charheight*self.scale, Cursor.textbox, 'center', 0,self.scale)
+    love.graphics.printf(self.brief, x, y, Cursor.textbox, 'center', 0,scale)
   end
   if self.brief and self.long and self.time > self.tooltipdelay then
-    local scale = 1.5
+    local scale = 1 * (1 + 0.1 * math.sin(math.min(math.pi, (self.time-self.tooltipdelay) * 10)))
     love.graphics.printf(self.long, self.pos.x-(Cursor.textbox/2)*scale, self.pos.y, Cursor.textbox, 'center', 0,scale)
   end
 end

@@ -54,22 +54,34 @@ function Game:enterWorldMap()
 end
 
 function Game:enterCombat()
-  self.combatmap = STI('lua/maps/'..self.state.currentlevel..'.lua')
-  self.combat = Combat(self.combatmap, self.control)
-  self.control = ControlWidget(self.combat.fractions['Undead'], self.scale)
+  local levelname = self.state.currentlevel
+  local objectives = levels.getObjectives(levelname)
+  local objective = objectives[self.state.levels[levelname]+1] or Objective()
   
+  self.combat = Combat(self, objective)
+  self.control = ControlWidget(self.combat.fractions['Undead'], self.scale)
   self.combat.unitslayer.controlwidget = self.control
   
   self.widgets = {}
   self:addWidget(self.combat)
   self:addWidget(self.control)
-  
   --require('utils/microscope')('Game.dot', self, 2, 'nometatables')
+end
+
+function Game:reward(unlocks, souls)
+  for _,levelname in ipairs(unlocks) do
+    self.state.levels[levelname]=0
+  end
+  for tier,amount in pairs(souls) do
+    self.state.souls[tier]=(self.state.souls[tier] or 0) + amount
+  end
+  self.state.levels[self.state.currentlevel] = self.state.levels[self.state.currentlevel] + 1
+  self.animation = 0
 end
 
 function Game:exitCombat()
   -- TODO: do something on combat exit
-  self.enterWorldMap()
+  self:enterWorldMap()
 end
 
 function Game:addWidget(widget)
@@ -77,6 +89,7 @@ function Game:addWidget(widget)
 end
 
 function Game:update(dt)
+  self.animation = (self.animation or 0) + dt
   for _,widget in ipairs(self.widgets) do
     widget:update(dt)
   end
@@ -90,6 +103,12 @@ function Game:draw()
   for _,widget in ipairs(self.widgets) do
     widget:draw()
   end
+  local textscale = T.defaultscale * 1.5 * (1 + 0.3 * math.sin(math.min(math.pi, self.animation * 10)))
+  local text = ''
+  for tier,souls in ipairs(self.state.souls) do
+    text = text..S.tier[tier]..tostring(souls)
+  end
+  love.graphics.printf(text, 0, 0, (love.graphics.getWidth()-40)/textscale, 'right', 0, textscale)
 end
 
 function Game:forwardMouseEvent(f, x, y, ...)

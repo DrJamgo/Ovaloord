@@ -165,6 +165,7 @@ function Unit:update(dt)
     if trigger then
       self.node = self.nextNode
       self.nextNode = nil
+      self.map.objective:eventUnitOnNode(self, self.node)
     end
   elseif self.attack and self.attack:isActive() then
     local trigger = self.attack:update(dt)
@@ -180,7 +181,6 @@ end
 
 function Unit:draw()
   local wx, wy = gamemap.getPixelFromTile(self.map, {x=self.pos.x, y=self.pos.y})
-   
   self.circle = {
     wx,
     wy,

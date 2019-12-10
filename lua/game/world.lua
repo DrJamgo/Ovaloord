@@ -45,7 +45,7 @@ function World:getActionFromObject(object)
     local unlocked = self.game.state.levels[object.name]
     if unlocked then
       if object.name == self.game.state.currentlevel then
-        return 'attack'
+        return 'combat'
       else
         return 'move'
       end
@@ -60,7 +60,7 @@ function World:getObjectDecription(object)
   if object.name then
     local action = self:getActionFromObject(object)
     local brief, long = T.get(object.name)
-    brief = (brief or '')..(S[action] or '')
+    brief = (S[action] or '')..(brief or '')
     return brief, long
   end
 end
@@ -88,7 +88,7 @@ function World:mousepressed(gx,gy,button,isTouch)
   local tileOrObject, layer, x, y = self:getTileAtPosition(gx, gy)
   if tileOrObject and tileOrObject.shape and tileOrObject.name then
     local action = self:getActionFromObject(tileOrObject)
-    if action == 'attack' then
+    if action == 'combat' then
       self.game:enterCombat()
     end
     if action == 'move' then
