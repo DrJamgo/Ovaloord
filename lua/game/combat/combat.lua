@@ -52,6 +52,10 @@ function Combat:update(dt)
     self.map:update((options['p'] and 0) or dt)
   end
   self.objective:update(dt, self.game)
+  
+  if love.keyboard.isDown('q') then
+    self.game:exitCombat()
+  end
 end
 
 function Combat:draw()

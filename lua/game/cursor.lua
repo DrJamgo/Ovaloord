@@ -61,7 +61,7 @@ function Cursor:draw()
     love.graphics.printf(self.brief, x, y, Cursor.textbox, 'center', 0,scale)
   end
   if self.brief and self.long and self.time > self.tooltipdelay then
-    local scale = 1 * (1 + 0.1 * math.sin(math.min(math.pi, (self.time-self.tooltipdelay) * 10)))
+    local scale = self.scale / 2 * (1 + 0.1 * math.sin(math.min(math.pi, (self.time-self.tooltipdelay) * 10)))
     love.graphics.printf(self.long, self.pos.x-(Cursor.textbox/2)*scale, self.pos.y, Cursor.textbox, 'center', 0,scale)
   end
 end

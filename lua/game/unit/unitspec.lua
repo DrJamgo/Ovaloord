@@ -8,22 +8,22 @@ require 'game/unit'
 unitcatalogue = {
   Human = {
     { -- T1
-      Peasant  ={hp= 5, melee={0.5,1.1,'slash','fast','fast'}, }
+      Peasant  ={hp= 5, melee={0.5,1.1,'slash','fast','fast'}},
+      Militia  ={hp= 7, melee={1.0,1.1,'slash','fast','fast'}},
+      Ranger   ={hp= 7, range={4.0,5.1,'shoot','veryslow','fast'}},
     },
     { -- T2
-      Militia  ={hp= 7, melee={1.0,1.1,'slash','fast','fast'}, },
-      Ranger   ={hp= 7, range={4.0,5.1,'shoot','veryslow','fast'}, }
     }
   },
   Undead = {
     { -- T1
+      Canibal  ={hp=10, melee={5.0,1.1,'slash','slow','normal'}, speed=1.5},
+      Revenant ={hp= 5, melee={2.0,1.1,'thrust','normal','slow'}},
+      Hitter   ={hp= 5, range={4.0,5.1,'shoot','veryslow','normal'}},
     },
     { -- T2
-      Canibal  ={hp=10, melee={5.0,1.1,'slash','slow','normal'}, speed=1.5}
     },
     { -- T3
-      Revenant ={hp= 5, melee={2.0,1.1,'thrust','normal','slow'}, },
-      Hitter   ={hp= 5, range={4.0,5.1,'shoot','veryslow','normal'}, },
     }
   }
 }

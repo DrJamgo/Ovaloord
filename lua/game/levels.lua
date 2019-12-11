@@ -3,9 +3,13 @@ require 'game/objective'
 levels = {}
 levels.desertvillage = {
   objectives={
-    ObjectiveReach({40,8}, 3, nil, {'village'}, {3}),
-    --ObjectiveReach({40,8}, 5, nil, nil, {3}),
-    ObjectiveKill(1, 'Ranger', nil, {3}),
+    ObjectiveReach({40,5}, 3, nil, {'village'}, {3})
+  }
+}
+
+levels.village = {
+  objectives={
+    ObjectiveReach({40,8}, 5, nil, {'rangervillage'}, {3})
   }
 }
 

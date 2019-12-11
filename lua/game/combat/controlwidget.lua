@@ -25,8 +25,8 @@ function ControlWidget:initialize(fraction, scale)
   self.spiritslayer.update = updateSpirits
   
   self:addSpirit(1)
-  self:addSpirit(2)
-  self:addSpirit(2)
+  self:addSpirit(1)
+  self:addSpirit(1)
   
   for i=1,self.unitcap do
     self:addUnit()

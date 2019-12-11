@@ -93,6 +93,13 @@ function Game:update(dt)
   for _,widget in ipairs(self.widgets) do
     widget:update(dt)
   end
+  
+  if self.state.levels['rangervillage'] then
+    self.finished = 0
+  end
+  if self.finished then
+    self.finished = self.finished + dt
+  end
 end
 
 function Game:draw()
@@ -109,6 +116,14 @@ function Game:draw()
     text = text..S.tier[tier]..tostring(souls)
   end
   love.graphics.printf(text, 0, 0, (love.graphics.getWidth()-40)/textscale, 'right', 0, textscale)
+  
+  if self.finished then
+    local textscale = 3
+    love.graphics.printf("You finished the Demo version!\nPress [F] to leave a feedback.\nPress [ESC] to exit..", 0, love.graphics.getHeight()/2, (love.graphics.getWidth())/textscale, 'center', 0, textscale)
+    if love.keyboard.isDown('f') then
+      love.system.openURL("https://docs.google.com/forms/d/e/1FAIpQLSfKRhlUyAXCEVTnMfftCHzhrUZtcmNOEDNXHluy5X3WmJl5pw/viewform")
+    end
+  end
 end
 
 function Game:forwardMouseEvent(f, x, y, ...)
