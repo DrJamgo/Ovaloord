@@ -1,0 +1,14 @@
+Title=Overloord Setup
+Path=C:\Games\DrJamgo\Overlood
+Text
+{
+<font face="verdana">
+<h1>Overloord</h1>
+<h2>Changelog</h2>
+<ul>
+  <li>Entry 1
+  <li>Entry 2
+  <li>Entry 3
+</ul>
+</font>
+}
