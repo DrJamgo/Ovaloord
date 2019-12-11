@@ -1,5 +1,6 @@
 Title=Overloord Setup
-Path=C:\Games\DrJamgo\Overlood
+Path=C:\Games\DrJamgo\Overloord
+Shortcut=P,Overloord.exe,DrJamgo,"Overloord Game Executable","Overloord"
 Text
 {
 <font face="verdana">
