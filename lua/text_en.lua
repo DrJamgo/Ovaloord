@@ -3,8 +3,9 @@ T.player = {'This is you!'}
 
 -- Global strings
 T.currentlevel = {'Current Level'}
-T.reachobjective = {'Reach the map goal with %s (%d/%d)'}
-T.noobjective = {S.info..'There is no objective.\nYou can leave whenever you want.'}
+T.ObjectiveReach = {S.goal..'Reach the end of the map with %s (%d/%d)'}
+T.ObjectiveKill = {S.skull..'Kill %s (%d/%d)'}
+T.Objective = {S.info..'No objective.\nYou can hunt for souls and leave whenever you want.'}
 T.reward = {'Reward'}
 T.anyunit = {'any Unit'}
 

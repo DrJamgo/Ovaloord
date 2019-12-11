@@ -29,7 +29,9 @@ function Objective:draw()
 end
 
 function Objective:getText()
-  return T.get('noobjective')
+  local text = T.get(self.class.name)
+  text = string.format(text, self.unittype or T.get('anyunit'), self.progress, self.amount)..'\n  '..self.rewardtext
+  return text
 end
 
 function Objective:isFinished()
@@ -78,19 +80,34 @@ function ObjectiveReach:initialize(tile, amount, unittype, unlocks, souls)
   Objective.initialize(self)
 end
 
-function ObjectiveReach:getText()
-  local text = S.goal..T.get('reachobjective')
-  text = string.format(text, self.unittype or T.get('anyunit'), self.progress, self.amount)..'\n  '..self.rewardtext
-  return text
-end
-
 function ObjectiveReach:eventUnitOnNode(unit, node)
   if unit.fraction.name == 'Undead' then
     if node.location.x == self.tile.x and node.location.y == self.tile.y then
       if not self.unittype or unit.class.name == self.unittype then
         self:_addProgress(1)
       end
+      --local souls = {}
+      --souls[unit.tier] = 1
+      --self.game:reward({},souls)
       unit:hit(1000)
+    end
+  end
+end
+
+
+ObjectiveKill = class('ObjectiveKill', Objective)
+function ObjectiveKill:initialize(amount, unittype, unlocks, souls)
+  self.amount = amount
+  self.unittype = unittype
+  self.unlocks = unlocks
+  self.souls = souls
+  Objective.initialize(self)
+end
+
+function ObjectiveKill:eventUnitDies(unit)
+  if unit.fraction.name ~= 'Undead' then
+    if not self.unittype or unit.class.name == self.unittype then
+      self:_addProgress(1)
     end
   end
 end

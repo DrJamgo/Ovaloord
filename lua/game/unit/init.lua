@@ -148,6 +148,7 @@ function Unit:update(dt)
     self.prone = math.min(1, (self.prone or 0) + dt * 2)
     if self.prone == 1 and not self.dead then
       self.dead = 0
+      self.map.objective:eventUnitDies(self)
       if self.fraction.name ~= 'Undead' then
         self.map:addObject(
           SpiritEffect(self.map, self.pos, SpiritEffect.colors[self.tier]))

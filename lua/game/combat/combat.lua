@@ -15,6 +15,7 @@ function Combat:initialize(game, objective)
   map.addObject = addObject
   map.removeObject = removeObject
   self.objective = objective
+  self.objective.game = game
   self.map.objective = self.objective
   
   self.objects = {}

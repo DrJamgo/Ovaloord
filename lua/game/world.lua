@@ -68,8 +68,8 @@ end
 function World:_updatePlayerPos(smooth)
   local level = self:_getObjectFromLevel(self.game.state.currentlevel)
   local centerx, centery = level.x+level.width/2, level.y+level.height/2
-  self.player.x = centerx - self.player.offset.x
-  self.player.y = centery - self.player.offset.y
+  self.player.x = math.floor(centerx - self.player.offset.x)
+  self.player.y = math.floor(centery - self.player.offset.y)
   self.camera:setFromWorld(self.map, centerx, centery, 1, smooth)
 end
 
