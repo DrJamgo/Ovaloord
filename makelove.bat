@@ -22,7 +22,7 @@ copy /b %LOVE_PATH%\love.exe+%LOVEFILE% %PACKAGE_DIR%\%GAMENAME%.exe
 copy /b %LOVE_PATH%\*.dll %PACKAGE_DIR%
 copy /b %LOVE_PATH%\license.txt %PACKAGE_DIR%
 
-%ZIPEXE% a -sfx -iiconres\icon.ico -iimgres\icon.bmp -zcomment.txt %GAMEPACKAGE% %PACKAGE_DIR%
+%ZIPEXE% a -sfx -iiconres\icon.ico -iimgres\icon.bmp -zdoc\setup.txt %GAMEPACKAGE% %PACKAGE_DIR%
 ::tar -cvf %GAMEPACKAGE% %PACKAGE_DIR%
 
 DEL /F /Q %ZIPFILE%
