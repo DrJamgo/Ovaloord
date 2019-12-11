@@ -3,6 +3,8 @@
 function love.conf(t)
   t.identity = nil
   t.window.title = "YesMaster"
+  t.window.icon = "res/icon.bmp"
+  
   t.window.fullscreen = true
   
   t.window.width = 800                -- The window width (number)

@@ -11,17 +11,23 @@ SET LOVEFILE=%GAMENAME%.love
 FOR /F "tokens=1 delims=" %%A in ('git describe --dirty') do SET GIT=%%A
 SET GAMEPACKAGE=%GAMENAME%_Setup_%GIT%
 
-%ZIPEXE% a -y -afzip %ZIPFILE% lua assets *.lua
+%ZIPEXE% a -y -afzip %ZIPFILE% lua assets *.lua res\icon.bmp
 ::tar -cvf %ZIPFILE% lua assets *.lua  <<-- doesn't support zip
 copy %ZIPFILE% %LOVEFILE%
 
 mkdir %PACKAGE_DIR%
-copy /b %LOVE_PATH%\love.exe+%LOVEFILE% %PACKAGE_DIR%\%GAMENAME%.exe
+copy /b %LOVE_PATH%\love.exe+%LOVEFILE% %PACKAGE_DIR%\game.exe
+copy /b res\icon.ico %PACKAGE_DIR%
 copy /b %LOVE_PATH%\*.dll %PACKAGE_DIR%
 copy /b %LOVE_PATH%\license.txt %PACKAGE_DIR%
 
+@ECHO OFF
+@echo off
+set /p PW="Enter Password for Archive: "
+@ECHO ON
+
 ::%ZIPEXE% a -ep1 %GAMEPACKAGE% %PACKAGE_DIR%\*
-%ZIPEXE% a -ep1 -sfx -iiconres\icon.ico -iimgres\icon.bmp -zres\setup.txt %GAMEPACKAGE% %PACKAGE_DIR%\*
+%ZIPEXE% a -p%PW% -ep1 -sfx -iiconres\icon.ico -iimgres\icon.bmp -zres\setup.txt %GAMEPACKAGE% %PACKAGE_DIR%\*
 
 DEL /F /Q %ZIPFILE%
 DEL /F /Q %PACKAGE_DIR%

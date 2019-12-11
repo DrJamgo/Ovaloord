@@ -1,6 +1,8 @@
 Title=Overloord Setup
 Path=C:\Games\DrJamgo\Overloord
-Shortcut=P,Overloord.exe,DrJamgo,"Overloord Game Executable","Overloord"
+Shortcut=P,game.exe,DrJamgo,"Overloord Game Executable","Overloord",icon.ico
+Setup=https://github.com/DrJamgo/Ovaloord/wiki
+Overwrite=1
 Text
 {
 <font face="verdana">
