@@ -38,7 +38,7 @@ function Unit:initialize(map, fraction, spawn)
   -- appearance
   self.sprite = LPCSprite(self.spritepath)
 
-  require('utils/microscope')('Unit.dot', self, 2, 'nometatables')
+  --require('utils/microscope')('Unit.dot', self, 2, 'nometatables')
 end
 --
 -- WRAPPERS for GRID
