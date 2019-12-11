@@ -2,7 +2,7 @@
 -- Copyright DrJamgo@hotmail.com 2019
 --
 love.filesystem.setRequirePath("?.lua;?/init.lua;lua/?.lua;lua/?/init.lua")
-APPLICATIONNAME = 'YesMaster'
+APPLICATIONNAME = 'Ovaloord'
 
 if arg[#arg] == "-debug" then require("mobdebug").start() end
 
