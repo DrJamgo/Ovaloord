@@ -1,22 +1,45 @@
 --symbolic values
 S = {
-  tier={'\1','\2','\3','\4'},
-  combat='\5',
-  move='\6',
-  locked='\7',
-  unlock='\8',
-  info='\9',
-  goal='\11',
-  skull='\12',
+  {combat='\5'},
+  {move='\6'},
+  {locked='\7'},
+  {unlock='\8'},
+  {info='\9'},
+  {tier={'\1','\2','\3','\4'}},
+  {goal='\11'},
+  {skull='\12'},
+  {fist='\14'},
+  {dagger='\15'},
+  {sword='\16'},
+  {spear='\17'},
+  {bow='\18'},
+  {wand='\19'},
+  {hatchet='\20'},
+  {axe='\21'},
+  {hammer='\22'},
+  {holy='\23'},
+  {unholy='\24'},
+  {halberd='\25'},
 }
 
-local font = love.graphics.newImageFont("assets/love2d_font.png",
-    " abcdefghijklmnopqrstuvwxyz" ..
+local glyphlist = " abcdefghijklmnopqrstuvwxyz" ..
     "ABCDEFGHIJKLMNOPQRSTUVWXYZ0" ..
-    "123456789.,!?-+/():;%&`'*#=[]\""..
-    S.combat..S.move..S.locked..S.unlock..S.info..
-    S.tier[1]..S.tier[2]..S.tier[3]..S.tier[4]..
-    S.goal..S.skull)
+    "123456789.,!?-+/():;%&`'*#=[]\""
+
+for i,s in ipairs(S) do
+  for name,v in pairs(s) do
+    if type(v) == 'string' then
+      glyphlist = glyphlist..v
+    else
+      for j,g in ipairs(v) do
+        glyphlist = glyphlist..g
+      end
+    end
+    S[name] = v
+  end
+end
+
+local font = love.graphics.newImageFont("assets/love2d_font.png", glyphlist)
 
 font:setFilter( 'nearest', 'nearest', 0 )
 love.graphics.setFont(font)

@@ -14,6 +14,7 @@ T.anyunit = {'any Unit'}
 T.yourpyramid = {'Your Pyramid', 'Once it was covered by water, now it is revealed!'}
 T.endlessdesert = {'The great desert', 'Nothing but endless sand..'}
 T.driedoutoasis = {'A dried out Oasis', 'This was a refuge of life in the sparse desert.'}
+
 T.desertvillage = {'Desert Village', 'Lets see if we can harvest these \1 weak souls..'}
 T.village = {'Village', 'Quiet and unknowing..'}
 T.rangervillage = {'Ranger Village'}
