@@ -1,7 +1,7 @@
 require 'middleclass'
 Cursor = class("Cursor")
 Cursor.scale = T.defaultscale
-Cursor.textbox = 120 * T.defaultscale
+Cursor.textbox = 80 * T.defaultscale
 Cursor.tooltipdelay = 2
 Cursor.charheight = 17
 
@@ -18,7 +18,7 @@ function Cursor:update(dt)
   local x, y = love.mouse.getPosition()
   if self.widget:test(x,y) then
     self.screen.x, self.screen.y = x,y
-    local tileOrObject = self.widget:getTileAtPosition(self.screen.x, self.screen.y)
+    local tileOrObject, layer, tx, ty = self.widget:getTileAtPosition(self.screen.x, self.screen.y)
     
     if tileOrObject and (tileOrObject.name or tileOrObject.type) then
       self.brief, self.long = self.widget:getObjectDecription(tileOrObject)
@@ -32,9 +32,12 @@ function Cursor:update(dt)
           self.time = 0
         end
         self.object = tileOrObject
-        local ox, oy
+        local ox, oy = x,y
         if tileOrObject.x and tileOrObject.y then
           ox, oy = math.ceil(tileOrObject.x + tileOrObject.width/2) , math.ceil(tileOrObject.y + tileOrObject.height/2)
+          self.pos.x, self.pos.y = self.widget:convertMapToScreen(ox, oy)
+        elseif(tx and ty) then 
+          ox, oy = self.widget.map:convertTileToPixel(tx-0.5, ty-0.5)
           self.pos.x, self.pos.y = self.widget:convertMapToScreen(ox, oy)
         else
           self.pos.x, self.pos.y = x,y
@@ -58,7 +61,8 @@ function Cursor:draw()
   y = math.floor(math.max(y,0))
   
   if self.brief then
-    love.graphics.printf(self.brief, x, y, Cursor.textbox, 'center', 0,scale)
+    love.graphics.printf(self.brief, x, y, Cursor.textbox, 
+    'center', 0,scale)
   end
   if self.brief and self.long and self.time > self.tooltipdelay then
     local scale = self.scale / 2 * (1 + 0.1 * math.sin(math.min(math.pi, (self.time-self.tooltipdelay) * 10)))

@@ -3,7 +3,7 @@ require 'utils/vec'
 
 UnitsLayer = class('UnitsLayer')
 
-function UnitsLayer:initialize(map, controlwidget)
+function UnitsLayer:initialize(map, game)
   for i,layer in ipairs(map.layers) do
     if layer.name == 'Units' then
       map:removeLayer(i)
@@ -13,7 +13,7 @@ function UnitsLayer:initialize(map, controlwidget)
       break
     end
   end
-  self.controlwidget = controlwidget
+  self.game = game
   self.map = map
   self.objects = {}
 end
@@ -48,8 +48,8 @@ function UnitsLayer:update(dt)
       object:update(dt)
       if object.dead and object.dead > 1 then
         self.objects[i] = nil
-        if object.tier and object.fraction ~= self.controlwidget.fraction then
-          self.controlwidget:addSpirit(object.tier)
+        if object.tier and object.fraction ~= self.game.control.fraction then
+          self.game:addSpirit(object.tier)
         end
       end
     end

@@ -45,8 +45,8 @@ SpiritEffect.quadsize = vec2(64,128)
 SpiritEffect.frames = 12
 SpiritEffect.duration = 1.2
 SpiritEffect.colors = {
-  {0.6,1,1,1},
-  {0.6,1,0.6,1},
+  {0.2,1,1,1},
+  {0.2,1,0.2,1},
   {1,0.4,0.4,1}
 }
 

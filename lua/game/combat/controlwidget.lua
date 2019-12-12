@@ -9,6 +9,9 @@ function ControlWidget:initialize(fraction, scale)
   
   TiledWidget.initialize(self, map, 0, y, w, h, 2)
   
+  self.shiftamount = map.tileheight * 6
+  self.transformshift = 0
+  self.defaulttransform = self.transform:clone()
   self.camera:fit(map)
   self.fraction = fraction
 
@@ -17,43 +20,11 @@ function ControlWidget:initialize(fraction, scale)
   self.unitcap = 4
   self.unitpool = {4,9,18}
   
-  self.spirits = {}
-  self.spiritslayer = map:convertToCustomLayer('Spirits', nil)
-  self.spiritslayer.spirits = self.spirits
-  self.spiritslayer.map = map
-  self.spiritslayer.draw = drawSpirits
-  self.spiritslayer.update = updateSpirits
-  
-  self:addSpirit(1)
-  self:addSpirit(1)
-  self:addSpirit(1)
-  
   for i=1,self.unitcap do
     self:addUnit()
   end
 end
 
-function updateSpirits(layer, dt)
-  local x,y = layer.map:convertTileToPixel(1,5)
-  for i,spirit in ipairs(layer.spirits) do
-    spirit.pos.x = 1
-    local targetY = 5.5-((i-1) * 0.5)
-    local diff = targetY - spirit.pos.y
-    spirit.pos.y = spirit.pos.y + (diff) * 0.1
-    spirit:update(dt)
-  end
-end
-
-function drawSpirits(layer)
-  for _,spirit in ipairs(layer.spirits) do
-    spirit:draw()
-  end
-end
-
-function ControlWidget:addSpirit(tier)
-  local spirit = SpiritOrb(self.map, {x=1, y=0.0}, SpiritOrb.colors[tier])
-  table.insert(self.spirits, spirit)
-end
 
 function ControlWidget:addUnit(id)
   for i=1,self.unitcap do
@@ -72,18 +43,29 @@ end
 function ControlWidget:mousepressed(gx,gy,button,isTouch)
   local tile, layer, x, y = self:getTileAtPosition(gx, gy)
   if tile and tile.type and tile.type ~= '' and _G[tile.type] then
-    if self.spirits[1] then
+    local unitclass = _G[tile.type]
+    local souls = self.fraction.game.game.state.souls
+    local tier = _G[tile.type].tier or 0
+    local cost = 1
+    if (souls[tier] or 0) >= cost then
+      souls[tier] = souls[tier] - cost
       self.fraction:addUnit(tile.type, self.fraction.spawn)
       self.map:setLayerTile(layer.name, x, y, 0)
-      table.remove(self.spirits, 1)
       self:addUnit()
     end
+  elseif tile and tile.type and tile.type == 'Master' then
+    options['r'] = not options['r']
   end
 end
 
 function ControlWidget:update(dt)
   TiledWidget.update(self, dt)
   self.map:update(dt)
+  
+  local dir = (options['r'] and (-1)) or 1
+  self.transformshift = math.max(0, math.min(self.shiftamount, self.transformshift + dir * dt * 1000))
+  self.transform = self.defaulttransform:clone()
+  self.transform:translate(0, self.transformshift)
 end
 
 function ControlWidget:draw()
@@ -95,5 +77,6 @@ function ControlWidget:draw()
   self.map:draw(self.camera:getMapArgs())
   -- restore target canvas and draw to it
   love.graphics.setCanvas(targetCanvas)
+  
   TiledWidget.draw(self)
 end

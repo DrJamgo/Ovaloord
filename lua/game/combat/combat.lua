@@ -20,7 +20,7 @@ function Combat:initialize(game, objective)
   
   self.objects = {}
   self.fractions = {}
-  self.unitslayer = UnitsLayer(self.map)
+  self.unitslayer = UnitsLayer(self.map, self.game)
   self.gridlayer = GridLayer(self.map, self.unitslayer.objects)
   
   for l,layer in ipairs(map.layers) do

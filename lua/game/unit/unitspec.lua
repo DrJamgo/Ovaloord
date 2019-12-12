@@ -33,7 +33,7 @@ for fraction, unitlist in pairs(unitcatalogue) do
     for name,spec in pairs(units) do
       _G[name] = class(name, Unit)
       _G[name].brief, _G[name].long = T.get(name)
-      _G[name].brief = (spec.icon or S.tier[tier]).._G[name].brief
+      _G[name].brief = (spec.icon and {SpiritEffect.colors[tier], spec.icon, {1,1,1,1}, _G[name].brief}) or (S.tier[tier].._G[name].brief)
       if not spec.spritepath then
         _G[name].spritepath = 'assets/sprites/'..fraction..'/'..name..'.png'
       end

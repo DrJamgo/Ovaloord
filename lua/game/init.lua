@@ -15,6 +15,7 @@ function newGameState()
   state.levels = {desertvillage=0}
   state.currentlevel = 'yourpyramid'
   state.souls = {3}
+  state.research = {'Cadaver'}
   return state
 end
 
@@ -68,12 +69,17 @@ function Game:enterCombat()
   --require('utils/microscope')('Game.dot', self, 2, 'nometatables')
 end
 
+function Game:addSpirit(tier, amount)
+  self.state.souls[tier]=(self.state.souls[tier] or 0) + (amount or 1)
+  self.animation = 0
+end
+
 function Game:reward(unlocks, souls)
   for _,levelname in ipairs(unlocks) do
     self.state.levels[levelname]=0
   end
   for tier,amount in pairs(souls) do
-    self.state.souls[tier]=(self.state.souls[tier] or 0) + amount
+    self:addSpirit(tier, amount)
   end
   self.state.levels[self.state.currentlevel] = self.state.levels[self.state.currentlevel] + 1
   self.animation = 0
