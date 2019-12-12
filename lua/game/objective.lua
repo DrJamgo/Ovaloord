@@ -83,7 +83,7 @@ end
 function ObjectiveReach:eventUnitOnNode(unit, node)
   if unit.fraction.name == 'Undead' then
     if node.location.x == self.tile.x and node.location.y == self.tile.y then
-      if not self.unittype or unit.class.name == self.unittype then
+      if not self.unittype or unit.class.name == self.unittype  or unit.icon == self.unittype then
         self:_addProgress(1)
       end
       --local souls = {}
@@ -93,7 +93,6 @@ function ObjectiveReach:eventUnitOnNode(unit, node)
     end
   end
 end
-
 
 ObjectiveKill = class('ObjectiveKill', Objective)
 function ObjectiveKill:initialize(amount, unittype, unlocks, souls)
