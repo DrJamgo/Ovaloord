@@ -45,7 +45,7 @@ font:setFilter( 'nearest', 'nearest', 0 )
 love.graphics.setFont(font)
 
 T = require 'text_en'
-T.defaultscale = (love.graphics.getWidth() > 1000 and 2.0 or 1.5)
+T.defaultscale = 2.0
 
 function T.get(name)
   if T[name] then
