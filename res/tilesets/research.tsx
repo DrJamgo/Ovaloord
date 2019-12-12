@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.2" tiledversion="1.2.4" name="research" tilewidth="32" tileheight="32" tilecount="21" columns="7">
- <image source="../../assets/tilesets/research.png" width="224" height="96"/>
+<tileset version="1.2" tiledversion="1.2.4" name="research" tilewidth="32" tileheight="32" tilecount="28" columns="7">
+ <image source="../../assets/tilesets/research.png" width="224" height="128"/>
  <tile id="1" type="Research"/>
  <tile id="3">
   <animation>
@@ -11,4 +11,5 @@
   </animation>
  </tile>
  <tile id="15" type="Settings"/>
+ <tile id="22" type="Quit"/>
 </tileset>

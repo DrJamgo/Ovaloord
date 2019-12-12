@@ -2,6 +2,11 @@ local T = {}
 T.player = {'This is you!'}
 T.Master = {''}
 
+-- Menu
+T.Research = {'Research [R]'}
+T.Settings = {'Settings [S]'}
+T.Quit     = {'Quit Battle [Q]'}
+
 -- Global strings
 T.currentlevel = {'Current Level'}
 T.ObjectiveReach = {S.move..'Reach end of map with %s (%d/%d)'}

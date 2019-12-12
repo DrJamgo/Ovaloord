@@ -2,7 +2,7 @@ local STI = require 'sti/sti'
 require 'game/widget'
 ControlWidget = class('ControlWidget', TiledWidget)
 
-function ControlWidget:initialize(fraction, scale)
+function ControlWidget:initialize(game, scale)
   local map = STI('lua/maps/gui_units.lua')
   local w,h = map.tilewidth * map.width * scale, map.tileheight * map.height * scale
   local y = love.graphics:getHeight() - h
@@ -10,10 +10,10 @@ function ControlWidget:initialize(fraction, scale)
   TiledWidget.initialize(self, map, 0, y, w, h, 2)
   
   self.shiftamount = map.tileheight * 6
-  self.transformshift = 0
+  self.transformshift = self.shiftamount
   self.defaulttransform = self.transform:clone()
   self.camera:fit(map)
-  self.fraction = fraction
+  self.game = game
 
   self.tile = nil
   
@@ -25,6 +25,9 @@ function ControlWidget:initialize(fraction, scale)
   end
 end
 
+function ControlWidget:setFraction(fraction)
+  self.fraction = fraction
+end
 
 function ControlWidget:addUnit(id)
   for i=1,self.unitcap do
@@ -42,19 +45,28 @@ end
 
 function ControlWidget:mousepressed(gx,gy,button,isTouch)
   local tile, layer, x, y = self:getTileAtPosition(gx, gy)
-  if tile and tile.type and tile.type ~= '' and _G[tile.type] then
-    local unitclass = _G[tile.type]
-    local souls = self.fraction.game.game.state.souls
-    local tier = _G[tile.type].tier or 0
-    local cost = 1
-    if (souls[tier] or 0) >= cost then
-      souls[tier] = souls[tier] - cost
-      self.fraction:addUnit(tile.type, self.fraction.spawn)
-      self.map:setLayerTile(layer.name, x, y, 0)
-      self:addUnit()
+  if tile and tile.type then
+    if tile.type ~= '' and _G[tile.type] then
+      if self.fraction then
+        local unitclass = _G[tile.type]
+        local souls = self.game.state.souls
+        local tier = _G[tile.type].tier or 0
+        local cost = 1
+        if (souls[tier] or 0) >= cost then
+          souls[tier] = souls[tier] - cost
+          self.fraction:addUnit(tile.type, self.fraction.spawn)
+          self.map:setLayerTile(layer.name, x, y, 0)
+          self:addUnit()
+        end
+      end
+      return true
+    elseif tile.type == 'Research' then
+      options['r'] = not options['r']
+      return true
+    elseif tile.type == 'Quit' then
+      self.game:exitCombat()
+      return true
     end
-  elseif tile and tile.type and tile.type == 'Master' then
-    options['r'] = not options['r']
   end
 end
 
@@ -66,6 +78,9 @@ function ControlWidget:update(dt)
   self.transformshift = math.max(0, math.min(self.shiftamount, self.transformshift + dir * dt * 1000))
   self.transform = self.defaulttransform:clone()
   self.transform:translate(0, self.transformshift)
+  
+  self.map.layers.UnitButtons.visible = (options['r'] or self.fraction) and true
+  self.map.layers.Units.visible = self.map.layers.UnitButtons.visible
 end
 
 function ControlWidget:draw()

@@ -32,6 +32,10 @@ end
 function Game:initialize()
   self:loadGame()
   self.scale = 2
+  
+  self.control = ControlWidget(self, self.scale)
+  self.world = World(self)
+  
   return self
 end
 
@@ -49,9 +53,7 @@ function removeObject(map, object)
 end
 
 function Game:enterWorldMap()
-  self.world = World(self)
-  self.widgets = {}
-  self:addWidget(self.world)
+  self.widgets = {self.world, self.control}
 end
 
 function Game:enterCombat()
@@ -60,12 +62,10 @@ function Game:enterCombat()
   local objective = objectives[self.state.levels[levelname]+1] or Objective()
   
   self.combat = Combat(self, objective)
-  self.control = ControlWidget(self.combat.fractions['Undead'], self.scale)
   self.combat.unitslayer.controlwidget = self.control
+  self.control:setFraction(self.combat.fractions['Undead'])
   
-  self.widgets = {}
-  self:addWidget(self.combat)
-  self:addWidget(self.control)
+  self.widgets = {self.combat, self.control}
   --require('utils/microscope')('Game.dot', self, 2, 'nometatables')
 end
 
@@ -87,11 +87,8 @@ end
 
 function Game:exitCombat()
   -- TODO: do something on combat exit
+  self.control:setFraction(nil)
   self:enterWorldMap()
-end
-
-function Game:addWidget(widget)
-  self.widgets[#self.widgets+1] = widget
 end
 
 function Game:update(dt)
