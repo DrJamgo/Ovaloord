@@ -16,10 +16,15 @@ function ControlWidget:initialize(game, scale)
   self.game = game
 
   self.tile = nil
-  
+  for i,tileset in ipairs(map.tilesets) do
+    if tileset.name == 'undead' then
+      self.idoffset = tileset.firstgid - 1
+    end
+  end
+
+  self.unitpool = self.game.state.active
   self.unitcap = 4
-  self.unitpool = {4,9,18}
-  
+
   for i=1,self.unitcap do
     self:addUnit()
   end
@@ -30,17 +35,7 @@ function ControlWidget:setFraction(fraction)
 end
 
 function ControlWidget:addUnit(id)
-  for i=1,self.unitcap do
-    local x = i+2
-    local y = 7
-    if not self.map.layers.Units.data[y][x] then
-      if not id then
-        id = self.unitpool[love.math.random(1, #self.unitpool)]
-      end
-      self.map:setLayerTile('Units', x, y, id)
-      return id
-    end
-  end
+
 end
 
 function ControlWidget:mousepressed(gx,gy,button,isTouch)
@@ -73,6 +68,13 @@ end
 function ControlWidget:update(dt)
   TiledWidget.update(self, dt)
   self.map:update(dt)
+  
+  for i=1,#self.unitpool do
+    local x = i+2
+    local y = 7
+    local id = (_G[self.unitpool[i]].id or 0) + self.idoffset
+    self.map:setLayerTile('Units', x, y, id)
+  end
   
   local dir = (options['r'] and (-1)) or 1
   self.transformshift = math.max(0, math.min(self.shiftamount, self.transformshift + dir * dt * 1000))

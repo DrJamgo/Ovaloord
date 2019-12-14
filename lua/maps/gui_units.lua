@@ -13,51 +13,8 @@ return {
   properties = {},
   tilesets = {
     {
-      name = "undead",
-      firstgid = 1,
-      filename = "../../res/tilesets/undead.tsx",
-      tilewidth = 64,
-      tileheight = 64,
-      spacing = 0,
-      margin = 0,
-      columns = 5,
-      image = "../../assets/tilesets/undead.png",
-      imagewidth = 320,
-      imageheight = 640,
-      tileoffset = {
-        x = -16,
-        y = 0
-      },
-      grid = {
-        orientation = "orthogonal",
-        width = 64,
-        height = 64
-      },
-      properties = {},
-      terrains = {},
-      tilecount = 50,
-      tiles = {
-        {
-          id = 0,
-          type = "Master"
-        },
-        {
-          id = 3,
-          type = "Revenant"
-        },
-        {
-          id = 8,
-          type = "Hitter"
-        },
-        {
-          id = 17,
-          type = "Canibal"
-        }
-      }
-    },
-    {
       name = "terrain_atlas",
-      firstgid = 51,
+      firstgid = 1,
       filename = "../../res/tilesets/terrain_atlas.tsx",
       tilewidth = 32,
       tileheight = 32,
@@ -110,7 +67,7 @@ return {
     },
     {
       name = "undead-spirit-recruit-anim-explode",
-      firstgid = 1075,
+      firstgid = 1025,
       filename = "../../res/tilesets/undead-spirit-recruit-anim-explode.tsx",
       tilewidth = 64,
       tileheight = 128,
@@ -215,7 +172,7 @@ return {
     },
     {
       name = "rotating_orbs",
-      firstgid = 1087,
+      firstgid = 1037,
       filename = "../../res/tilesets/rotating_orbs.tsx",
       tilewidth = 24,
       tileheight = 24,
@@ -263,7 +220,7 @@ return {
     },
     {
       name = "research",
-      firstgid = 1119,
+      firstgid = 1069,
       filename = "../../res/tilesets/research.tsx",
       tilewidth = 32,
       tileheight = 32,
@@ -320,6 +277,53 @@ return {
           type = "Quit"
         }
       }
+    },
+    {
+      name = "undead",
+      firstgid = 1097,
+      filename = "../../res/tilesets/undead.tsx",
+      tilewidth = 64,
+      tileheight = 64,
+      spacing = 0,
+      margin = 0,
+      columns = 4,
+      image = "../../assets/tilesets/undead.png",
+      imagewidth = 256,
+      imageheight = 576,
+      tileoffset = {
+        x = -16,
+        y = 0
+      },
+      grid = {
+        orientation = "orthogonal",
+        width = 64,
+        height = 64
+      },
+      properties = {},
+      terrains = {},
+      tilecount = 36,
+      tiles = {
+        {
+          id = 0,
+          type = "Corpse"
+        },
+        {
+          id = 1,
+          type = "Zombie"
+        },
+        {
+          id = 2,
+          type = "Cadaver"
+        },
+        {
+          id = 3,
+          type = "Rotter"
+        },
+        {
+          id = 34,
+          type = "Cadaver"
+        }
+      }
     }
   },
   layers = {
@@ -346,10 +350,10 @@ return {
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 553, 553, 553, 553, 0, 0, 0, 0, 0, 0,
-        0, 0, 1009, 1009, 1009, 1009, 1009, 1009, 0, 0, 0, 0,
-        0, 0, 468, 468, 468, 468, 468, 468, 468, 468, 0, 0,
-        0, 0, 0, 0, 0, 418, 418, 418, 418, 418, 0, 0,
+        0, 0, 503, 503, 503, 503, 0, 0, 0, 0, 0, 0,
+        0, 0, 959, 959, 959, 959, 959, 959, 0, 0, 0, 0,
+        0, 0, 418, 418, 418, 418, 418, 418, 418, 418, 0, 0,
+        0, 0, 0, 0, 0, 368, 368, 368, 368, 368, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
       }
     },
@@ -371,15 +375,15 @@ return {
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        1141, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        1091, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        1134, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        1120, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        1084, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        1070, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 1119, 1126, 1127, 1128, 0, 0, 0, 0, 0, 0,
-        0, 0, 1119, 1126, 1127, 1128, 1129, 1130, 0, 0, 0, 0,
-        0, 0, 1119, 1133, 1127, 1128, 1129, 1130, 1131, 1132, 0, 0,
-        0, 0, 0, 0, 0, 1128, 1129, 1137, 1131, 1132, 0, 0,
+        0, 0, 1069, 1076, 1077, 1078, 0, 0, 0, 0, 0, 0,
+        0, 0, 1069, 1076, 1077, 1078, 1079, 1080, 0, 0, 0, 0,
+        0, 0, 1069, 1083, 1077, 1078, 1079, 1080, 1081, 1082, 0, 0,
+        0, 0, 0, 0, 0, 1078, 1079, 1087, 1081, 1082, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
       }
     },
@@ -404,37 +408,7 @@ return {
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 1119, 1126, 1127, 1128, 1129, 1130, 1131, 1132, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-      }
-    },
-    {
-      type = "tilelayer",
-      id = 38,
-      name = "Selection",
-      x = 0,
-      y = 0,
-      width = 12,
-      height = 13,
-      visible = true,
-      opacity = 1,
-      offsetx = 0,
-      offsety = 0,
-      properties = {},
-      encoding = "lua",
-      data = {
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 1069, 1076, 1077, 1078, 1079, 1080, 1081, 1082, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,

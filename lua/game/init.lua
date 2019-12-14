@@ -15,7 +15,8 @@ function newGameState()
   state.levels = {desertvillage=0}
   state.currentlevel = 'yourpyramid'
   state.souls = {3}
-  state.research = {'Cadaver'}
+  state.research = {'Corpse'}
+  state.active = {'Corpse'}
   return state
 end
 

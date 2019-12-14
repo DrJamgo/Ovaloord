@@ -17,6 +17,7 @@ unitcatalogue = {
   },
   Undead = {
     { -- T1
+      Corpse  ={id=1 ,icon=S.fist,   hp= 3, melee={0.5,1.1,'slash','fast','fast'}},
       Canibal  ={icon=S.hammer, hp=10, melee={5.0,1.1,'slash','slow','normal'}, speed=1.5},
       Revenant ={icon=S.spear,  hp= 5, melee={2.0,1.1,'thrust','normal','slow'}},
       Hitter   ={icon=S.bow,    hp= 5, range={4.0,5.1,'shoot','veryslow','normal'}},
