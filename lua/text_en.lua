@@ -31,6 +31,14 @@ T.road = {'Road'}
 
 -- Unit descriptions
 -- Undead
+T.Rosen = {'Rosen', 'He rose to serve.'}
+T.Warden = {'Warden', 'Protects ancient kings.'}
+T.Revenant = {'Revenant'}
+
+T.Zombie = {'Zombie', 'Dead  flesh knows no pain.'}
+T.Cadaver = {'Cadaver'}
+T.Rotter = {'Rotter'}
+
 T.Canibal = {'Canibal', 'Tough, strong, slow..'}
 T.Hitter = {'Hitter', 'Shoots from distance'}
 T.Revenant = {'Revenant', 'Comes to get you..'}

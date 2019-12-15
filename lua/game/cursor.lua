@@ -2,7 +2,7 @@ require 'middleclass'
 Cursor = class("Cursor")
 Cursor.scale = T.defaultscale
 Cursor.textbox = 80 * T.defaultscale
-Cursor.tooltipdelay = 2
+Cursor.tooltipdelay = 1
 Cursor.charheight = 17
 
 function Cursor:initialize(widget)

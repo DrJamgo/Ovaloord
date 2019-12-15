@@ -1,4 +1,5 @@
 local STI = require 'sti/sti'
+require 'game/unit/lpcsprite'
 require 'game/widget'
 ControlWidget = class('ControlWidget', TiledWidget)
 
@@ -23,19 +24,50 @@ function ControlWidget:initialize(game, scale)
   end
 
   self.unitpool = self.game.state.active
-  self.unitcap = 4
+  self.layer = self.map:convertToCustomLayer('Units')
+  self.layer.draw = drawUnits
+  self.layer.update = updateUnits
+  self.layer.objects = {}
+  self.layer.map = self.map
 
-  for i=1,self.unitcap do
-    self:addUnit()
+  for i=1,#self.unitpool do
+    local objects = self.layer.objects
+    local name = self.unitpool[i]
+    local x,y = self.map:convertTileToPixel(i+1.45, 6.1)
+    local newUnit = {sprite=LPCSprite(_G[name].spritepath)}
+    newUnit.x, newUnit.y = x,y
+    newUnit.width, newUnit.height = 32,16
+    newUnit.name = name
+    newUnit.type = name
+    newUnit.cooldown = 0.0
+    newUnit.cooldowntime = 2.0
+    newUnit.brief = _G[name].brief
+    newUnit.long = _G[name].long
+    objects[#objects+1] = newUnit
+  end
+end
+
+function updateUnits(layer, dt)
+  for i,object in ipairs(layer.objects) do
+    object.cooldown = math.max(0, (object.cooldown - dt))
+  end
+end
+
+function drawUnits(layer)
+  for i,object in ipairs(layer.objects) do
+    if object.cooldown > 0 then
+      local time = (object.cooldown / object.cooldowntime) * (5/6)
+      love.graphics.setColor(1-time, 1-time, 1-time, 1)
+      object.sprite:drawAnimation(object.x, object.y, 'prone', 4, time)
+    else
+      love.graphics.setColor(1,1,1,1)
+      object.sprite:drawAnimation(object.x, object.y, 'stand', 1, 0)
+    end
   end
 end
 
 function ControlWidget:setFraction(fraction)
   self.fraction = fraction
-end
-
-function ControlWidget:addUnit(id)
-
 end
 
 function ControlWidget:mousepressed(gx,gy,button,isTouch)
@@ -47,11 +79,10 @@ function ControlWidget:mousepressed(gx,gy,button,isTouch)
         local souls = self.game.state.souls
         local tier = _G[tile.type].tier or 0
         local cost = 1
-        if (souls[tier] or 0) >= cost then
+        if (souls[tier] or 0) >= cost and tile.cooldown == 0 then
           souls[tier] = souls[tier] - cost
+          tile.cooldown = tile.cooldowntime
           self.fraction:addUnit(tile.type, self.fraction.spawn)
-          self.map:setLayerTile(layer.name, x, y, 0)
-          self:addUnit()
         end
       end
       return true
@@ -69,13 +100,6 @@ function ControlWidget:update(dt)
   TiledWidget.update(self, dt)
   self.map:update(dt)
   
-  for i=1,#self.unitpool do
-    local x = i+2
-    local y = 7
-    local id = (_G[self.unitpool[i]].id or 0) + self.idoffset
-    self.map:setLayerTile('Units', x, y, id)
-  end
-  
   local dir = (options['r'] and (-1)) or 1
   self.transformshift = math.max(0, math.min(self.shiftamount, self.transformshift + dir * dt * 1000))
   self.transform = self.defaulttransform:clone()
@@ -83,6 +107,7 @@ function ControlWidget:update(dt)
   
   self.map.layers.UnitButtons.visible = (options['r'] or self.fraction) and true
   self.map.layers.Units.visible = self.map.layers.UnitButtons.visible
+  self.map.layers.Tier.visible = self.map.layers.UnitButtons.visible
 end
 
 function ControlWidget:draw()

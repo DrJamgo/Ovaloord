@@ -3,13 +3,13 @@ require 'game/objective'
 levels = {}
 levels.desertvillage = {
   objectives={
-    ObjectiveReach({40,5}, 3, S.bow, {'village'}, {3})
+    ObjectiveReach({40,5}, 3, nil, {'village'}, {3,2})
   }
 }
 
 levels.village = {
   objectives={
-    ObjectiveReach({40,8}, 5, nil, {'rangervillage'}, {3})
+    ObjectiveReach({40,8}, 5, nil, {'rangervillage'}, {3,4})
   }
 }
 
