@@ -2,14 +2,80 @@ require 'middleclass'
 require 'game/widget'
 Intro = class('Intro')
 
+FadeScreen = class('FadeScreen')
+function FadeScreen:initialize(path, fadein, time, fadeout, skip)
+  self.path = path
+  self.fadein = fadein
+  self.duration = time
+  self.fadeout = fadeout
+  self.skip = skip
+  
+  self.time = 0
+  self.alpha = 0
+  
+  self.image = love.graphics.newImage(self.path)
+  self.image:setFilter('nearest','nearest')
+  local scale = math.max(love.graphics.getWidth() / self.image:getWidth(), love.graphics.getHeight() / self.image:getHeight())
+  local origin = {x=self.image:getWidth()/2, y=self.image:getHeight()/2}
+  local center = {x=love.graphics.getWidth()/2, y=love.graphics.getHeight()/2}
+  self.transform = love.math.newTransform(center.x,center.y,0,scale,scale,origin.x,origin.y)
+end
+
+function FadeScreen:update(dt)
+  if love.mouse.isDown(1) and self.skip then
+    self.time = math.max(self.time, self.fadein + self.duration)
+  end
+  self.alpha = math.min(1, self.time / self.fadein)
+  self.alpha = math.min(self.alpha, self.alpha - math.max(-1, (self.time - self.fadein - self.duration)) / self.fadeout)
+  
+  self.time = self.time + dt
+  if self.time > (self.fadein + self.duration + self.fadeout) then
+    return true
+  end
+end
+
+function FadeScreen:draw()
+  love.graphics.replaceTransform(self.transform)
+  love.graphics.clear(0,0,0,0)
+  love.graphics.setColor(1,1,1,self.alpha)
+  love.graphics.draw(self.image)
+end
+
+OvaLoordScreen = class('OvaLoordScreen', FadeScreen)
+OvaLoordScreen.numframes = 5
+OvaLoordScreen.size = vec2(128,72)
+function OvaLoordScreen:initialize(...)
+  FadeScreen.initialize(self, ...)
+  local scale = math.max(love.graphics.getWidth() / self.image:getWidth() / self.numframes, love.graphics.getHeight() / self.image:getHeight())
+  local origin = {x=self.image:getWidth()/2/self.numframes, y=self.image:getHeight()/2}
+  local center = {x=love.graphics.getWidth()/2, y=love.graphics.getHeight()/2}
+  self.transform = love.math.newTransform(center.x,center.y,0,scale,scale,origin.x,origin.y)
+  self:update(0.1)
+end
+
+function OvaLoordScreen:update(dt)
+  local finished = FadeScreen.update(self, dt)
+  local inframe = self.time - self.fadein
+  local animduration = 1.5
+  local frame = math.max(0,math.min(math.floor(inframe / animduration * self.numframes),self.numframes-1))
+  self.quad = love.graphics.newQuad(frame*self.size.x,0,self.size.x,self.size.y,self.size.x*self.numframes,self.size.y)
+  return finished
+end
+
+function OvaLoordScreen:draw()
+  if self.quad then
+    love.graphics.setColor(1,1,1,self.alpha)
+    love.graphics.draw(self.image, self.quad, self.transform)
+  end
+end
+
 Intro.screens = {
-  {path='assets/splash/powered_by_love.png', fadein=1.0, time=3.0, fadeout=1.0, skip=true}
+  FadeScreen('assets/splash/powered_by_love.png', 1.0, 3.0, 0.0, true),
+  OvaLoordScreen('assets/splash/Ovaloord.png', 0.0, 2.0, 1.0, false),
 }
 
 function Intro:initialize()
   self.index = 1
-  self.time = 0
-  self.alpha = 0
 end
 
 function Intro:isActive()
@@ -18,25 +84,9 @@ end
 
 function Intro:update(dt)
   local screen = self.screens[self.index]
-  
   if screen then
-    if not screen.image then
-      screen.image = love.graphics.newImage(screen.path)
-      screen.image:setFilter('nearest','nearest')
-      local scale = math.max(love.graphics.getWidth() / screen.image:getWidth(), love.graphics.getHeight() / screen.image:getHeight())
-      local origin = {x=screen.image:getWidth()/2, y=screen.image:getHeight()/2}
-      local center = {x=love.graphics.getWidth()/2, y=love.graphics.getHeight()/2}
-      self.transform = love.math.newTransform(center.x,center.y,0,scale,scale,origin.x,origin.y)
-    end
-    if love.mouse.isDown(1) and screen.skip then
-      self.time = math.max(self.time, screen.fadein + screen.time)
-    end
-    self.alpha = math.min(1, self.time / screen.fadein)
-    self.alpha = math.min(self.alpha, self.alpha - math.max(-1, (self.time - screen.fadein - screen.time)) / screen.fadeout)
-    
-    self.time = self.time + dt
-    if self.time > (screen.fadein + screen.time + screen.fadeout) then
-      self.time = 0
+    local finished = screen:update(dt)
+    if finished then
       self.index = self.index + 1
     end
   end
@@ -45,9 +95,6 @@ end
 function Intro:draw()
   local screen = self.screens[self.index]
   if screen then
-    love.graphics.replaceTransform(self.transform)
-    love.graphics.clear(0,0,0,0)
-    love.graphics.setColor(1,1,1,self.alpha)
-    love.graphics.draw(screen.image)
+    screen:draw()
   end
 end
