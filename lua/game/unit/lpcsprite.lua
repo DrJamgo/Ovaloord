@@ -19,6 +19,9 @@ function LPCSprite:initialize(filepath)
   self.drawpos = vec2(0,0)
 end
 
+LPCSprite.shadow = love.graphics.newImage('assets/sprites/lpc_shadow.png')
+LPCSprite.shadow:setFilter('nearest','nearest')
+
 LPCSprite.size = vec2(64,64)
 LPCSprite.offset = vec2(32, 48)
 LPCSprite.scale = 1
@@ -68,6 +71,7 @@ function LPCSprite:drawAnimation(wx, wy, animation, direction, animtime)
       self.drawpos.x = wx
       self.drawpos.y = wy
     end
+    love.graphics.draw(self.shadow, quad, self.drawpos.x, self.drawpos.y, 0, self.scale, self.scale, self.offset.x, self.offset.y)
     love.graphics.draw(self.spriteimage, quad, self.drawpos.x, self.drawpos.y, 0, self.scale, self.scale, self.offset.x, self.offset.y)
     
     self.drawframe = drawframe
