@@ -23,7 +23,8 @@ function Camera:update(dt)
   if self.target then
     local diffx, diffy = self.target.x - self.offsetx, self.target.y - self.offsety
     if diffx ~= 0 or diffy ~= 0 then
-      local step = math.ceil(self.speed * dt)
+      local speed = math.min(math.max(math.abs(diffx), math.abs(diffy)), self.speed)
+      local step = math.ceil(speed * dt)
       diffx = math.max(-step, math.min(step, diffx))
       diffy = math.max(-step, math.min(step, diffy))
       self.offsetx = self.offsetx + diffx

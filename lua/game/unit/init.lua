@@ -202,8 +202,9 @@ function Unit:draw()
   elseif self.attack then
     self.sprite:drawAnimation(wx, wy, self.attack.anim, self.dir, self.attack:getProgress())
   else
+    local anim = (((self.moving == false) or self.stuck) and 'stand') or 'move'
     self.movedist = math.min(1, self.move:getProgress())
-    self.sprite:drawAnimation(wx, wy, (self.stuck and 'stand') or 'move', self.dir, self.movedist)
+    self.sprite:drawAnimation(wx, wy, anim, self.dir, self.movedist)
   end
   
   --love.graphics.print(tostring(self.id), wx, wy)
