@@ -4,8 +4,8 @@ require 'utils/vec'
 GridLayer = class('GridLayer')
 
 local COST = {}
-COST.ROAD = 1
-COST.OTHER = 2
+COST.ROAD = 0.7
+COST.OTHER = 1
 COST.UNIT_MOVING = 2
 COST.UNIT_STANDING = 5
 
@@ -31,8 +31,12 @@ function GridLayer:initialize(map)
             walk = walk and layer.properties.nowalk == nil
             shoot = shoot and layer.properties.noshoot == nil
         end
-        if layer.data and layer.data[y][x] and layer.data[y][x].type == 'road' then
-          cost = COST.ROAD
+        if layer.data and layer.data[y][x] then
+          if layer.data[y][x].type == 'road' then
+            cost = math.min(cost, COST.ROAD)
+          elseif layer.properties.movecost then
+            cost = math.min(cost, layer.properties.movecost)
+          end
         end
       end
       if walk or shoot then
@@ -72,10 +76,15 @@ function GridLayer:draw()
         local wx,wy = self.map:convertTileToPixel(x,y)
         love.graphics.rectangle("fill", wx, wy, -self.map.tilewidth, -self.map.tileheight)
       end
-      if self.static[y][x] and self.static[y][x].walk ==false then
+      if self.static[y][x] and self.static[y][x].walk == false then
         love.graphics.setColor(1,0,0,0.5)
         local wx,wy = self.map:convertTileToPixel(x,y)
         love.graphics.rectangle("fill", wx, wy, -self.map.tilewidth, -self.map.tileheight)
+      elseif self.static[y][x] then
+        local cost = self.static[y][x].cost
+        love.graphics.setColor(cost/2,0.5,0.5,0.5)
+        local wx,wy = self.map:convertTileToPixel(x,y)
+        love.graphics.print(tostring(self.static[y][x].cost), wx-self.map.tilewidth, wy-self.map.tileheight)
       end
       local unit = self.dynamic[y][x]
       if unit then
