@@ -56,7 +56,7 @@ end
 function OvaLoordScreen:update(dt)
   local finished = FadeScreen.update(self, dt)
   local inframe = self.time - self.fadein
-  local animduration = 1.5
+  local animduration = 1.0
   local frame = math.max(0,math.min(math.floor(inframe / animduration * self.numframes),self.numframes-1))
   self.quad = love.graphics.newQuad(frame*self.size.x,0,self.size.x,self.size.y,self.size.x*self.numframes,self.size.y)
   return finished
