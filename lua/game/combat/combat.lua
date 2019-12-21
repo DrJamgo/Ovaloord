@@ -29,7 +29,7 @@ function Combat:initialize(game, objective)
       self.fractions[fraction] = _G[fraction](self, layer)
     end
   end
-  local undead = self.fractions['Undead']
+  local undead = self.fractions.Undead
   self.camera:setFromTile(self.map, undead.spawn.x, undead.spawn.y, 1)
   self.camera.speed = 240
 end
@@ -38,18 +38,18 @@ end
 function Combat:update(dt)
   if self.objective:isFinished() == false then
     TiledWidget.update(self, dt)
-    local undead = self.fractions['Undead']
-    local leader = self.fractions['Undead']:getLeadingUnit()
+    local undead = self.fractions.Undead
+    local leader = self.fractions.Undead:getLeadingUnit()
     if leader then
       self.camera:setFromTile(self.map, leader.pos.x, leader.pos.y, 1, true)
     else
       local x,y = unpack(undead.spawn)
       self.camera:setFromTile(self.map, undead.spawn.x, undead.spawn.y, 1, true)
     end
-    self.gridlayer.visible = options['g']
+    self.gridlayer.visible = options.g and options.cheats
 
     self.gridlayer.cursor = self.cursorl
-    self.map:update((options['p'] and 0) or dt)
+    self.map:update((options.p and 0) or dt)
   end
   self.objective:update(dt, self.game)
   

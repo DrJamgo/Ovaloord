@@ -16,8 +16,10 @@ local intro = Intro()
 local game = Game()
 local main = intro
 options = {}
-
-
+-- copy args to options table
+for _,a in ipairs(arg) do
+  options[a] = true
+end
 
 function love.keypressed( key, scancode, isrepeat )
   options[key] = ((options[key] == nil) and true) or nil

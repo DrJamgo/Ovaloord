@@ -39,7 +39,7 @@ function Objective:isFinished()
 end
 
 function Objective:update(dt, game)
-  if love.keyboard.isDown('w') then
+  if love.keyboard.isDown('w') and options.cheats then
     self.progress = self.amount
   end
   self.time = self.time + dt
