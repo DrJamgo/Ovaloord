@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-down" width="12" height="13" tilewidth="36" tileheight="28" infinite="0" nextlayerid="41" nextobjectid="2">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-down" width="12" height="13" tilewidth="36" tileheight="28" infinite="0" nextlayerid="42" nextobjectid="6">
  <tileset firstgid="1" source="../tilesets/terrain_atlas.tsx"/>
  <tileset firstgid="1025" source="../tilesets/undead-spirit-recruit-anim-explode.tsx"/>
  <tileset firstgid="1037" source="../tilesets/rotating_orbs.tsx"/>
@@ -13,7 +13,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,503,503,959,978,978,978,0,0,0,0,
+0,0,503,0,0,978,978,978,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,503,503,0,0,0,0,0,0,0,0,
 0,0,959,959,959,959,959,959,0,0,0,0,
@@ -56,5 +56,10 @@
 0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
+ <objectgroup id="41" name="Research">
+  <object id="3" name="Rosen" x="72" y="220" width="32" height="28"/>
+  <object id="4" name="Warden" x="72" y="248" width="32" height="28"/>
+  <object id="5" name="Revenant" x="72" y="276" width="32" height="28"/>
+ </objectgroup>
  <objectgroup id="40" name="Units"/>
 </map>

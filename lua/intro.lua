@@ -71,7 +71,7 @@ end
 
 Intro.screens = {
   FadeScreen('assets/splash/powered_by_love.png', 1.0, 3.0, 0.0, true),
-  OvaLoordScreen('assets/splash/Ovaloord.png', 0.0, 2.0, 1.0, false),
+  OvaLoordScreen('assets/splash/Ovaloord.png', 0.0, 2.0, 1.0, true),
 }
 
 function Intro:initialize()

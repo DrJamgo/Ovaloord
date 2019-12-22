@@ -8,8 +8,8 @@ return {
   height = 13,
   tilewidth = 36,
   tileheight = 28,
-  nextlayerid = 41,
-  nextobjectid = 2,
+  nextlayerid = 42,
+  nextobjectid = 6,
   properties = {},
   tilesets = {
     {
@@ -348,7 +348,7 @@ return {
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 503, 503, 959, 978, 978, 978, 0, 0, 0, 0,
+        0, 0, 503, 0, 0, 978, 978, 978, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 503, 503, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 959, 959, 959, 959, 959, 959, 0, 0, 0, 0,
@@ -415,6 +415,58 @@ return {
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+      }
+    },
+    {
+      type = "objectgroup",
+      id = 41,
+      name = "Research",
+      visible = true,
+      opacity = 1,
+      offsetx = 0,
+      offsety = 0,
+      draworder = "topdown",
+      properties = {},
+      objects = {
+        {
+          id = 3,
+          name = "Rosen",
+          type = "",
+          shape = "rectangle",
+          x = 72,
+          y = 220,
+          width = 32,
+          height = 28,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 4,
+          name = "Warden",
+          type = "",
+          shape = "rectangle",
+          x = 72,
+          y = 248,
+          width = 32,
+          height = 28,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 5,
+          name = "Revenant",
+          type = "",
+          shape = "rectangle",
+          x = 72,
+          y = 276,
+          width = 32,
+          height = 28,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        }
       }
     },
     {

@@ -16,7 +16,8 @@ function newGameState()
   state.currentlevel = 'yourpyramid'
   state.souls = {3}
   state.research = {'Rosen'}
-  state.active = {'Rosen'}
+  state.active = {'Rosen', 'Rosen', 'Rosen'}
+  state.selectioncap = 3
   return state
 end
 
