@@ -14,9 +14,19 @@ function Cursor:initialize(widget)
   self.time = 0
 end
 
+function Cursor:set(x,y)
+  self.x = x
+  self.y = y
+end
+
 function Cursor:update(dt)
-  local x, y = love.mouse.getPosition()
-  if self.widget:test(x,y) then
+  local x, y
+  if self.x and self.y then
+    x,y = self.x, self.y
+  else
+    --x,y = love.mouse.getPosition()
+  end
+  if x and y and self.widget:test(x,y) then
     self.screen.x, self.screen.y = x,y
     local tileOrObject, layer, tx, ty = self.widget:getTileAtPosition(self.screen.x, self.screen.y)
     

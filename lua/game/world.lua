@@ -85,6 +85,8 @@ function World:update(dt)
 end
 
 function World:mousepressed(gx,gy,button,isTouch)
+  if options['r'] then return end
+  
   local tileOrObject, layer, x, y = self:getTileAtPosition(gx, gy)
   if tileOrObject and tileOrObject.shape and tileOrObject.name then
     local action = self:getActionFromObject(tileOrObject)

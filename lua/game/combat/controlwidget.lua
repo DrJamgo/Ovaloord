@@ -40,6 +40,7 @@ function ControlWidget:initialize(game, scale)
       if unitname == object.name then
         newUnit.locked = false
       end
+      newUnit.y = newUnit.y - 8
     end
   end
   self.researchlayer = self.map:convertToCustomLayer('Research')
@@ -86,7 +87,7 @@ end
 function drawUnits(layer)
   for i,object in ipairs(layer.objects) do
     if object.locked then
-      love.graphics.setColor(0.1,0.1,0.1,1)
+      love.graphics.setColor(0.1,0.1,0.1,0.6)
       object.sprite:drawAnimation(object.x, object.y, 'stand', 1, 0)
     elseif object.cooldown > 0 then
       local time = (object.cooldown / object.cooldowntime) * (5/6)
@@ -107,18 +108,18 @@ function ControlWidget:mousepressed(gx,gy,button,isTouch)
   local tile, layer, x, y = self:getTileAtPosition(gx, gy)
   if tile and tile.type then
     if tile.type ~= '' and _G[tile.type] then
-      if self.fraction then
-        local unitclass = _G[tile.type]
-        local souls = self.game.state.souls
-        local tier = _G[tile.type].tier or 0
-        local cost = 1
-        if (souls[tier] or 0) >= cost and tile.cooldown == 0 then
-          souls[tier] = souls[tier] - cost
-          tile.cooldown = tile.cooldowntime
-          self.fraction:addUnit(tile.type, self.fraction.spawn)
-        end
-      else
-        if layer.name == 'Units' then
+      if layer.name == 'Units' then
+        if self.fraction then
+          local unitclass = _G[tile.type]
+          local souls = self.game.state.souls
+          local tier = _G[tile.type].tier or 0
+          local cost = 1
+          if (souls[tier] or 0) >= cost and tile.cooldown == 0 then
+            souls[tier] = souls[tier] - cost
+            tile.cooldown = tile.cooldowntime
+            self.fraction:addUnit(tile.type, self.fraction.spawn)
+          end
+        else
           for i,selected in ipairs(self.unitpool) do
             if selected == tile.type then
               table.remove(self.unitpool, i)
@@ -127,10 +128,10 @@ function ControlWidget:mousepressed(gx,gy,button,isTouch)
             end
           end
         end
-        if layer.name == 'Research' and tile.locked == false and self.game.state.selectioncap > #self.unitpool then
-          table.insert(self.unitpool, tile.name)
-          self:_updateUnitPool()
-        end
+      end
+      if layer.name == 'Research' and tile.locked == false and self.game.state.selectioncap > #self.unitpool then
+        table.insert(self.unitpool, tile.name)
+        self:_updateUnitPool()
       end
       return true
     elseif tile.type == 'Research' then

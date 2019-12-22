@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-down" width="12" height="13" tilewidth="36" tileheight="28" infinite="0" nextlayerid="42" nextobjectid="6">
- <tileset firstgid="1" source="../tilesets/terrain_atlas.tsx"/>
- <tileset firstgid="1025" source="../tilesets/undead-spirit-recruit-anim-explode.tsx"/>
- <tileset firstgid="1037" source="../tilesets/rotating_orbs.tsx"/>
- <tileset firstgid="1069" source="../tilesets/research.tsx"/>
- <tileset firstgid="1097" source="../tilesets/undead.tsx"/>
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-down" width="12" height="13" tilewidth="36" tileheight="32" infinite="0" nextlayerid="43" nextobjectid="9">
+ <tileset firstgid="1" source="../tilesets/research.tsx"/>
+ <tileset firstgid="29" source="../tilesets/terrain-v7.tsx"/>
+ <tileset firstgid="2077" source="../tilesets/terrain_atlas.tsx"/>
  <layer id="34" name="Tier" width="12" height="13">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,
@@ -13,12 +11,12 @@
 0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,503,0,0,978,978,978,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,503,503,0,0,0,0,0,0,0,0,
-0,0,959,959,959,959,959,959,0,0,0,0,
-0,0,418,418,418,418,418,418,0,0,0,0,
-0,0,0,0,305,368,368,368,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,577,0,0,0,0,0,0,0,0,0,
+0,0,350,0,0,0,0,0,0,0,0,0,
+0,0,3006,0,0,0,0,0,0,0,0,0,
+0,0,0,589,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
@@ -27,15 +25,15 @@
 0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,
-1091,0,0,0,0,0,0,0,0,0,0,0,
+23,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,
-1084,0,0,0,0,0,0,0,0,0,0,0,
-1070,0,0,0,0,0,0,0,0,0,0,0,
+16,0,0,0,0,0,0,0,0,0,0,0,
+2,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,1077,1076,0,0,0,0,0,0,0,0,
-0,0,1077,1076,1078,1090,1090,1090,0,0,0,0,
-0,0,1077,1083,1078,1090,1090,1090,0,0,0,0,
-0,0,0,0,1078,1090,1090,1090,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
@@ -47,19 +45,25 @@
 0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,1077,1076,1078,1079,1080,1082,0,0,0,0,
+0,0,17,17,17,22,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,17,17,17,17,17,17,17,0,0,0,
+0,0,17,17,17,17,17,17,17,0,0,0,
+0,0,17,17,17,17,17,17,17,0,0,0,
+0,0,0,17,17,17,17,17,17,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
  <objectgroup id="41" name="Research">
-  <object id="3" name="Rosen" x="72" y="220" width="32" height="28"/>
-  <object id="4" name="Warden" x="72" y="248" width="32" height="28"/>
-  <object id="5" name="Revenant" x="72" y="276" width="32" height="28"/>
+  <object id="6" name="Rosen" x="88.0909" y="269.409">
+   <point/>
+  </object>
+  <object id="7" name="Warden" x="88.0909" y="301.364">
+   <point/>
+  </object>
+  <object id="8" name="Revenant" x="88" y="333.364">
+   <point/>
+  </object>
  </objectgroup>
  <objectgroup id="40" name="Units"/>
 </map>

@@ -41,7 +41,7 @@ function Widget:draw()
   love.graphics.replaceTransform(self.transform)
   love.graphics.draw(self.canvas)
   love.graphics.pop()
-  --love.graphics.rectangle("line",x,y,w,h)
+  love.graphics.rectangle("line",x,y,w,h)
 end
 
 TiledWidget = class('TiledWidget', Widget)
@@ -55,6 +55,12 @@ end
 function TiledWidget:update(dt)
   self.camera:update(dt)
   self.cursor:update(dt)
+end
+
+function TiledWidget:mousemoved(x,y,...)
+  self.cursor:set(x,y)
+  local tileOrObject = self:getTileAtPosition(x, y)
+  return tileOrObject ~= nil
 end
 
 function TiledWidget:getMapFromScreen(screenx, screeny)
