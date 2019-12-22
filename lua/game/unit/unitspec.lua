@@ -6,13 +6,20 @@ require 'game/unit'
 -- melee/range (dmg, range, anim, cooldown, duration, trigger)
 --
 unitcatalogue = {
-  Human = {
+  desert = {
     { -- T1
-      Peasant  ={icon=S.fist,   hp= 5, melee={0.5,1.1,'slash','fast','fast'}},
-      Militia  ={icon=S.dagger, hp= 7, melee={1.0,1.1,'slash','fast','fast'}},
-      Ranger   ={icon=S.bow,    hp= 7, range={4.0,5.1,'shoot','veryslow','fast'}},
+      Nomad     ={icon=S.fist, hp= 5, melee={0.5,1.1,'slash','fast','fast'}},
+      Shepard   ={icon=S.spear, hp= 7, melee={2.0,1.1,'thrust','normal','slow'}},
+      Errant    ={icon=S.dagger, hp = 5, melee={0.5,1.1,'slash','fast','normal'}},
+    }
+  },
+  village = {
+    { -- T1
+      Fisher     ={icon=S.spear,  hp= 5, melee={2.0,1.1,'thrust','normal','normal'}},
+      Attendant  ={icon=S.spear,  hp= 7, melee={3.0,1.1,'thrust','normal','slow'}},
     },
     { -- T2
+      Shipbuilder={icon=S.hammer,  hp= 10, melee={5.0,1.1,'slash','normal','slow'}},
     }
   },
   Undead = {
