@@ -39,9 +39,10 @@ function Widget:draw()
   love.graphics.push()
   local x,y,w,h = unpack(self.rect)
   love.graphics.replaceTransform(self.transform)
+  love.graphics.setColor(1,1,1,1)
   love.graphics.draw(self.canvas)
   love.graphics.pop()
-  love.graphics.rectangle("line",x,y,w,h)
+  --love.graphics.rectangle("line",x,y,w,h)
 end
 
 TiledWidget = class('TiledWidget', Widget)
@@ -88,14 +89,16 @@ function TiledWidget:getTileAtPosition(...)
       if tile then return tile, layer, tx, ty end
     end
     for _,object in pairs(layer.objects or {}) do
-      local x,y = object.x, object.y
-      local w,h = object.width, object.height
-      if object.sprite then
-        x,y = object.sprite.x, object.sprite.y
-        w,h = object.sprite.width, object.sprite.height
-      end
-      if x and mapx >= x and mapx <= x + w and mapy >= y and mapy <= y + h then
-        return object, layer
+      if object.visible ~= false then
+        local x,y = object.x, object.y
+        local w,h = object.width, object.height
+        if object.sprite then
+          x,y = object.sprite.x, object.sprite.y
+          w,h = object.sprite.width, object.sprite.height
+        end
+        if x and mapx >= x and mapx <= x + w and mapy >= y and mapy <= y + h then
+          return object, layer
+        end
       end
     end
   end
@@ -104,7 +107,7 @@ end
 
 function TiledWidget:getObjectDecription(object)
   if object.brief then
-    return object.brief, object.long
+    return object.brief, ((object.unlocked and S.unlock)or S.locked)..object.long
   elseif object.name then
     return T.get(object.name)
   elseif object.type and object.type ~= '' then

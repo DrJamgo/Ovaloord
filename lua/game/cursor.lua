@@ -1,7 +1,7 @@
 require 'middleclass'
 Cursor = class("Cursor")
 Cursor.scale = T.defaultscale
-Cursor.textbox = 80 * T.defaultscale
+Cursor.textbox = 100 * T.defaultscale
 Cursor.tooltipdelay = 1
 Cursor.charheight = 17
 

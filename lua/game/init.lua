@@ -91,6 +91,7 @@ function Game:exitCombat()
   -- TODO: do something on combat exit
   self.control:setFraction(nil)
   self:enterWorldMap()
+  options['r'] = true
 end
 
 function Game:update(dt)

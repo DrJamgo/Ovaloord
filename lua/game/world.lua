@@ -60,7 +60,11 @@ function World:getObjectDecription(object)
   if object.name then
     local action = self:getActionFromObject(object)
     local brief, long = T.get(object.name)
-    brief = (S[action] or '')..(brief or '')
+    local objectives = ''
+    if action == 'move' or action == 'combat' then
+      objectives = string.format(" %d/%d", self.game.state.levels[object.name] or 0, #levels[object.name].objectives)
+    end
+    brief = (S[action] or '')..(brief or '')..objectives
     return brief, long
   end
 end
@@ -76,12 +80,6 @@ end
 function World:update(dt)
   TiledWidget.update(self, dt)
   self:_updatePlayerPos(true)
-  if self.cursortile and self.cursortile.name then
-    local _,text = self:_getAction(self.cursortile.name)
-    self.cursortext = text
-  else
-    self.cursortext = ''
-  end
 end
 
 function World:mousepressed(gx,gy,button,isTouch)
@@ -91,7 +89,11 @@ function World:mousepressed(gx,gy,button,isTouch)
   if tileOrObject and tileOrObject.shape and tileOrObject.name then
     local action = self:getActionFromObject(tileOrObject)
     if action == 'combat' then
-      self.game:enterCombat()
+      if #self.game.state.active < self.game.state.selectioncap then
+        options['r'] = true
+      else
+        self.game:enterCombat()
+      end
     end
     if action == 'move' then
       self.game.state.currentlevel = tileOrObject.name

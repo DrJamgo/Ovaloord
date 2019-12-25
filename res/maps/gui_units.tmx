@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-down" width="12" height="13" tilewidth="36" tileheight="32" infinite="0" nextlayerid="43" nextobjectid="9">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-down" width="12" height="13" tilewidth="32" tileheight="32" infinite="0" nextlayerid="44" nextobjectid="9">
  <tileset firstgid="1" source="../tilesets/research.tsx"/>
  <tileset firstgid="29" source="../tilesets/terrain-v7.tsx"/>
  <tileset firstgid="2077" source="../tilesets/terrain_atlas.tsx"/>
@@ -12,12 +12,12 @@
 0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,577,0,0,0,0,0,0,0,0,0,
-0,0,350,0,0,0,0,0,0,0,0,0,
-0,0,3006,0,0,0,0,0,0,0,0,0,
-0,0,0,589,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0
+2829,2830,2830,2830,2830,2830,2830,2830,2830,2830,2830,2831,
+2861,2862,577,3054,3054,3054,3054,3054,3054,2862,2862,2863,
+2861,2862,350,3054,3054,3054,3054,3054,3054,2862,2862,2863,
+2861,2862,3006,3054,3054,3054,3054,3054,3054,2862,2862,2863,
+2861,2862,2862,589,3054,3054,3054,3054,3054,2862,2862,2863,
+2893,2894,2894,2894,2894,2894,2894,2894,2894,2894,2894,2895
 </data>
  </layer>
  <layer id="35" name="Buttons" width="12" height="13">

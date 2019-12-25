@@ -33,20 +33,15 @@ function ControlWidget:initialize(game, scale)
   local layerobjects = self.map.layers.Research.objects
   local researchobjects = {}
   for _,object in ipairs(layerobjects) do
+    local known = (self.game.state.souls[_G[object.name].tier] ~= nil)
     local newUnit = self:_newDrawable(object.name, object.x, object.y)
     researchobjects[#researchobjects+1] = newUnit
-    newUnit.locked = true
-    for i,unitname in ipairs(self.game.state.research) do
-      if unitname == object.name then
-        newUnit.locked = false
-      end
-      newUnit.y = newUnit.y - 8
-    end
   end
   self.researchlayer = self.map:convertToCustomLayer('Research')
-  self.researchlayer.draw = drawUnits
+  self.researchlayer.draw = drawResearch
   self.researchlayer.update = updateResearch
   self.researchlayer.objects = researchobjects
+  self.researchlayer.widget = self
   
   self:_updateUnitPool()
 end
@@ -74,8 +69,21 @@ function ControlWidget:_updateUnitPool()
   end
 end
 
-function updateResearch(layer, dt)
+function drawResearch(layer)
+  drawUnits(layer)
+  local cap = layer.widget.game.state.selectioncap
+  local sel = #layer.widget.unitpool
+  local x,y = layer.widget.map:convertTileToPixel(1,6.2)
+  local rb = ((sel == cap) and 1) or 0
+  love.graphics.setColor(1,rb,rb,1)
+  love.graphics.print(string.format(" %d/%d", sel, cap),x,y,0,1)
+end
 
+function updateResearch(layer, dt)
+  for _,object in ipairs(layer.objects) do
+    object.unlocked = table.searchByValue(layer.widget.game.state.research, object.name) ~= nil
+    object.visible = (layer.widget.game.state.souls[_G[object.name].tier] ~= nil)
+  end
 end
 
 function updateUnits(layer, dt)
@@ -86,7 +94,9 @@ end
 
 function drawUnits(layer)
   for i,object in ipairs(layer.objects) do
-    if object.locked then
+    if object.visible == false then
+      -- do nothing
+    elseif object.unlocked == false then
       love.graphics.setColor(0.1,0.1,0.1,0.6)
       object.sprite:drawAnimation(object.x, object.y, 'stand', 1, 0)
     elseif object.cooldown > 0 then
@@ -129,7 +139,7 @@ function ControlWidget:mousepressed(gx,gy,button,isTouch)
           end
         end
       end
-      if layer.name == 'Research' and tile.locked == false and self.game.state.selectioncap > #self.unitpool then
+      if layer.name == 'Research' and tile.unlocked and self.game.state.selectioncap > #self.unitpool then
         table.insert(self.unitpool, tile.name)
         self:_updateUnitPool()
       end
@@ -156,7 +166,7 @@ function ControlWidget:update(dt)
   self.map.layers.UnitButtons.visible = (options['r'] or self.fraction) and true
   self.map.layers.Units.visible = self.map.layers.UnitButtons.visible
   self.map.layers.Tier.visible = self.map.layers.UnitButtons.visible
-  self.map.layers.Research.visible = self.map.layers.UnitButtons.visible
+  self.map.layers.Research.visible = options['r']
 end
 
 function ControlWidget:draw()
