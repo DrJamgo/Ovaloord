@@ -1,4 +1,5 @@
 require 'middleclass'
+
 local STI = require "sti/sti"
 require 'game/cursor'
 
@@ -14,8 +15,8 @@ World.player.offset = vec2(12, 32)
 World.content = vec2(256,192)
 
 function World:initialize(game)
-  self.game = game
   self.map = STI('lua/maps/worldmap.lua')
+  self.game = game
   TiledWidget.initialize(self, self.map, 0,0,love.graphics.getWidth(), love.graphics.getHeight())
   
   self.map.layers.UI.visible = false
@@ -44,7 +45,7 @@ function World:getActionFromObject(object)
   if level then
     local unlocked = self.game.state.levels[object.name]
     if unlocked then
-      if object.name == self.game.state.currentlevel then
+      if object.name == self.game.state.currentlevel and levels[object.name] then
         return 'combat'
       else
         return 'move'
@@ -61,7 +62,7 @@ function World:getObjectDecription(object)
     local action = self:getActionFromObject(object)
     local brief, long = T.get(object.name)
     local objectives = ''
-    if action == 'move' or action == 'combat' then
+    if levels[object.name] and levels[object.name].objectives then
       objectives = string.format(" %d/%d", self.game.state.levels[object.name] or 0, #levels[object.name].objectives)
     end
     brief = (S[action] or '')..(brief or '')..objectives

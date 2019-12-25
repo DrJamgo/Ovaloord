@@ -107,7 +107,7 @@ end
 
 function TiledWidget:getObjectDecription(object)
   if object.brief then
-    return object.brief, ((object.unlocked and S.unlock)or S.locked)..object.long
+    return object.brief, ((object.unlocked and S.unlock)or S.locked)..(object.long or '')
   elseif object.name then
     return T.get(object.name)
   elseif object.type and object.type ~= '' then

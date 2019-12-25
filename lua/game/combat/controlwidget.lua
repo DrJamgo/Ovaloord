@@ -1,6 +1,7 @@
 local STI = require 'sti/sti'
 require 'game/unit/lpcsprite'
 require 'game/widget'
+require 'game/combat/research'
 ControlWidget = class('ControlWidget', TiledWidget)
 
 function ControlWidget:initialize(game, scale)
@@ -30,19 +31,22 @@ function ControlWidget:initialize(game, scale)
   self.layer.objects = {}
   self.layer.map = self.map
   
-  local layerobjects = self.map.layers.Research.objects
-  local researchobjects = {}
-  for _,object in ipairs(layerobjects) do
-    local known = (self.game.state.souls[_G[object.name].tier] ~= nil)
-    local newUnit = self:_newDrawable(object.name, object.x, object.y)
-    researchobjects[#researchobjects+1] = newUnit
-  end
   self.researchlayer = self.map:convertToCustomLayer('Research')
+  self.research = Research(self.game)
+  
+  local objects = {}
+  for col,unitgroup in ipairs(self.research.units) do
+    for row,unitname in ipairs(unitgroup) do
+      local x,y = self.map:convertTileToPixel(1+col+0.5,7+row+0.15)
+      objects[#objects+1] = self:_newDrawable(unitname, x, y)
+    end
+  end
+  
   self.researchlayer.draw = drawResearch
   self.researchlayer.update = updateResearch
-  self.researchlayer.objects = researchobjects
+  self.researchlayer.objects = objects
   self.researchlayer.widget = self
-  
+
   self:_updateUnitPool()
 end
 
@@ -81,8 +85,8 @@ end
 
 function updateResearch(layer, dt)
   for _,object in ipairs(layer.objects) do
-    object.unlocked = table.searchByValue(layer.widget.game.state.research, object.name) ~= nil
-    object.visible = (layer.widget.game.state.souls[_G[object.name].tier] ~= nil)
+    object.unlocked = layer.widget.research:isUnlocked(object.name)
+    object.visible = layer.widget.research:isKnown(object.name)
   end
 end
 
@@ -132,15 +136,15 @@ function ControlWidget:mousepressed(gx,gy,button,isTouch)
         else
           for i,selected in ipairs(self.unitpool) do
             if selected == tile.type then
-              table.remove(self.unitpool, i)
+              self.research:removeUnitFromPool(tile.type)
               self:_updateUnitPool()
               break
             end
           end
         end
       end
-      if layer.name == 'Research' and tile.unlocked and self.game.state.selectioncap > #self.unitpool then
-        table.insert(self.unitpool, tile.name)
+      if layer.name == 'Research' and tile.unlocked then
+        self.research:addUnitToPool(tile.name)
         self:_updateUnitPool()
       end
       return true

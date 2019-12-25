@@ -254,10 +254,10 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="30" name="UI" visible="0">
+ <objectgroup id="30" name="UI">
   <object id="3" name="village" type="level" x="144" y="288" width="48" height="32"/>
   <object id="4" name="desertvillage" type="level" x="64" y="368" width="48" height="32"/>
-  <object id="5" name="yourpyramid" x="118.875" y="407" width="37.25" height="18.5"/>
+  <object id="5" name="yourpyramid" type="level" x="118.875" y="407.75" width="37.25" height="18.5"/>
   <object id="6" name="rangervillage" type="level" x="64" y="208" width="48" height="32"/>
   <object id="7" name="driedoutoasis" x="108.5" y="422.375" width="58.75" height="31.875"/>
   <object id="8" name="endlessdesert" x="1" y="425.667" width="106" height="85.6667"/>

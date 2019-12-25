@@ -55,13 +55,13 @@
 </data>
  </layer>
  <objectgroup id="41" name="Research">
-  <object id="6" name="Rosen" x="88.0909" y="269.409">
+  <object id="6" name="Rosen" x="79.5909" y="270.409">
    <point/>
   </object>
-  <object id="7" name="Warden" x="88.0909" y="301.364">
+  <object id="7" name="Warden" x="80.0909" y="302.114">
    <point/>
   </object>
-  <object id="8" name="Revenant" x="88" y="333.364">
+  <object id="8" name="Revenant" x="80" y="333.864">
    <point/>
   </object>
  </objectgroup>
