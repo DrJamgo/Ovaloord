@@ -9,6 +9,8 @@ COST.OTHER = 1
 COST.UNIT_MOVING = 2
 COST.UNIT_STANDING = 5
 
+debug = {}
+
 function GridLayer:initialize(map)
   map:addCustomLayer('grid',nil,self)
   self.draw = GridLayer.draw
@@ -54,7 +56,7 @@ function GridLayer:update(dt)
         local location = vec2(x,y)
         if unit.hp <= 0 then
           self.dynamic[y][x] = nil
-        elseif unit.nextNode and not self:locationsAreEqual(unit.nextNode.location, location) then
+        elseif unit.nextNode and not self:locationsAreEqual(unit.nextNode, location) then
           local diff = vec2_sub(unit.pos, location)
           local dist = math.max(math.abs(diff.x), math.abs(diff.y))
           if dist > unit.radius * 2 then
@@ -68,6 +70,14 @@ end
   
 function GridLayer:draw()
   local map = self.map
+  
+  for id,loc in pairs(debug) do
+    local color = (id >= self.numtiles and {1,0,0,1}) or ({0,1,0,1})
+    local offset = (id >= self.numtiles and 0.5) or 0
+    local wx,wy = self.map:convertTileToPixel(loc.x,loc.y+offset)
+    love.graphics.setColor(unpack(color))
+    love.graphics.print(tostring(id), wx-self.map.tilewidth, wy-self.map.tileheight)
+  end
   
   for y=1,map.height do
     for x=1,map.width do
@@ -84,7 +94,7 @@ function GridLayer:draw()
         local cost = self.static[y][x].cost
         love.graphics.setColor(cost/2,0.5,0.5,0.5)
         local wx,wy = self.map:convertTileToPixel(x,y)
-        love.graphics.print(tostring(self.static[y][x].cost), wx-self.map.tilewidth, wy-self.map.tileheight)
+        --love.graphics.print(tostring(self.static[y][x].cost), wx-self.map.tilewidth, wy-self.map.tileheight)
       end
       local unit = self.dynamic[y][x]
       if unit then
@@ -93,26 +103,21 @@ function GridLayer:draw()
         local wux, wuy = self.map:convertTileToPixel(unit.pos.x, unit.pos.y)
         love.graphics.rectangle("fill", wx, wy, -self.map.tilewidth, -self.map.tileheight)
         love.graphics.line(wx-16, wy-16, wux - 16, wuy - 16)
-      end
-      if self.cursor and self.cursor[1] == x and self.cursor[2] == y then
-        love.graphics.setColor(1,1,1,1.0)
-        local wx,wy = self.map:convertTileToPixel(x,y)
-        love.graphics.rectangle("line", wx, wy, -self.map.tilewidth, -self.map.tileheight)
-        love.graphics.print(x .. ',' .. y, wx, wy)
         
-        if unit then
-          local text = unit.class.name ..'\n'
-          text = text .. string.format("hp %.1f/%.1f\n",unit.hp, unit.class.hp)
-          if unit.stuck then
-            text = text .. string.format("stuck %.1f\n",unit.stuck)
+        if unit.path then
+          for i=1,#unit.path.nodes-1 do
+            node1 = unit.path.nodes[i]
+            node2 = unit.path.nodes[i+1]
+            
+            local w1x,w1y = 
+              self.map:convertTileToPixel(node1.location.x, node1.location.y)
+            local w2x,w2y =
+              self.map:convertTileToPixel(node2.location.x, node2.location.y)
+            
+            local color = ((node2.action == 'move') and {0,1,0,1}) or {1,0,0,1}
+            love.graphics.setColor(unpack(color))
+            love.graphics.line(w1x-16, w1y-16, w2x - 16, w2y - 16)
           end
-          if unit.attack then
-            text = text .. string.format("%s %.1f/%.1f/%.1f\n",unit.attack.class.name, unit.attack.time, unit.attack.trigger, unit.attack.cooldown)
-          end
-          if unit.idle and unit.idle:isActive() then
-            text = text .. string.format("idle %.1f/%.1f\n", unit.idle.time, unit.idle.cooldown)
-          end
-          love.graphics.print(text, wx, wy,0,0.8,0.8,32,128)
         end
       end
     end
@@ -121,7 +126,7 @@ function GridLayer:draw()
 end
 
 
-function GridLayer:getNode(location)
+function GridLayer:getNode(location, selfunit)
   -- Here you make sure the requested node is valid (i.e. on the map, not blocked)
   local x,y = location.x,location.y
   if y >= 1 and y <= #self.static then
@@ -129,13 +134,16 @@ function GridLayer:getNode(location)
     if static then
       local cost = static.cost
       local unit = self.dynamic[y][x]
-      if unit then
+      local id = static.id
+      if unit and selfunit ~= unit then
         cost = cost * ((unit.moving and COST.UNIT_MOVING) or COST.UNIT_STANDING)
+        id = self.numtiles + unit.id
       end
-      local node = Node(static.location, cost, static.id)
+      local node = Node(static.location, cost, id)
       node.unit = unit
       node.shoot = static.shoot
       node.walk = static.walk
+      
       return node
     end
   end
@@ -160,26 +168,50 @@ GridLayer.adjecentOffsets = {
   vec2( 0,-1)
 }
 
-function GridLayer:getAdjacentNodes(curnode, dest)
+function GridLayer:getAdjacentNodes(curnode, dest, unit)
   -- Given a node, return a table containing all adjacent nodes
   -- The code here works for a 2d tile-based game but could be modified
   -- for other types of node graphs
   local result = {}
+  local melee = {}
+  local range = {}
   
-  for _,delta in ipairs(self.adjecentOffsets) do
-    table.insert(result, 
-      self:_handleMoveNodes(vec2_add(curnode.location, delta), curnode, dest))
+  if curnode.action == 'move' or not curnode.action then
+    local goal = dest
+    if dest.node then
+      goal = dest.node.location
+    end
+    for _,delta in ipairs(self.adjecentOffsets) do
+      table.insert(result, 
+        self:_handleMoveNodes(vec2_add(curnode.location, delta), curnode, goal, unit))
+    end
+    
+    if unit then
+      if unit.melee then
+        melee = unit.melee:getNodes(self, curnode)
+        table.extend(result, melee or {})
+      end
+      if unit.range then
+        range = unit.range:getNodes(self, curnode)
+        table.extend(result, range or {})
+      end
+    end
   end
-  return result
+  
+  return result, melee, range
 end
 
-function GridLayer:locationsAreEqual(a, b)
-  return a.x == b.x and a.y == b.y
+function GridLayer:locationsAreEqual(nodeA, locOrTarget)
+  if not locOrTarget.id then
+    return nodeA.location.x == locOrTarget.x and nodeA.location.y == locOrTarget.y
+  else
+    return locOrTarget.id + self.numtiles == nodeA.lid
+  end
 end
 
-function GridLayer:_handleMoveNodes(loc, fromnode, dest)
+function GridLayer:_handleMoveNodes(loc, fromnode, dest, unit)
   -- Fetch a Node for the given location and set its parameters
-  local n = self:getNode(loc)
+  local n = self:getNode(loc, unit)
 
   if n ~= nil and n.walk then
     local dx = math.max(loc.x, dest.x) - math.min(loc.x, dest.x)

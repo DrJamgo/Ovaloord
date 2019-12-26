@@ -44,10 +44,7 @@ end
 -- WRAPPERS for GRID
 --
 function Unit:getAdjacentNodes(curnode, dest)
-  local move = self.map.layers.grid:getAdjacentNodes(curnode, dest)
-  local melee = self.melee and self.melee:getNodes(self.map.layers.grid, self.node) or {}
-  local range = self.range and self.range:getNodes(self.map.layers.grid, self.node) or {}
-  return move, melee, range
+  return self.map.layers.grid:getAdjacentNodes(curnode, dest, self)
 end
 
 function Unit:locationsAreEqual(...)
@@ -55,7 +52,7 @@ function Unit:locationsAreEqual(...)
 end
 
 function Unit:getNode(...)
-  return self.map.layers.grid:getNode(...)
+  return self.map.layers.grid:getNode(..., self)
 end
 
 function Unit:_faceNode(node)
@@ -70,9 +67,10 @@ end
 function Unit:_moveToTile(dt, targetTile)
   -- find path
   if not self.path or self.target ~= targetTile then
-    if not self.map.layers.grid:locationsAreEqual(self.node.location, targetTile) then
+    if not self.map.layers.grid:locationsAreEqual(self.node, targetTile) then
       local astar = AStar(self)
       local start = {x=math.floor(self.pos.x+0.5), y=math.floor(self.pos.y+0.5)}
+      GridLayer.counter = 0
       self.path = astar:findPath(start, targetTile)
       self.pathindex = 0
       self.nextNode = nil

@@ -162,10 +162,10 @@ function Melee:getNode(grid, fromnode, location)
   if y >= 1 and y <= #grid.static then
       local target = grid.dynamic[y][x]
       if self:validateTarget(fromnode, target) then
-        local node = Node(location, 1, grid.static[y][x].id + grid.numtiles)
+        local node = Node(location, 1, grid.numtiles + target.id)
         node.unit = target
         node.cost = 1
-        node.action = 'melee'
+        node.action = 'attack'
         return node
       end
       return nil
@@ -188,8 +188,9 @@ function Range:getNodes(grid, fromnode)
         local node, continue = self:getNode(grid, fromnode, loc)
         if node then
             node.parent = fromnode
-            node.action = 'range'
+            node.action = 'attack'
             self:_calculateCost(grid, node)
+            debug[node.mCost] = loc
             table.insert(result, node)
         end
         if continue == false then
@@ -205,9 +206,6 @@ function Range:getNode(grid, fromnode, location)
   local node = grid:getNode(location)
   if node and node.shoot then
     if node.unit and self:validateTarget(fromnode, node.unit) then
-      node.parent = fromnode
-      node.action = 'range'
-      self:_calculateCost(grid, node)
       return node, false
     end
     return nil, true

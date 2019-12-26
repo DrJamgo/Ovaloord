@@ -8,4 +8,6 @@
  <tile id="8" type="Fisher"/>
  <tile id="9" type="Attendant"/>
  <tile id="10" type="Shipbuilder"/>
+ <tile id="16" type="Scout"/>
+ <tile id="17" type="Sentry"/>
 </tileset>

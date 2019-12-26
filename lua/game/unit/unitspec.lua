@@ -22,6 +22,14 @@ unitcatalogue = {
       Shipbuilder={icon=S.hammer,  hp= 10, melee={5.0,1.1,'slash','normal','slow'}},
     }
   },
+  ranger = {
+    { -- T1
+      Scout      ={icoyn=S.dagger,  hp= 5, melee={3.0,1.1,'slash','normal','slow'}},
+    },
+    { -- T2
+      Sentry     ={icon=S.bow,  hp= 10, range={5.0,4.1,'shoot','normal','normal'}},
+    }
+  },
   Undead = {
     { -- T1
       Rosen    ={icon=S.spear,  hp= 5, melee={3.0,1.1,'thrust','normal','slow'}},

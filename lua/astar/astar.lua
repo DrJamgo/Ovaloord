@@ -65,12 +65,8 @@ function AStar:_getBestOpenNode()
   local bestNode = nil
   
   for lid, n in pairs(self.open) do
-    if bestNode == nil then
+    if not bestNode or n.score <= bestNode.score then
       bestNode = n
-    else
-      if n.score <= bestNode.score then
-        bestNode = n
-      end
     end
   end
   
@@ -104,7 +100,7 @@ function AStar:_handleNode(node, goal)
   local nodes = self.mh:getAdjacentNodes(node, goal)
 
   for lid, n in pairs(nodes) do repeat
-    if self.mh:locationsAreEqual(n.location, goal) then
+    if self.mh:locationsAreEqual(n, goal) then
       return n
     elseif self.closed[n.lid] ~= nil then -- Alread in close, skip this
       break

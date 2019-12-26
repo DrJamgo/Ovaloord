@@ -144,3 +144,10 @@ function table.searchByValue(tbl, value)
   return nil
 end
 
+function table.extend(firsttable, secondtable)
+  ii=0
+  for i=#firsttable+1, #secondtable+#firsttable do
+      ii=ii+1
+      firsttable[i]=secondtable[ii]
+  end
+end

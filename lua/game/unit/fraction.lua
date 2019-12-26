@@ -87,7 +87,7 @@ function Human:getUnitTarget(unit)
   local enemy = self:findClosestEnemy(unit)
   if enemy then
     local pos = (enemy.node and enemy.node.location)
-    if pos then return {'move', pos} end
+    if pos then return {'attack', enemy} end
   end
   return {'move', unit.spawn}
 end
