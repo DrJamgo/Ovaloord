@@ -48,12 +48,32 @@ function ControlWidget:initialize(game, scale)
   self.researchlayer.widget = self
 
   self:_updateUnitPool()
+  updateResearch(self.researchlayer, 10)
+end
+
+function ControlWidget:unlockRandomUnit(tier)
+  local lockedCount = 0
+  for _,unit in ipairs(self.researchlayer.objects) do
+    if unit.visible and unit.unlocked == false then
+      lockedCount = lockedCount + 1
+    end
+  end
+  if lockedCount > 0 then
+    while true do
+      index = math.random(#self.researchlayer.objects-1)+1
+      unit = self.researchlayer.objects[index]
+      if unit and unit.unlocked == false and unit.visible then
+        self.research:unlockUnit(unit.name)
+        return
+      end
+    end
+  end
 end
 
 function ControlWidget:_newDrawable(name, x, y)
   local newUnit = {sprite=LPCSprite(_G[name].spritepath)}
-  newUnit.x, newUnit.y = x,y
-  newUnit.width, newUnit.height = 32,16
+  newUnit.x, newUnit.y = x-16, y-32
+  newUnit.width, newUnit.height = 32,64
   newUnit.name = name
   newUnit.type = name
   newUnit.cooldown = 0.0
@@ -85,14 +105,22 @@ end
 
 function updateResearch(layer, dt)
   for _,object in ipairs(layer.objects) do
+    local unlocked = object.unlocked
     object.unlocked = layer.widget.research:isUnlocked(object.name)
+    if unlocked ~= object.unlocked then
+      object.cooldown = object.cooldowntime
+    end
     object.visible = layer.widget.research:isKnown(object.name)
+    if object.visible then
+      object.cooldown = math.max(0, (object.cooldown - dt))
+    end
   end
 end
 
 function updateUnits(layer, dt)
   for i,object in ipairs(layer.objects) do
     object.cooldown = math.max(0, (object.cooldown - dt))
+    object.visible = layer.visible
   end
 end
 
@@ -102,14 +130,14 @@ function drawUnits(layer)
       -- do nothing
     elseif object.unlocked == false then
       love.graphics.setColor(0.1,0.1,0.1,0.6)
-      object.sprite:drawAnimation(object.x, object.y, 'stand', 1, 0)
+      object.sprite:drawAnimation(object.x+16, object.y+32, 'stand', 1, 0)
     elseif object.cooldown > 0 then
-      local time = (object.cooldown / object.cooldowntime) * (5/6)
+      local time = (object.cooldown / (object.cooldowntime)) * (5/6)
       love.graphics.setColor(1-time-0.2, 1-time-0.2, 1-time-0.2, 1)
-      object.sprite:drawAnimation(object.x, object.y, 'prone', 4, time)
+      object.sprite:drawAnimation(object.x+16, object.y+32, 'prone', 4, time)
     else
       love.graphics.setColor(1,1,1,1)
-      object.sprite:drawAnimation(object.x, object.y, 'stand', 1, 0)
+      object.sprite:drawAnimation(object.x+16, object.y+32, 'stand', 1, 0)
     end
   end
 end
@@ -167,10 +195,10 @@ function ControlWidget:update(dt)
   self.transform = self.defaulttransform:clone()
   self.transform:translate(0, self.transformshift)
   
-  self.map.layers.UnitButtons.visible = (options['r'] or self.fraction) and true
+  self.map.layers.UnitButtons.visible = ((options['r'] or self.fraction) and true) or false
   self.map.layers.Units.visible = self.map.layers.UnitButtons.visible
   self.map.layers.Tier.visible = self.map.layers.UnitButtons.visible
-  self.map.layers.Research.visible = options['r']
+  self.map.layers.Research.visible = options['r'] == true
 end
 
 function ControlWidget:draw()

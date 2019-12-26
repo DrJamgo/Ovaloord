@@ -3,11 +3,15 @@ Research = class('Research')
 
 Research.units = {
   {'Rosen', 'Warden', 'Revenant'},
-  --{'Pirate', 'Raider', 'Marauder'},
+  {'Pirate', 'Raider', 'Marauder'},
 }
 
 function Research:initialize(game)
   self.state = game.state
+end
+
+function Research:unlockUnit(name)
+  table.insert(self.state.research, name)
 end
 
 function Research:isPoolFull()

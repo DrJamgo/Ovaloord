@@ -85,6 +85,8 @@ function Game:reward(unlocks, souls)
   end
   self.state.levels[self.state.currentlevel] = self.state.levels[self.state.currentlevel] + 1
   self.animation = 0
+  self.control:update(1)
+  self.control:unlockRandomUnit()
 end
 
 function Game:exitCombat()
@@ -95,16 +97,18 @@ function Game:exitCombat()
 end
 
 function Game:update(dt)
-  self.animation = (self.animation or 0) + dt
-  for _,widget in ipairs(self.widgets) do
-    widget:update(dt)
-  end
-  
-  if self.state.levels['rangervillage'] then
-    self.finished = 0
-  end
-  if self.finished then
-    self.finished = self.finished + dt
+  for _=1,(love.keyboard.isDown('x') and 10) or 1 do
+    self.animation = (self.animation or 0) + dt
+    for _,widget in ipairs(self.widgets) do
+      widget:update(dt)
+    end
+    
+    if self.state.levels['rangervillage'] then
+      self.finished = 0
+    end
+    if self.finished then
+      self.finished = self.finished + dt
+    end
   end
 end
 

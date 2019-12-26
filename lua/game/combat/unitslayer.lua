@@ -43,14 +43,12 @@ function UnitsLayer:update(dt)
   if love.keyboard.isDown('y') then dt = dt * 0.1 end
   if options['p'] then dt = 0 end
   local leading_undead = nil
-  for _=1,(love.keyboard.isDown('x') and 10) or 1 do
-    for i,object in pairs(self.objects) do
-      object:update(dt)
-      if object.dead and object.dead > 1 then
-        self.objects[i] = nil
-        if object.tier and object.fraction ~= self.game.control.fraction then
-          self.game:addSpirit(object.tier)
-        end
+  for i,object in pairs(self.objects) do
+    object:update(dt)
+    if object.dead and object.dead > 1 then
+      self.objects[i] = nil
+      if object.tier and object.fraction ~= self.game.control.fraction then
+        self.game:addSpirit(object.tier)
       end
     end
   end

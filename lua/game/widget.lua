@@ -92,7 +92,7 @@ function TiledWidget:getTileAtPosition(...)
       if object.visible ~= false then
         local x,y = object.x, object.y
         local w,h = object.width, object.height
-        if object.sprite then
+        if object.sprite and not w then
           x,y = object.sprite.x, object.sprite.y
           w,h = object.sprite.width, object.sprite.height
         end

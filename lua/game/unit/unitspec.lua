@@ -25,15 +25,17 @@ unitcatalogue = {
   Undead = {
     { -- T1
       Rosen    ={icon=S.spear,  hp= 5, melee={3.0,1.1,'thrust','normal','slow'}},
-      Zombie   ={icon=S.dagger, hp= 7, melee={2.0,1.1,'slash','normal','fast'}},
+      Pirate   ={icon=S.dagger, hp= 7, melee={2.0,1.1,'slash','normal','fast'}},
     },
     { -- T2
       Warden   ={icon=S.spear,  hp= 7, melee={5.0,1.1,'thrust','normal','slow'}},
+      Raider   ={icon=S.dagger, hp= 7, melee={2.0,1.1,'slash','normal','fast'}},
       Hitter   ={icon=S.bow,    hp= 5, range={4.0,5.1,'shoot','veryslow','normal'}},
       Canibal  ={icon=S.hatchet, hp=10, melee={5.0,1.1,'slash','slow','normal'}, speed=1.5},
     },
     { -- T3
       Revenant ={icon=S.spear,  hp= 10, melee={7.0,1.1,'thrust','normal','slow'}},
+      Marauder ={icon=S.dagger, hp= 7, melee={2.0,1.1,'slash','normal','fast'}},
     }
   }
 }
