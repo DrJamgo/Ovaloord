@@ -31,6 +31,10 @@ function Ability:initialize(unit, cooldown, duration, trigger)
   return self
 end
 
+function Ability:getValue()
+  return 1
+end
+
 function Ability:update(dt)
   local trigger = self.time > self.trigger
   
@@ -126,12 +130,18 @@ end
 
 ---------- Melee ----------
 Melee = class('Melee', Ability)
+Melee.rangetolerance = 0.1
 Melee.minrange = 0.5
 function Melee:initialize(unit, dmg, range, anim, ...)
   Ability.initialize(self, unit, ...)
-  self.maxrange = range
+  self.maxrange = range + self.rangetolerance
   self.dmg = dmg
   self.anim = anim
+end
+
+function Melee:getValue()
+  -- value is DPS with range bonus
+  return (self.dmg / self.cooldown) * math.max(1,math.ceil(self.maxrange / 2))
 end
 
 function Melee:activate(target)
