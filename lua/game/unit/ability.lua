@@ -84,9 +84,16 @@ function Ability:_calculateCost(grid, node)
   node.score = node.mCost + emCost
 end
 
+local adjecentOffsets = {
+  vec2( 1, 0),
+  vec2( 0, 1),
+  vec2(-1, 0),
+  vec2( 0,-1)
+}
+
 function Ability:getNodes(grid, fromnode)
   local result = {}
-  for _,delta in ipairs(grid.adjecentOffsets) do
+  for _,delta in ipairs(adjecentOffsets) do
     local n = self:getNode(grid, fromnode, vec2_add(fromnode.location, delta))
     if n then
       n.parent = fromnode
@@ -173,10 +180,10 @@ function Melee:getNode(grid, fromnode, location)
   if y >= 1 and y <= #grid.static then
       local target = grid.dynamic[y][x]
       if self:validateTarget(fromnode, target) then
-        local node = Node(location, 1, grid.numtiles + target.id)
+        local node = Node(location, 1, grid.numtiles + target.id, fromnode)
         node.unit = target
-        node.cost = 1
         node.action = 'attack'
+        self:_calculateCost(grid, node)
         return node
       end
       return nil
@@ -198,11 +205,8 @@ function Range:getNodes(grid, fromnode)
         loc = vec2_add(loc, delta)
         local node, continue = self:getNode(grid, fromnode, loc)
         if node then
-            node.parent = fromnode
-            node.action = 'attack'
-            self:_calculateCost(grid, node)
-            debug[node.mCost] = loc
             table.insert(result, node)
+            debug[node.lid] = loc
         end
         if continue == false then
           loc = nil
@@ -217,7 +221,7 @@ function Range:getNode(grid, fromnode, location)
   local node = grid:getNode(location)
   if node and node.shoot then
     if node.unit and self:validateTarget(fromnode, node.unit) then
-      return node, false
+      return Melee.getNode(self, grid, fromnode, location), false
     end
     return nil, true
   end

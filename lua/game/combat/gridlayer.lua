@@ -137,7 +137,6 @@ function GridLayer:getNode(location, selfunit)
       local id = static.id
       if unit and selfunit ~= unit then
         cost = cost * ((unit.moving and COST.UNIT_MOVING) or COST.UNIT_STANDING)
-        id = self.numtiles + unit.id
       end
       local node = Node(static.location, cost, id)
       node.unit = unit
