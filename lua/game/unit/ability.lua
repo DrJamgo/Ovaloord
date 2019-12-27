@@ -78,12 +78,6 @@ function Ability:getProgress()
   return self.time / math.max(self.duration, 0.0001)
 end
 
-function Ability:_calculateCost(grid, node)
-  local emCost = 1
-  node.mCost = node.mCost + (node.parent.mCost or 0)
-  node.score = node.mCost + emCost
-end
-
 local adjecentOffsets = {
   vec2( 1, 0),
   vec2( 0, 1),
@@ -91,13 +85,17 @@ local adjecentOffsets = {
   vec2( 0,-1)
 }
 
-function Ability:getNodes(grid, fromnode)
+function Ability:_calculateCost(node, dest)
+  -- TODO: better cost function!
+  node.score = node.mCost + 1
+end
+
+function Ability:getNodes(grid, fromnode, dest)
   local result = {}
   for _,delta in ipairs(adjecentOffsets) do
     local n = self:getNode(grid, fromnode, vec2_add(fromnode.location, delta))
     if n then
-      n.parent = fromnode
-      self:_calculateCost(grid, n)
+      self:_calculateCost(n, dest)
       table.insert(result, n)
     end
   end
@@ -106,11 +104,6 @@ end
 
 ---------- Move ----------
 Move = class('Move', Ability)
-function Move:getNode(grid, fromnode, location)
-  local node = grid:getNode(location)
-  return node
-end
-
 function Move:activate(target)
   if self:isReady() then
     self.from = self.unit.pos
@@ -136,6 +129,19 @@ function Move:update(dt)
   return trigger
 end
 
+function Move:getNode(grid, fromnode, location, dest)
+  local node = grid:getNode(location, nil, fromnode)
+  if node and node.walk then
+    local dx = math.max(location.x, dest.x) - math.min(location.x, dest.x)
+    local dy = math.max(location.y, dest.y) - math.min(location.y, dest.y)
+    local emCost = dx + dy
+    node.score = node.mCost + emCost
+    node.action = 'move'
+    return node
+  end
+  return nil
+end
+
 ---------- Melee ----------
 Melee = class('Melee', Ability)
 Melee.rangetolerance = 0.1
@@ -145,11 +151,6 @@ function Melee:initialize(unit, dmg, range, anim, ...)
   self.maxrange = range + self.rangetolerance
   self.dmg = dmg
   self.anim = anim
-end
-
-function Melee:getValue()
-  -- value is DPS with range bonus
-  return (self.dmg / self.cooldown) * math.max(1,math.ceil(self.maxrange / 2))
 end
 
 function Melee:activate(target)
@@ -174,16 +175,16 @@ function Melee:validateTarget(fromnode, target)
   return false
 end
 
-function Melee:getNode(grid, fromnode, location)
+function Melee:getNode(grid, fromnode, location, dest)
   -- Here you make sure the requested node is valid (i.e. on the map, not blocked)
   local x,y = location.x,location.y
   if y >= 1 and y <= #grid.static then
       local target = grid.dynamic[y][x]
       if self:validateTarget(fromnode, target) then
-        local node = Node(location, 1, grid.numtiles + target.id, fromnode)
+        local node = Node(location, self.cooldown, grid.numtiles + target.id, fromnode)
         node.unit = target
         node.action = 'attack'
-        self:_calculateCost(grid, node)
+        self:_calculateCost(node, dest)
         return node
       end
       return nil
@@ -196,7 +197,7 @@ require 'game/unit/projectile'
 
 Range = class('Range', Melee)
 Range.minrange = 1.1
-function Range:getNodes(grid, fromnode)
+function Range:getNodes(grid, fromnode, target)
   local result = {}
   for _,delta in ipairs(grid.adjecentOffsets) do
     local loc = fromnode.location

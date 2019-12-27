@@ -46,8 +46,8 @@ end
 Node = class('Node')
 function Node:initialize(location, mCost, lid, parent)
   self.location = location -- Where is the node located
-  self.mCost = mCost -- Total move cost to reach this node
   self.parent = parent -- Parent node
+  self.mCost = ((parent and parent.mCost) or 0) + mCost-- Total move cost to reach this node
   self.score = 0 -- Calculated score for this node
   self.lid = lid -- set the location id - unique for each location in the map
 end

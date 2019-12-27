@@ -126,7 +126,7 @@ function GridLayer:draw()
 end
 
 
-function GridLayer:getNode(location, selfunit)
+function GridLayer:getNode(location, selfunit, fromnode)
   -- Here you make sure the requested node is valid (i.e. on the map, not blocked)
   local x,y = location.x,location.y
   if y >= 1 and y <= #self.static then
@@ -138,11 +138,10 @@ function GridLayer:getNode(location, selfunit)
       if unit and selfunit ~= unit then
         cost = cost * ((unit.moving and COST.UNIT_MOVING) or COST.UNIT_STANDING)
       end
-      local node = Node(static.location, cost, id)
+      local node = Node(static.location, cost, id, fromnode)
       node.unit = unit
       node.shoot = static.shoot
-      node.walk = static.walk
-      
+      node.walk = static.walk      
       return node
     end
   end
@@ -181,17 +180,16 @@ function GridLayer:getAdjacentNodes(curnode, dest, unit)
       goal = dest.node.location
     end
     for _,delta in ipairs(self.adjecentOffsets) do
-      table.insert(result, 
-        self:_handleMoveNodes(vec2_add(curnode.location, delta), curnode, goal, unit))
+      table.insert(result, unit.move:getNode(self, curnode, vec2_add(curnode.location, delta), goal))
     end
     
     if unit then
       if unit.melee then
-        melee = unit.melee:getNodes(self, curnode)
+        melee = unit.melee:getNodes(self, curnode, dest)
         table.extend(result, melee or {})
       end
       if unit.range then
-        range = unit.range:getNodes(self, curnode)
+        range = unit.range:getNodes(self, curnode, dest)
         table.extend(result, range or {})
       end
     end
@@ -210,20 +208,5 @@ end
 
 function GridLayer:_handleMoveNodes(loc, fromnode, dest, unit)
   -- Fetch a Node for the given location and set its parameters
-  local n = self:getNode(loc, unit)
-
-  if n ~= nil and n.walk then
-    local dx = math.max(loc.x, dest.x) - math.min(loc.x, dest.x)
-    local dy = math.max(loc.y, dest.y) - math.min(loc.y, dest.y)
-    local emCost = dx + dy
-
-    n.mCost = n.mCost + fromnode.mCost
-    n.score = n.mCost + emCost
-    n.parent = fromnode
-    n.action = 'move'
-
-    return n
-  end
-  
-  return nil
+  return unit.move:getNode(self, fromnode, loc, dest)
 end

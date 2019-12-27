@@ -26,13 +26,14 @@ function Unit:initialize(map, fraction, spawn)
   self.pos = vec2(spawn.x, spawn.y)
   self.node = self.map.layers.grid:getNode(spawn)
   self.map.layers.grid:claimNode(self.node, self)
+  self.move = Move(self)  
   if self.melee then
     self.melee = Melee(self, unpack(self.melee))
   end
   if self.range then
     self.range = Range(self, unpack(self.range))
   end
-  self.move = Move(self)
+  
   self.idle = Ability(self, 1.0 + math.random(1,10)/10, 1.0, 1.0)
   
   -- appearance
@@ -189,7 +190,7 @@ function Unit:draw()
   --love.graphics.setColor(self.stuck and 1 or 0,0.5,0.5)
   --love.graphics.circle("line",unpack(self.circle))
   
-  if self.ishit > 0 then
+  if self.ishit and self.ishit > 0 then
     love.graphics.setColor(1, 0.5, 0.5, 1)
   end
   
