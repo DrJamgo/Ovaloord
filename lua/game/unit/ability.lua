@@ -101,6 +101,7 @@ end
 Move = class('Move', Ability)
 function Move:getNode(grid, fromnode, location)
   local node = grid:getNode(location)
+  return node
 end
 
 function Move:activate(target)
