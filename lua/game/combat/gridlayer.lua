@@ -174,24 +174,22 @@ function GridLayer:getAdjacentNodes(curnode, dest, unit)
   local melee = {}
   local range = {}
   
-  if curnode.action == 'move' or not curnode.action then
-    local goal = dest
-    if dest.node then
-      goal = dest.node.location
+  local goal = dest
+  if dest.node then
+    goal = dest.node.location
+  end
+  
+  if unit then
+    if unit.move then
+      result = unit.move:getNodes(self, curnode, goal)
     end
-    for _,delta in ipairs(self.adjecentOffsets) do
-      table.insert(result, unit.move:getNode(self, curnode, vec2_add(curnode.location, delta), goal))
+    if unit.melee then
+      melee = unit.melee:getNodes(self, curnode, dest)
+      table.extend(result, melee or {})
     end
-    
-    if unit then
-      if unit.melee then
-        melee = unit.melee:getNodes(self, curnode, dest)
-        table.extend(result, melee or {})
-      end
-      if unit.range then
-        range = unit.range:getNodes(self, curnode, dest)
-        table.extend(result, range or {})
-      end
+    if unit.range then
+      range = unit.range:getNodes(self, curnode, dest)
+      table.extend(result, range or {})
     end
   end
   

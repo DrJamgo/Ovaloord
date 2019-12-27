@@ -93,7 +93,7 @@ end
 function Ability:getNodes(grid, fromnode, dest)
   local result = {}
   for _,delta in ipairs(adjecentOffsets) do
-    local n = self:getNode(grid, fromnode, vec2_add(fromnode.location, delta))
+    local n = self:getNode(grid, fromnode, vec2_add(fromnode.location, delta), dest)
     if n then
       self:_calculateCost(n, dest)
       table.insert(result, n)
