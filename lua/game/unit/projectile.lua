@@ -13,12 +13,14 @@ function Projectile:initialize(ability, unit, target)
   self.unit = unit
   self.target = target
   
-  self.diff = vec2_sub(target.pos, unit.pos)
-  
+  local diff = vec2_sub(target.pos, unit.pos)
+  local duration
   -- 1=right, 2=down, 3=left, 4=up
-  self.dir = (math.floor((math.atan2(self.diff.y, self.diff.x) / math.pi * 2 + 0.5))) % 4 + 1
-  self.diff, self.duration = vec2_norm(self.diff)
-  self.duration = self.duration / self.speed
+  self.dir = (math.floor((math.atan2(diff.y, diff.x) / math.pi * 2 + 0.5))) % 4 + 1
+  
+  diff, duration = vec2_norm(diff)
+  self.pos = vec2_add(self.pos, vec2_mul(diff,0.5))
+  self.duration = duration / self.speed
   self.time = 0
 end
 
@@ -27,7 +29,8 @@ function Projectile:getProgress()
 end
 
 function Projectile:update(dt)
-  self.pos = vec2_add(self.pos, vec2_norm(self.diff, dt * self.speed))
+  local diff = vec2_sub(self.target.pos, self.unit.pos)
+  self.pos = vec2_add(self.pos, vec2_norm(diff, dt * self.speed))
   self.time = math.min(1, self.time + dt)
   if self.time >= self.duration then
     self.target:hit(self.ability.dmg, self.unit)
@@ -49,3 +52,8 @@ Arrow = class('Arrow', Projectile)
 Arrow.spriteimage = love.graphics.newImage('assets/sprites/arrow.png')
 Arrow.speed = 15
 Arrow.curve = 8
+
+FireBall = class('FireBall', Projectile)
+FireBall.spriteimage = love.graphics.newImage('assets/sprites/fireball.png')
+FireBall.speed = 10
+FireBall.curve = 0

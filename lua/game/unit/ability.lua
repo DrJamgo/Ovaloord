@@ -144,12 +144,15 @@ function Move:getNode(grid, fromnode, location, dest)
   return nil
 end
 
+lookup.triggerfactor = {slash=4/6, thrust=6/8, shoot=9/12}
+
 ---------- Melee ----------
 Melee = class('Melee', Ability)
 Melee.rangetolerance = 0.1
 Melee.minrange = 0.5
 function Melee:initialize(unit, dmg, range, anim, ...)
   Ability.initialize(self, unit, ...)
+  self.trigger = self.duration * (lookup.triggerfactor[anim] or 1)
   self.maxrange = range + self.rangetolerance
   self.dmg = dmg
   self.anim = anim
@@ -171,6 +174,7 @@ end
 
 function Melee:validateTarget(fromnode, target)
   if target and self.unit.fraction:isEnemy(target) and target.hp and target.hp > 0 then
+    local diff = vec2_sub(target.pos, fromnode.location)
     local dist = vec2_dist(target.pos, fromnode.location)
     return dist <= self.maxrange and dist >= self.minrange
   end
@@ -199,6 +203,11 @@ require 'game/unit/projectile'
 
 Range = class('Range', Melee)
 Range.minrange = 1.1
+function Range:initialize(unit, projectile, ...)
+  Melee.initialize(self, unit, ...)
+  self.projectile = projectile
+end
+
 function Range:getNodes(grid, fromnode, target)
   local result = {}
   if not fromnode.action or fromnode.action == 'move' then
@@ -231,9 +240,13 @@ function Range:getNode(grid, fromnode, location)
 end
 
 function Range:update(dt)
-  local trigger = Ability.update(self, dt) and self:validateTarget(self.unit.node, self.target)
+  local valid = self:validateTarget(self.unit.node, self.target)
+  local trigger = Ability.update(self, dt) and valid
+  if not valid then
+    self.time = self.cooldown
+  end
   if trigger then
-    self.unit.map:addObject(Arrow(self, self.unit, self.target))
+    self.unit.map:addObject(self.projectile(self, self.unit, self.target))
   end
   return trigger
 end

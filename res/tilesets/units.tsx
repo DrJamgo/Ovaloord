@@ -10,4 +10,5 @@
  <tile id="10" type="Shipbuilder"/>
  <tile id="16" type="Scout"/>
  <tile id="17" type="Sentry"/>
+ <tile id="34" type="Enchanter"/>
 </tileset>

@@ -131,6 +131,7 @@ function Unit:_moveToTile(dt, targetTile)
         self.attack:activate(self.nextNode.unit)
       else
         self.nextNode = nil
+        self.path = nil
       end
     end
   else

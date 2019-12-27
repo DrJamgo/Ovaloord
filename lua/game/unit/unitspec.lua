@@ -1,4 +1,5 @@
 require 'game/unit'
+require 'game/unit/projectile'
 
 --
 -- Cheet sheets
@@ -27,8 +28,15 @@ unitcatalogue = {
       Scout      ={icoyn=S.dagger,  hp= 5, melee={3.0,1,'slash','normal','slow'}},
     },
     { -- T2
-      Sentry     ={icon=S.bow,  hp= 10, range={5.0,4,'shoot','normal','normal'}},
+      Sentry     ={icon=S.bow,  hp= 10, range={Arrow,5.0,4,'shoot','normal','normal'}},
     }
+  },
+  druid = {
+    {}, --T1
+    {}, --T2
+    { --T3
+      Enchanter = {icon=S.wand, hp=5, range={FireBall,1,4,'slash','normal','normal'}},
+    }, 
   },
   Undead = {
     { -- T1
@@ -38,7 +46,7 @@ unitcatalogue = {
     { -- T2
       Warden   ={icon=S.spear,  hp= 7, melee={5.0,1,'thrust','normal','slow'}},
       Raider   ={icon=S.dagger, hp= 7, melee={2.0,1,'slash','normal','fast'}},
-      Hitter   ={icon=S.bow,    hp= 5, range={4.0,5,'shoot','veryslow','normal'}},
+      Hitter   ={icon=S.bow,    hp= 5, range={Arrow,4.0,5,'shoot','veryslow','normal'}},
       Canibal  ={icon=S.hatchet, hp=10, melee={5.0,1,'slash','slow','normal'}, speed=1.5},
     },
     { -- T3
