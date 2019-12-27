@@ -133,6 +133,9 @@ function Unit:_moveToTile(dt, targetTile)
         self.nextNode = nil
         self.path = nil
       end
+    else
+      self.nextNode = nil
+      self.path = nil
     end
   else
     self.idle:activate()
