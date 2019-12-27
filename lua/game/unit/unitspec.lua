@@ -35,7 +35,7 @@ unitcatalogue = {
     {}, --T1
     {}, --T2
     { --T3
-      Enchanter = {icon=S.wand, hp=5, range={FireBall,1,4,'slash','normal','normal'}},
+      Enchanter = {icon=S.wand, hp=5, range={FireBall,1,4,'slash','normal','veryslow'}},
     }, 
   },
   Undead = {

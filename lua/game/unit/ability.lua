@@ -148,12 +148,13 @@ lookup.triggerfactor = {slash=4/6, thrust=6/8, shoot=9/12}
 
 ---------- Melee ----------
 Melee = class('Melee', Ability)
-Melee.rangetolerance = 0.1
+Melee.tolrange = 0.1
 Melee.minrange = 0.5
+Melee.tollat = 0.5
 function Melee:initialize(unit, dmg, range, anim, ...)
   Ability.initialize(self, unit, ...)
   self.trigger = self.duration * (lookup.triggerfactor[anim] or 1)
-  self.maxrange = range + self.rangetolerance
+  self.maxrange = range + self.tolrange
   self.dmg = dmg
   self.anim = anim
 end
@@ -176,7 +177,7 @@ function Melee:validateTarget(fromnode, target)
   if target and self.unit.fraction:isEnemy(target) and target.hp and target.hp > 0 then
     local diff = vec2_sub(target.pos, fromnode.location)
     local dist = vec2_dist(target.pos, fromnode.location)
-    return dist <= self.maxrange and dist >= self.minrange and (math.abs(diff.x) < 1 or math.abs(diff.y) < 1)
+    return dist <= self.maxrange and dist >= self.minrange and (math.abs(diff.x) < self.tollat or math.abs(diff.y) < self.tollat)
   end
   return false
 end
