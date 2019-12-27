@@ -126,16 +126,15 @@ function Unit:_moveToTile(dt, targetTile)
           self.stuck = 0
         end
       end
-    elseif self.nextNode.action and self.attack then
+    elseif self.nextNode.action == 'attack' then
+      self.attack = self.nextNode.ability
+      self:_faceNode(self.nextNode)
       if self.attack:validateTarget(self.node, self.nextNode.unit) then
         self.attack:activate(self.nextNode.unit)
       else
         self.nextNode = nil
         self.path = nil
       end
-    else
-      self.nextNode = nil
-      self.path = nil
     end
   else
     self.idle:activate()

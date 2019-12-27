@@ -190,6 +190,7 @@ function Melee:getNode(grid, fromnode, location, dest)
         local node = Node(location, self.cooldown, grid.numtiles + target.id, fromnode)
         node.unit = target
         node.action = 'attack'
+        node.ability = self
         self:_calculateCost(node, dest)
         return node
       end
