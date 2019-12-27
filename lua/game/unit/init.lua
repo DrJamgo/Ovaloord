@@ -26,6 +26,7 @@ function Unit:initialize(map, fraction, spawn)
   self.pos = vec2(spawn.x, spawn.y)
   self.move = Move(self)
   self.node = self.move:getNode(self.map.layers.grid, nil, spawn, spawn)
+  assert(self.node, string.format("Cannot claim node: %d,%d for '%s'", spawn.x, spawn.y, self.class.name))
   self.map.layers.grid:claimNode(self.node, self)
   
   if self.melee then

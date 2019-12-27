@@ -114,7 +114,7 @@ function GridLayer:draw()
             local w2x,w2y =
               self.map:convertTileToPixel(node2.location.x, node2.location.y)
             
-            local color = ((node2.action == 'move') and {0,1,0,1}) or {1,0,0,1}
+            local color = ((node2.action == 'move') and {0,1,0,0.5}) or {1,0,0,0.5}
             love.graphics.setColor(unpack(color))
             love.graphics.line(w1x-16, w1y-16, w2x - 16, w2y - 16)
           end

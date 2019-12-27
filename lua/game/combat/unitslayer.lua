@@ -39,9 +39,6 @@ function UnitsLayer:draw()
 end
 
 function UnitsLayer:update(dt)
-  dt = math.min(dt, 0.25)
-  if love.keyboard.isDown('y') then dt = dt * 0.1 end
-  if options['p'] then dt = 0 end
   local leading_undead = nil
   for i,object in pairs(self.objects) do
     object:update(dt)
