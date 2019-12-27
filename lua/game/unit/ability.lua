@@ -92,11 +92,13 @@ end
 
 function Ability:getNodes(grid, fromnode, dest)
   local result = {}
-  for _,delta in ipairs(adjecentOffsets) do
-    local n = self:getNode(grid, fromnode, vec2_add(fromnode.location, delta), dest)
-    if n then
-      self:_calculateCost(n, dest)
-      table.insert(result, n)
+  if not fromnode.action or fromnode.action == 'move' then
+    for _,delta in ipairs(adjecentOffsets) do
+      local n = self:getNode(grid, fromnode, vec2_add(fromnode.location, delta), dest)
+      if n then
+        self:_calculateCost(n, dest)
+        table.insert(result, n)
+      end
     end
   end
   return result
@@ -199,18 +201,17 @@ Range = class('Range', Melee)
 Range.minrange = 1.1
 function Range:getNodes(grid, fromnode, target)
   local result = {}
-  for _,delta in ipairs(grid.adjecentOffsets) do
-    local loc = fromnode.location
-    for i=1,math.floor(self.maxrange) do
-      if loc then
-        loc = vec2_add(loc, delta)
-        local node, continue = self:getNode(grid, fromnode, loc)
-        if node then
-            table.insert(result, node)
-            debug[node.lid] = loc
-        end
-        if continue == false then
-          loc = nil
+  if not fromnode.action or fromnode.action == 'move' then
+    for _,delta in ipairs(adjecentOffsets) do
+      local loc = fromnode.location
+      for i=1,math.floor(self.maxrange) do
+        if loc then
+          loc = vec2_add(loc, delta)
+          local node, continue = self:getNode(grid, fromnode, loc)
+          table.insert(result, node)
+          if continue == false then
+            loc = nil
+          end
         end
       end
     end

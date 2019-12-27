@@ -24,9 +24,10 @@ function Unit:initialize(map, fraction, spawn)
   
   -- physics
   self.pos = vec2(spawn.x, spawn.y)
-  self.node = self.map.layers.grid:getNode(spawn)
+  self.move = Move(self)
+  self.node = self.move:getNode(self.map.layers.grid, nil, spawn, spawn)
   self.map.layers.grid:claimNode(self.node, self)
-  self.move = Move(self)  
+  
   if self.melee then
     self.melee = Melee(self, unpack(self.melee))
   end

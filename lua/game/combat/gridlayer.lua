@@ -159,13 +159,6 @@ function GridLayer:claimNode(node, unit)
   end
 end
 
-GridLayer.adjecentOffsets = {
-  vec2( 1, 0),
-  vec2( 0, 1),
-  vec2(-1, 0),
-  vec2( 0,-1)
-}
-
 function GridLayer:getAdjacentNodes(curnode, dest, unit)
   -- Given a node, return a table containing all adjacent nodes
   -- The code here works for a 2d tile-based game but could be modified
@@ -202,9 +195,4 @@ function GridLayer:locationsAreEqual(nodeA, locOrTarget)
   else
     return locOrTarget.id + self.numtiles == nodeA.lid
   end
-end
-
-function GridLayer:_handleMoveNodes(loc, fromnode, dest, unit)
-  -- Fetch a Node for the given location and set its parameters
-  return unit.move:getNode(self, fromnode, loc, dest)
 end
