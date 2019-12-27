@@ -176,7 +176,7 @@ function Melee:validateTarget(fromnode, target)
   if target and self.unit.fraction:isEnemy(target) and target.hp and target.hp > 0 then
     local diff = vec2_sub(target.pos, fromnode.location)
     local dist = vec2_dist(target.pos, fromnode.location)
-    return dist <= self.maxrange and dist >= self.minrange
+    return dist <= self.maxrange and dist >= self.minrange and (math.abs(diff.x) < 1 or math.abs(diff.y) < 1)
   end
   return false
 end
