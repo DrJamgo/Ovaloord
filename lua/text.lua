@@ -18,8 +18,9 @@ S = {
   {axe='\21'},
   {hammer='\22'},
   {holy='\23'},
-  {unholy='\24'},
-  {halberd='\25'},
+  {animal='\24'},
+  {unholy='\25'},
+  {halberd='\26'},
 }
 
 local glyphlist = " abcdefghijklmnopqrstuvwxyz" ..

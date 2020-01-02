@@ -3,7 +3,7 @@ Unit = class('Unit')
 
 require 'utils/map'
 require 'utils/vec'
-require 'game/effect'
+require 'game/visual'
 require 'game/unit/lpcsprite'
 require 'game/unit/ability'
 require 'astar/astar'
@@ -159,10 +159,10 @@ function Unit:update(dt)
       self.map.objective:eventUnitDies(self)
       if self.fraction.name ~= 'Undead' then
         self.map:addObject(
-          SpiritEffect(self.map, self.pos, SpiritEffect.colors[self.tier]))
+          SpiritVisual(self.map, self.pos, SpiritVisual.colors[self.tier]))
       else
         self.map:addObject(
-          SpiritEffect(self.map, self.pos, {0.2,0.2,0.2,1}))
+          SpiritVisual(self.map, self.pos, {0.2,0.2,0.2,1}))
       end
     elseif self.dead then
       self.dead = self.dead + dt
