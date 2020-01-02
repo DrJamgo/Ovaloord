@@ -14,6 +14,7 @@ Unit.spritepath = 'assets/sprites/default.png'
 Unit.stuckpatience = 0.5
 Unit.tier = 0
 Unit.sight = 6
+Unit.dr = 0
 
 function Unit:initialize(map, fraction, spawn)
   -- references
@@ -142,9 +143,12 @@ function Unit:_moveToTile(dt, targetTile)
   end
 end
 
-function Unit:hit(dmg, unit)
-  self.hp = self.hp - dmg
-  self.ishit = 0.2
+function Unit:hit(dmg, bypassDR, unit)
+  local actualDmg = math.max(0,(dmg - ((not bypassDR and self.dr) or 0)))
+  self.hp = self.hp - actualDmg
+  if actualDmg > 0 then
+    self.ishit = 0.2
+  end
 end
 
 function Unit:update(dt)

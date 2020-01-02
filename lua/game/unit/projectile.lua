@@ -6,6 +6,7 @@ Projectile.speed = 15
 Projectile.scale = 1
 Projectile.offset = vec2(16, 16)
 Projectile.quadsize = vec2(32,32)
+Projectile.bypassDR = false
 
 function Projectile:initialize(ability, unit, target)
   self.ability = ability
@@ -29,11 +30,11 @@ function Projectile:getProgress()
 end
 
 function Projectile:update(dt)
-  local diff = vec2_sub(self.target.pos, self.unit.pos)
+  local diff = vec2_sub(self.target.pos, self.pos)
   self.pos = vec2_add(self.pos, vec2_norm(diff, dt * self.speed))
   self.time = math.min(1, self.time + dt)
   if self.time >= self.duration then
-    self.target:hit(self.ability.dmg, self.unit)
+    self.target:hit(self.ability.dmg, self.bypassDR, self.unit)
     self.unit.map:removeObject(self)
   end
 end
@@ -57,3 +58,4 @@ FireBall = class('FireBall', Projectile)
 FireBall.spriteimage = love.graphics.newImage('assets/sprites/fireball.png')
 FireBall.speed = 10
 FireBall.curve = 0
+FireBall.bypassDR = true

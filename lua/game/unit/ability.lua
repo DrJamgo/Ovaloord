@@ -168,7 +168,7 @@ function Melee:update(dt)
   local trigger = Ability.update(self, dt) and self:validateTarget(self.unit.node, self.target)
   if trigger then
     -- todo: DMG calculation
-    self.target:hit(self.dmg, self.unit)
+    self.target:hit(self.dmg, false, self.unit)
   end
   return trigger 
 end
