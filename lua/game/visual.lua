@@ -2,6 +2,7 @@ require 'middleclass'
 StationaryVisual = class('StationaryVisual')
 StationaryVisual.color = {1,1,1,1}
 StationaryVisual.originy = 0
+StationaryVisual.soundfile = nil
 
 function StationaryVisual:initialize(map, pos, color)
   assert(self.spriteimage, "spriteimage not set")
@@ -9,6 +10,10 @@ function StationaryVisual:initialize(map, pos, color)
   self.map = map
   self.pos = vec2(pos.x, pos.y)
   self.time = 0
+  if self.soundfile then
+    self.sound = love.audio.newSource(self.soundfile, 'stream')
+    self.sound:play()
+  end
 end
 
 function StationaryVisual:getProgress()
@@ -19,6 +24,9 @@ function StationaryVisual:update(dt)
   self.time = math.min(self.duration, self.time + dt)
   if self.time >= self.duration then
     self.map:removeObject(self)
+    if self.sound then
+      self.sound:destroy()
+    end
   end
 end
 
@@ -44,6 +52,7 @@ SpiritVisual.offset = vec2(0,0)
 SpiritVisual.quadsize = vec2(64,128)
 SpiritVisual.frames = 12
 SpiritVisual.duration = 1.2
+SpiritVisual.soundfile = 'assets/sound/spiriteffect.wav'
 SpiritVisual.colors = {
   {0.2,1,1,1},
   {0.2,1,0.2,1},

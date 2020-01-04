@@ -10,7 +10,9 @@ return {
   tileheight = 32,
   nextlayerid = 52,
   nextobjectid = 7,
-  properties = {},
+  properties = {
+    ["music"] = "Town6.mp3"
+  },
   tilesets = {
     {
       name = "terrain_atlas",

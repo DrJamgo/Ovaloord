@@ -9,7 +9,7 @@ levels.desertvillage = {
 
 levels.village = {
   objectives={
-    ObjectiveReach({40,13}, 5, nil, {'rangervillage'}, {3,4})
+    ObjectiveReach({40,11}, 5, nil, {'rangervillage'}, {3,4})
   }
 }
 

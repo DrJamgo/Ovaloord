@@ -56,6 +56,21 @@ end
 
 function Game:enterWorldMap()
   self.widgets = {self.world, self.control}
+  self:setMusic('Jungle2.wav')
+end
+
+function Game:setMusic(file)
+  if self.music then
+    self.music:stop()
+    self.music:release()
+    self.music = nil
+  end
+  if file then
+    self.music = love.audio.newSource('assets/music/'..file, 'stream')
+    self.music:setVolume(0.2)
+    self.music:setLooping(true)
+    self.music:play()
+  end
 end
 
 function Game:enterCombat()
@@ -69,6 +84,8 @@ function Game:enterCombat()
   
   self.widgets = {self.combat, self.control}
   --require('utils/microscope')('Game.dot', self, 2, 'nometatables')
+  
+  self:setMusic(self.combat.map.properties.music)
 end
 
 function Game:addSpirit(tier, amount)
