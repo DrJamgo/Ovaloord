@@ -10,7 +10,9 @@ return {
   tileheight = 32,
   nextlayerid = 57,
   nextobjectid = 7,
-  properties = {},
+  properties = {
+    ["music"] = "Fishing_village.wav"
+  },
   tilesets = {
     {
       name = "terrain_atlas",
@@ -263,6 +265,18 @@ return {
         {
           id = 10,
           type = "Shipbuilder"
+        },
+        {
+          id = 16,
+          type = "Scout"
+        },
+        {
+          id = 17,
+          type = "Sentry"
+        },
+        {
+          id = 34,
+          type = "Enchanter"
         }
       }
     }

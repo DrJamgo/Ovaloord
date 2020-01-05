@@ -8,13 +8,10 @@ if arg[#arg] == "-debug" then require("mobdebug").start() end
 
 require 'text'
 require 'game'
-require 'intro'
 require 'utils/table'
 
-
-local intro = Intro()
 local game = Game()
-local main = intro
+local main = game
 options = {}
 numbers = {}
 
@@ -60,10 +57,6 @@ function errorHandler( err )
 end
 
 function love.update(dt)
-  if main == intro and not intro:isActive() then
-    game:enterWorldMap()
-    main = game
-  end
   xpcall(main.update, errorHandler, main, dt)
 end
 

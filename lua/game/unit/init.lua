@@ -157,13 +157,8 @@ function Unit:update(dt)
     if self.prone == 1 and not self.dead then
       self.dead = 0
       self.map.objective:eventUnitDies(self)
-      if self.fraction.name ~= 'Undead' then
         self.map:addObject(
           SpiritVisual(self.map, self.pos, SpiritVisual.colors[self.tier]))
-      else
-        self.map:addObject(
-          SpiritVisual(self.map, self.pos, {0.2,0.2,0.2,1}))
-      end
     elseif self.dead then
       self.dead = self.dead + dt
     end

@@ -1,6 +1,6 @@
 require 'middleclass'
 require 'game/widget'
-Intro = class('Intro')
+require 'page'
 
 FadeScreen = class('FadeScreen')
 function FadeScreen:initialize(path, fadein, time, fadeout, skip)
@@ -74,6 +74,8 @@ function OvaLoordScreen:draw()
   end
 end
 
+Intro = class('Intro', Page)
+
 Intro.screens = {
   FadeScreen('assets/splash/powered_by_love.png', 1.0, 3.0, 0.0, true),
   OvaLoordScreen('assets/splash/Ovaloord.png', 0.0, 2.0, 1.0, true),
@@ -83,16 +85,15 @@ function Intro:initialize()
   self.index = 1
 end
 
-function Intro:isActive()
-  return self.index <= #self.screens
-end
-
 function Intro:update(dt)
   local screen = self.screens[self.index]
   if screen then
     local finished = screen:update(dt)
     if finished then
       self.index = self.index + 1
+      if self.index > #self.screens then
+        PageManager.switch('worldpage')
+      end
     end
   end
 end

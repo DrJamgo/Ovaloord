@@ -93,7 +93,7 @@ function World:mousepressed(gx,gy,button,isTouch)
       if #self.game.state.active < self.game.state.selectioncap then
         options['r'] = true
       else
-        self.game:enterCombat()
+        PageManager.switch('combatpage')
       end
     end
     if action == 'move' then

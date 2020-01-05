@@ -25,7 +25,7 @@ function StationaryVisual:update(dt)
   if self.time >= self.duration then
     self.map:removeObject(self)
     if self.sound then
-      self.sound:destroy()
+      self.sound:release()
     end
   end
 end
