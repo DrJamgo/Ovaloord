@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="40" height="16" tilewidth="32" tileheight="32" infinite="0" nextlayerid="57" nextobjectid="7">
  <properties>
-  <property name="music" value="Fishing_village.wav"/>
+  <property name="music" value="Fishing_village.mp3"/>
  </properties>
  <tileset firstgid="1" source="../tilesets/terrain_atlas.tsx"/>
  <tileset firstgid="1025" source="../tilesets/terrain-v7.tsx"/>

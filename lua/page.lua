@@ -101,7 +101,7 @@ function WorldPage:initialize(game)
 end
 
 function WorldPage:enter()
-  self.game:setMusic('Jungle2.wav')
+  self.game:setMusic('Jungle2.mp3')
 end
 
 ---------- CombatPage ----------

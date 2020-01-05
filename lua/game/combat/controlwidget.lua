@@ -62,7 +62,7 @@ function ControlWidget:_newDrawable(name, x, y)
   newUnit.name = name
   newUnit.type = name
   newUnit.cooldown = 0.0
-  newUnit.cooldowntime = 2.0
+  newUnit.cooldowntime = 5.0
   newUnit.brief = _G[name].brief
   newUnit.long = _G[name].long
   return newUnit

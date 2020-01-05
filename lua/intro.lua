@@ -54,16 +54,18 @@ function OvaLoordScreen:initialize(...)
 end
 
 function OvaLoordScreen:update(dt)
-  if not self.sound then
-    self.sound = love.audio.newSource("assets/sound/ghostbreath.wav", 'stream')
-    self.sound:setVolume(0.9) -- 90% of ordinary volume
-    self.sound:play()
-  end
   local finished = FadeScreen.update(self, dt)
   local inframe = self.time - self.fadein
   local animduration = 1.0
   local frame = math.max(0,math.min(math.floor(inframe / animduration * self.numframes),self.numframes-1))
   self.quad = love.graphics.newQuad(frame*self.size.x,0,self.size.x,self.size.y,self.size.x*self.numframes,self.size.y)
+  
+  if not self.sound and frame >= 3 then
+    self.sound = love.audio.newSource("assets/sound/ghostbreath.wav", 'stream')
+    self.sound:setVolume(0.5) -- 90% of ordinary volume
+    self.sound:play()
+  end  
+
   return finished
 end
 

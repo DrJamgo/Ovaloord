@@ -5,7 +5,7 @@
 SET LOVE_PATH=C:\LOVE
 SET ZIPEXE="C:\Program Files\WinRAR\WinRAR.exe"
 SET GAMENAME=Overloord
-SET PACKAGE_DIR=tmp
+SET PACKAGE_DIR=%GAMENAME%
 SET ZIPFILE=%GAMENAME%.zip
 SET LOVEFILE=%GAMENAME%.love
 FOR /F "tokens=1 delims=" %%A in ('git describe --dirty') do SET GIT=%%A
@@ -27,7 +27,7 @@ copy /b %LOVE_PATH%\license.txt %PACKAGE_DIR%
 
 ::%ZIPEXE% a -ep1 %GAMEPACKAGE% %PACKAGE_DIR%\*
 ::%ZIPEXE% a -ep1 -sfx -iiconres\icon.ico -iimgres\icon.bmp -zres\setup.txt %GAMEPACKAGE% %PACKAGE_DIR%\*
-%ZIPEXE% a -ep1 %GAMEPACKAGE% %PACKAGE_DIR%\*
+%ZIPEXE% a -ep1 %GAMEPACKAGE% %PACKAGE_DIR%
 
 pause
 
