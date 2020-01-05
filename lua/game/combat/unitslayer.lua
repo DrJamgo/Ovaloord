@@ -44,7 +44,7 @@ function UnitsLayer:update(dt)
     object:update(dt)
     if object.dead and object.dead > 1 then
       self.objects[i] = nil
-      if object.tier and object.fraction ~= self.game.control.fraction then
+      if object.tier then
         self.game:addSpirit(object.tier)
       end
     end
