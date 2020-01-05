@@ -18,8 +18,8 @@ function newGameState()
   state.currentlevel = 'yourpyramid'
   state.souls = {3}
   state.research = {'Rosen'}
-  state.active = {'Rosen', 'Rosen', 'Rosen'}
-  state.selectioncap = 3
+  state.active = {'Rosen', 'Rosen'}
+  state.selectioncap = 2
   return state
 end
 
@@ -92,6 +92,7 @@ function Game:reward(unlocks, souls)
   self.state.levels[self.state.currentlevel] = self.state.levels[self.state.currentlevel] + 1
   self.animation = 0
   PageManager.pages.worldpage.control:unlockRandomUnit()
+  self.state.selectioncap = self.state.selectioncap + 1
 end
 
 function Game:exitCombat()
