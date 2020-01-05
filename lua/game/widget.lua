@@ -42,7 +42,7 @@ function Widget:draw()
   love.graphics.setColor(1,1,1,1)
   love.graphics.draw(self.canvas)
   love.graphics.pop()
-  love.graphics.rectangle("line",x,y,w,h)
+  --love.graphics.rectangle("line",x,y,w,h)
 end
 
 ----------- TextWidget ----------
@@ -66,7 +66,7 @@ function TextWidget:draw()
   local targetCanvas = love.graphics.getCanvas()
   love.graphics.setCanvas(self.canvas)
   love.graphics.clear(0,0,0,0)
-  love.graphics.printf(self.text, 0, 0, 
+  love.graphics.printf({self.color, self.text}, 0, 0, 
     (self.width)/self.scale, 
     self.align, 0,
     self.scale)
@@ -78,7 +78,7 @@ end
 ----------- HudWidget ----------
 HudWidget = class('HudWidget', TextWidget)
 HudWidget.align = 'right'
-HudWidget.width = 120
+HudWidget.width = 100
 HudWidget.height = 200
 
 function HudWidget:initialize(state, ...)
@@ -100,8 +100,8 @@ end
 
 ----------- ObjectiveWidget ----------
 ObjectiveWidget = class('ObjectiveWidget', TextWidget)
-ObjectiveWidget.width = 640
-ObjectiveWidget.height = 160
+ObjectiveWidget.width = 660
+ObjectiveWidget.height = 200
 ObjectiveWidget.align = 'left'
 function ObjectiveWidget:initialize(objective, ...)
   self.objective = objective
@@ -115,8 +115,7 @@ function ObjectiveWidget:update(dt)
   if self.objective.closed then
     f = 1
   end
-  local color = {f,1,f,1}
-  self.color = color
+  self.color = {f,1,f,1}
   self.scale = self.objective.textscale
 end
 
