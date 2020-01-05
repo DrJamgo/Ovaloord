@@ -78,7 +78,7 @@ end
 ----------- HudWidget ----------
 HudWidget = class('HudWidget', TextWidget)
 HudWidget.align = 'right'
-HudWidget.width = 100
+HudWidget.width = 160
 HudWidget.height = 200
 
 function HudWidget:initialize(state, ...)
