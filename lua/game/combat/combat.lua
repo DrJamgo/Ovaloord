@@ -36,7 +36,7 @@ end
 
 
 function Combat:update(dt)
-  if self.objective:isFinished() == false then
+  if self.objective:isFinished() == false or self.objective.closed then
     TiledWidget.update(self, dt)
     local undead = self.fractions.Undead
     local leader = self.fractions.Undead:getLeadingUnit()
@@ -54,6 +54,9 @@ function Combat:update(dt)
   self.objective:update(dt, self.game)
   
   if love.keyboard.isDown('q') then
+    if self.objective:isFinished() then
+      self.objective:giveReward(self.game)
+    end
     self.game:exitCombat()
   end
 end

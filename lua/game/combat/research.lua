@@ -14,6 +14,22 @@ function Research:unlockUnit(name)
   table.insert(self.state.research, name)
 end
 
+function Research:unlockRandomUnit()
+  local lockedCount = 0
+  local lockedUnits = {}
+  for col, units in ipairs(self.units) do
+    for row,unit in ipairs(units) do
+      if self:isKnown(unit) and self:isUnlocked(unit) == false then
+        lockedUnits[#lockedUnits+1] = unit
+      end
+    end
+  end
+  if #lockedUnits > 0 then
+    index = math.random(#lockedUnits-1)+1
+    self:unlockUnit(lockedUnits[index])
+  end
+end
+
 function Research:isPoolFull()
   return #self.state.active >= self.state.selectioncap
 end
@@ -23,7 +39,7 @@ function Research:isUnlocked(name)
 end
 
 function Research:isKnown(name)
-  return self.state.souls[_G[name].tier] ~= nil
+  return _G[name] and (self.state.souls[_G[name].tier] ~= nil)
 end
 
 function Research:removeUnitFromPool(name)

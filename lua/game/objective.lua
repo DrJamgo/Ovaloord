@@ -24,6 +24,9 @@ end
 
 function Objective:draw()
   local f = math.max(0,math.min(1,self.animincrement))
+  if self.closed then
+    f = 1
+  end
   local color = {f,1,f,1}
   love.graphics.printf({color, self:getText()}, 0, 0, love.graphics.getWidth()/self.textscale, 'left', 0, self.textscale)
 end
@@ -31,6 +34,9 @@ end
 function Objective:getText()
   local text = T.get(self.class.name)
   text = string.format(text, self.unittype or T.get('anyunit'), self.progress, self.amount)..'\n  '..self.rewardtext
+  if self:isFinished() then
+    text = text..'\n'..T.ObjectiveLeave[1]
+  end
   return text
 end
 
@@ -49,15 +55,18 @@ function Objective:update(dt, game)
     else
       self.animcomplete = self.animcomplete + dt
       self.textscale = self.class.textscale * (1 + self.factorComplete * math.sin(math.min(math.pi, self.animcomplete * 5)))
-      if self.animcomplete > self.animationtime then
-        game:reward(self.unlocks or {}, self.souls or {})
-        game:exitCombat()
+      if self.animcomplete > self.animationtime and not self.closed then
+        self.closed = true
       end
     end
   else
     self.textscale = self.class.textscale * (1 + self.factorInc * math.sin(math.min(math.pi, self.animincrement * 10)))
     self.animincrement = self.animincrement + dt
   end
+end
+
+function Objective:giveReward(game)
+  game:reward(self.unlocks or {}, self.souls or {})
 end
 
 function Objective:_addProgress(amount)

@@ -12,6 +12,7 @@ T.currentlevel = {'Current Level'}
 T.ObjectiveReach = {S.move..'Reach end of map with %s (%d/%d)'}
 T.ObjectiveKill = {S.skull..'Kill %s (%d/%d)'}
 T.Objective = {S.info..'No objective.\nYou can hunt for souls and leave whenever you want with [Q].'}
+T.ObjectiveLeave = {'Quit the Map with [Q] whenever you want.'}
 T.reward = {'Reward'}
 T.anyunit = {'any Unit'}
 

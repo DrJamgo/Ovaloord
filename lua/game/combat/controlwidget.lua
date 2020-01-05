@@ -51,23 +51,8 @@ function ControlWidget:initialize(game, scale)
   updateResearch(self.researchlayer, 10)
 end
 
-function ControlWidget:unlockRandomUnit(tier)
-  local lockedCount = 0
-  for _,unit in ipairs(self.researchlayer.objects) do
-    if unit.visible and unit.unlocked == false then
-      lockedCount = lockedCount + 1
-    end
-  end
-  if lockedCount > 0 then
-    while true do
-      index = math.random(#self.researchlayer.objects-1)+1
-      unit = self.researchlayer.objects[index]
-      if unit and unit.unlocked == false and unit.visible then
-        self.research:unlockUnit(unit.name)
-        return
-      end
-    end
-  end
+function ControlWidget:unlockRandomUnit()
+  self.research:unlockRandomUnit()
 end
 
 function ControlWidget:_newDrawable(name, x, y)
@@ -149,7 +134,13 @@ end
 function ControlWidget:mousepressed(gx,gy,button,isTouch)
   local tile, layer, x, y = self:getTileAtPosition(gx, gy)
   if tile and tile.type then
-    if tile.type ~= '' and _G[tile.type] then
+    if tile.type == 'Research' then
+      options['r'] = not options['r']
+      return true
+    elseif tile.type == 'Quit' then
+      self.game:exitCombat()
+      return true
+    elseif tile.type ~= '' and _G[tile.type] then
       if layer.name == 'Units' then
         if self.fraction then
           local unitclass = _G[tile.type]
@@ -175,12 +166,6 @@ function ControlWidget:mousepressed(gx,gy,button,isTouch)
         self.research:addUnitToPool(tile.name)
         self:_updateUnitPool()
       end
-      return true
-    elseif tile.type == 'Research' then
-      options['r'] = not options['r']
-      return true
-    elseif tile.type == 'Quit' then
-      self.game:exitCombat()
       return true
     end
   end
