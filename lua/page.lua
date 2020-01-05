@@ -96,7 +96,8 @@ function WorldPage:initialize(game)
   
   self.control = ControlWidget(game, game.scale)
   self.world = World(game)
-  self.widgets = {self.world, self.control}
+  self.hud = HudWidget(game.state)
+  self.widgets = {self.world, self.control, self.hud}
 end
 
 function WorldPage:enter()
@@ -106,17 +107,24 @@ end
 ---------- CombatPage ----------
 CombatPage = class('CombatPage', Page)
 
+function CombatPage:initialize(game)
+  Page.initialize(self, game)
+  
+  self.control = PageManager.pages['worldpage'].control
+  self.hud = PageManager.pages['worldpage'].hud
+end
+
 function CombatPage:enter()
   local levelname = self.game.state.currentlevel
   local objectives = levels.getObjectives(levelname)
   local objective = objectives[self.game.state.levels[levelname]+1] or Objective()
   
-  self.control = PageManager.pages['worldpage'].control
 
   self.combat = Combat(self.game, objective)
   self.combat.unitslayer.controlwidget = self.control
   self.control:setFraction(self.combat.fractions['Undead'])
-  self.widgets = {self.combat, self.control}
+  self.objective = ObjectiveWidget(objective)
+  self.widgets = {self.combat, self.control, self.hud, self.objective}
   
   self.game:setMusic(self.combat.map.properties.music)
 end

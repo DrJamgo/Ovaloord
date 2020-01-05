@@ -104,20 +104,12 @@ function Game:update(dt)
   if options['p'] then dt = 0 end
   
   for _=1,(love.keyboard.isDown('x') and 10) or 1 do
-    self.animation = (self.animation or 0) + dt
     PageManager.update(dt)
   end
 end
 
 function Game:draw()
   PageManager.draw()
-
-  local textscale = T.defaultscale * 1.5 * (1 + 0.3 * math.sin(math.min(math.pi, self.animation * 10)))
-  local text = ''
-  for tier,souls in ipairs(self.state.souls) do
-    text = text..S.tier[tier]..tostring(souls)
-  end
-  love.graphics.printf(text, 0, 0, (love.graphics.getWidth()-40)/textscale, 'right', 0, textscale)
 end
 
 function Game:forwardMouseEvent(...)

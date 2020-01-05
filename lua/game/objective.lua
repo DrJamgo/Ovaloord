@@ -22,15 +22,6 @@ function Objective:initialize()
   self.rewardtext = text
 end
 
-function Objective:draw()
-  local f = math.max(0,math.min(1,self.animincrement))
-  if self.closed then
-    f = 1
-  end
-  local color = {f,1,f,1}
-  love.graphics.printf({color, self:getText()}, 0, 0, love.graphics.getWidth()/self.textscale, 'left', 0, self.textscale)
-end
-
 function Objective:getText()
   local text = T.get(self.class.name)
   text = string.format(text, self.unittype or T.get('anyunit'), self.progress, self.amount)..'\n  '..self.rewardtext

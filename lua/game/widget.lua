@@ -42,8 +42,85 @@ function Widget:draw()
   love.graphics.setColor(1,1,1,1)
   love.graphics.draw(self.canvas)
   love.graphics.pop()
-  --love.graphics.rectangle("line",x,y,w,h)
+  love.graphics.rectangle("line",x,y,w,h)
 end
+
+----------- TextWidget ----------
+TextWidget = class('TextWidget', Widget)
+TextWidget.align = 'left'
+TextWidget.scale = T.defaultscale
+TextWidget.color = {1,1,1,1}
+
+function TextWidget:initialize(...)
+  Widget.initialize(self,...)
+  self.scale = self.scale
+  self.anim = 0
+  self.text = ''
+end
+
+function TextWidget:update(dt)
+  -- do nothing
+end
+
+function TextWidget:draw()
+  local targetCanvas = love.graphics.getCanvas()
+  love.graphics.setCanvas(self.canvas)
+  love.graphics.clear(0,0,0,0)
+  love.graphics.printf(self.text, 0, 0, 
+    (self.width)/self.scale, 
+    self.align, 0,
+    self.scale)
+  -- restore target canvas and draw to it
+  love.graphics.setCanvas(targetCanvas)
+  Widget.draw(self)
+end
+
+----------- HudWidget ----------
+HudWidget = class('HudWidget', TextWidget)
+HudWidget.align = 'right'
+HudWidget.width = 120
+HudWidget.height = 200
+
+function HudWidget:initialize(state, ...)
+  self.state = state
+  TextWidget.initialize(self, love.graphics.getWidth()-16-self.width, 0, self.width, self.height, 1)
+end
+
+function HudWidget:update(dt)
+  self.anim = (self.anim or 1) + dt 
+  
+  local textscale = T.defaultscale * 1.5 * (1 + 0.3 * math.sin(math.min(math.pi, self.anim * 10)))
+  local text = ''
+  for tier,souls in ipairs(self.state.souls) do
+    text = text..S.tier[tier]..tostring(souls)..'\n'
+  end
+  self.scale = textscale
+  self.text = text
+end
+
+----------- ObjectiveWidget ----------
+ObjectiveWidget = class('ObjectiveWidget', TextWidget)
+ObjectiveWidget.width = 640
+ObjectiveWidget.height = 160
+ObjectiveWidget.align = 'left'
+function ObjectiveWidget:initialize(objective, ...)
+  self.objective = objective
+  self.scale = T.defaultscale
+  TextWidget.initialize(self, 0+16, 0, self.width, self.height, 1)
+end
+
+function ObjectiveWidget:update(dt)
+  self.text = self.objective:getText()
+  local f = math.max(0,math.min(1,self.objective.animincrement))
+  if self.objective.closed then
+    f = 1
+  end
+  local color = {f,1,f,1}
+  self.color = color
+  self.scale = self.objective.textscale
+end
+
+----------- TiledWidget ----------
 
 TiledWidget = class('TiledWidget', Widget)
 
