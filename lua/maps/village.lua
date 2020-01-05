@@ -11,7 +11,7 @@ return {
   nextlayerid = 57,
   nextobjectid = 7,
   properties = {
-    ["music"] = "Fishing_village.wav"
+    ["music"] = "Fishing_village.mp3"
   },
   tilesets = {
     {

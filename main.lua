@@ -4,7 +4,10 @@
 love.filesystem.setRequirePath("?.lua;?/init.lua;lua/?.lua;lua/?/init.lua")
 APPLICATIONNAME = 'Ovaloord'
 
-if arg[#arg] == "-debug" then require("mobdebug").start() end
+if arg[#arg] == "-debug" then
+  require("mobdebug").start()
+  love.window.setMode( 800, 600 )
+end
 
 require 'text'
 require 'game'

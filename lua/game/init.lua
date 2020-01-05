@@ -103,6 +103,10 @@ function Game:update(dt)
   if love.keyboard.isDown('y') then dt = dt * 0.1 end
   if options['p'] then dt = 0 end
   
+  if self.state.currentlevel == 'rangervillage' then
+    PageManager.switch(DemoFinishedPage())
+  end
+  
   for _=1,(love.keyboard.isDown('x') and 10) or 1 do
     PageManager.update(dt)
   end

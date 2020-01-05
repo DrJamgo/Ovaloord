@@ -133,3 +133,18 @@ function CombatPage:leave()
   self.control:setFraction(nil)
   options['r'] = true
 end
+
+DemoFinishedPage = class('DemoFinishedPage', Page)
+
+function DemoFinishedPage:initialize(game)
+  
+end
+
+function DemoFinishedPage:draw()
+  love.graphics.setColor(1,1,1,1)
+  love.graphics.setCanvas()
+  love.graphics.replaceTransform(love.math.newTransform())
+  
+  love.graphics.printf("Ovaloord Demo Version "..GIT.." Finished!\n Thank you very much for playing..\n(Press ESC to exit)",0,0,love.graphics.getWidth()/3,'center',0,3)
+end
+

@@ -20,6 +20,7 @@ copy /b %LOVE_PATH%\love.exe+%LOVEFILE% %PACKAGE_DIR%\game.exe
 copy /b res\icon.ico %PACKAGE_DIR%
 copy /b %LOVE_PATH%\*.dll %PACKAGE_DIR%
 copy /b %LOVE_PATH%\license.txt %PACKAGE_DIR%
+ECHO "GIT = '%GIT%'">>"%PACKAGE_DIR%/lua/conf.lua"
 
 @ECHO OFF
 ::set /p PW="Enter Password for Archive: "
