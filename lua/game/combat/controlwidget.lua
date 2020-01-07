@@ -82,7 +82,7 @@ function drawResearch(layer)
   drawUnits(layer)
   local cap = layer.widget.game.state.selectioncap
   local sel = #layer.widget.unitpool
-  local x,y = layer.widget.map:convertTileToPixel(1,6.2)
+  local x,y = layer.widget.map:convertTileToPixel(10,6.3)
   local rb = ((sel == cap) and 1) or 0
   love.graphics.setColor(1,rb,rb,1)
   love.graphics.print(string.format(" %d/%d", sel, cap),x,y,0,1)
@@ -174,6 +174,18 @@ end
 function ControlWidget:update(dt)
   TiledWidget.update(self, dt)
   self.map:update(dt)
+  
+  for i=1,8 do
+    local layerdata = self.map.layers.UnitButtons.data
+    local x,y = 2+i, 7
+
+    if self.game.state.selectioncap >= i then
+      self.map:setLayerTile('UnitButtons', x, y, 17)
+    else
+      self.map:setLayerTile('UnitButtons', x, y, 22)
+    end
+    
+  end
   
   local dir = (options['r'] and (-1)) or 1
   self.transformshift = math.max(0, math.min(self.shiftamount, self.transformshift + dir * dt * 1000))
