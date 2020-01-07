@@ -93,7 +93,8 @@ function updateResearch(layer, dt)
     local unlocked = object.unlocked
     object.unlocked = layer.widget.research:isUnlocked(object.name)
     if unlocked ~= object.unlocked then
-      object.cooldown = object.cooldowntime
+      object.cooldown = 1
+      object.cooldowntime = 1
     end
     object.visible = layer.widget.research:isKnown(object.name)
     if object.visible then
