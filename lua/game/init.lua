@@ -83,16 +83,24 @@ function Game:addSpirit(tier, amount)
 end
 
 function Game:reward(unlocks, souls)
-  for _,levelname in ipairs(unlocks) do
-    self.state.levels[levelname]=0
+  for _,unlock in ipairs(unlocks) do
+    if levels[unlock] then
+      self.state.levels[unlock] = self.state.levels[unlock] or 0
+    elseif unlock == 'cap' then
+      self.state.selectioncap = math.min(self.state.selectioncap + 1, 8)
+    elseif unlock == 'randomunit' then
+      PageManager.pages.worldpage.control.research:unlockRandomUnit()
+    else
+      PageManager.pages.worldpage.control.research:unlockUnit(unlock)
+    end
   end
+  
   for tier,amount in pairs(souls) do
     self:addSpirit(tier, amount)
   end
+  local levelname = self.state.currentlevel
   self.state.levels[self.state.currentlevel] = self.state.levels[self.state.currentlevel] + 1
   self.animation = 0
-  PageManager.pages.worldpage.control:unlockRandomUnit()
-  self.state.selectioncap = self.state.selectioncap + 1
 end
 
 function Game:exitCombat()
@@ -104,9 +112,9 @@ function Game:update(dt)
   if love.keyboard.isDown('y') then dt = dt * 0.1 end
   if options['p'] then dt = 0 end
   
-  if self.state.currentlevel == 'rangervillage' then
-    PageManager.switch(DemoFinishedPage())
-  end
+  --if self.state.currentlevel == 'rangervillage' then
+  --  PageManager.switch(DemoFinishedPage())
+  --end
   
   for _=1,(love.keyboard.isDown('x') and 10) or 1 do
     PageManager.update(dt)

@@ -15,6 +15,8 @@ T.Objective = {S.info..'No objective.\nYou can hunt for souls and leave whenever
 T.ObjectiveLeave = {'Quit the Map with [Q] whenever you want.'}
 T.reward = {'Reward'}
 T.anyunit = {'any Unit'}
+T.randomunit = {'random Unit'}
+T.cap = {'Unit Capacity'}
 
 -- worldmap objects and levels
 T.yourpyramid = {'Your Pyramid', 'Once it was covered by water, now it is revealed!'}

@@ -7,10 +7,10 @@ Objective.animationtime = 1.5
 Objective.factorInc = 0.05
 Objective.factorComplete = 0.2
 
-function Objective:initialize()
-  self.time = 0
-  self.progress = 0
-  self.animincrement = -0.5
+function Objective:initialize(unlocks, souls, page)
+  self.unlocks = unlocks
+  self.souls = souls
+  self.page  = page
   
   local text = T.get('reward')..': '
   for _,levelname in ipairs(self.unlocks or {}) do
@@ -20,6 +20,14 @@ function Objective:initialize()
     text = text..S.tier[tier]..tostring(amount)..' '
   end
   self.rewardtext = text
+  
+  self:reset()
+end
+
+function Objective:reset()
+  self.time = 0
+  self.progress = 0
+  self.animincrement = -0.5
 end
 
 function Objective:getText()
@@ -71,13 +79,11 @@ function Objective:eventUnitDies(unit)
 end
 
 ObjectiveReach = class('ObjectiveReach', Objective)
-function ObjectiveReach:initialize(tile, amount, unittype, unlocks, souls)
+function ObjectiveReach:initialize(tile, amount, unittype, ...)
   self.tile = {x=tile[1],y=tile[2]}
   self.amount = amount
   self.unittype = unittype
-  self.unlocks = unlocks
-  self.souls = souls
-  Objective.initialize(self)
+  Objective.initialize(self, ...)
 end
 
 function ObjectiveReach:eventUnitOnNode(unit, node)
@@ -95,12 +101,10 @@ function ObjectiveReach:eventUnitOnNode(unit, node)
 end
 
 ObjectiveKill = class('ObjectiveKill', Objective)
-function ObjectiveKill:initialize(amount, unittype, unlocks, souls)
+function ObjectiveKill:initialize(amount, unittype, ...)
   self.amount = amount
   self.unittype = unittype
-  self.unlocks = unlocks
-  self.souls = souls
-  Objective.initialize(self)
+  Objective.initialize(self, ...)
 end
 
 function ObjectiveKill:eventUnitDies(unit)

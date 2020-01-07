@@ -51,10 +51,6 @@ function ControlWidget:initialize(game, scale)
   updateResearch(self.researchlayer, 10)
 end
 
-function ControlWidget:unlockRandomUnit()
-  self.research:unlockRandomUnit()
-end
-
 function ControlWidget:_newDrawable(name, x, y)
   local newUnit = {sprite=LPCSprite(_G[name].spritepath)}
   newUnit.x, newUnit.y = x-16, y-32

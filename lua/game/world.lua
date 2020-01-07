@@ -66,6 +66,9 @@ function World:getObjectDecription(object)
       objectives = string.format(" %d/%d", self.game.state.levels[object.name] or 0, #levels[object.name].objectives)
     end
     brief = (S[action] or '')..(brief or '')..objectives
+    if action == 'locked' then
+      brief = {{0.5,0.5,0.5,1}, brief}
+    end
     return brief, long
   end
 end

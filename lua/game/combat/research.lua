@@ -11,7 +11,11 @@ function Research:initialize(game)
 end
 
 function Research:unlockUnit(name)
-  table.insert(self.state.research, name)
+  if not table.searchByValue(self.state.research, name) then
+    table.insert(self.state.research, name)
+    return true
+  end
+  return false
 end
 
 function Research:unlockRandomUnit()
@@ -25,7 +29,7 @@ function Research:unlockRandomUnit()
     end
   end
   if #lockedUnits > 0 then
-    index = math.random(#lockedUnits-1)+1
+    local index = math.random(1, #lockedUnits)
     self:unlockUnit(lockedUnits[index])
   end
 end
@@ -39,7 +43,20 @@ function Research:isUnlocked(name)
 end
 
 function Research:isKnown(name)
-  return _G[name] and (self.state.souls[_G[name].tier] ~= nil)
+  for col, units in ipairs(self.units) do
+    local known = false
+    if self:isUnlocked(units[1]) then
+      known = true
+    end
+    for row,unit in ipairs(units) do
+      if known and (unit == name) then return true end
+      if not self:isUnlocked(unit) then
+        break
+      end
+    end
+  end
+  
+  return false
 end
 
 function Research:removeUnitFromPool(name)
