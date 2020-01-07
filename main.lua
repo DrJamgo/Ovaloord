@@ -6,8 +6,10 @@ APPLICATIONNAME = 'Ovaloord'
 
 if arg[#arg] == "-debug" then
   require("mobdebug").start()
-  love.window.setMode( 800, 600 )
+  love.window.setMode( 1080, 720 )
 end
+
+love.window.setMode( 1280, 720 )
 
 require 'text'
 require 'game'

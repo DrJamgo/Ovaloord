@@ -69,7 +69,7 @@ function ControlWidget:_updateUnitPool()
   local objects = self.layer.objects
   for i=1,#self.unitpool do
     local name = self.unitpool[i]
-    local x,y = self.map:convertTileToPixel(i+1.45, 6.1)
+    local x,y = self.map:convertTileToPixel(i+1.5, 6.1)
     objects[#objects+1] = self:_newDrawable(name, x, y)
   end
 end
@@ -78,7 +78,7 @@ function drawResearch(layer)
   drawUnits(layer)
   local cap = layer.widget.game.state.selectioncap
   local sel = #layer.widget.unitpool
-  local x,y = layer.widget.map:convertTileToPixel(10,6.3)
+  local x,y = layer.widget.map:convertTileToPixel(cap+3,6.3)
   local rb = ((sel == cap) and 1) or 0
   love.graphics.setColor(1,rb,rb,1)
   love.graphics.print(string.format(" %d/%d", sel, cap),x,y,0,1)
@@ -180,6 +180,7 @@ function ControlWidget:update(dt)
       self.map:setLayerTile('UnitButtons', x, y, 17)
     else
       self.map:setLayerTile('UnitButtons', x, y, 22)
+      break
     end
   end
   

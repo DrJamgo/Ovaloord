@@ -11,11 +11,11 @@ levels.desertvillage = {
 levels.village = {
   objectives={
     ObjectiveReach({40,11}, 5, nil, {'Pirate'}, {3,4}),
-    ObjectiveReach({40,11}, 5, nil, {'rangervillage'}, {3,4}),
+    ObjectiveReach({40,11}, 5, nil, {'rangeroutpost'}, {3,4}),
     ObjectiveReach({40,11}, 5, nil, {'randomunit'}, {3,4}),
   }
 }
-levels.rangervillage = {
+levels.rangeroutpost = {
   objectives={
     ObjectiveReach({40,8}, 10, nil, {'rangervillage'},{}, {4,4})
   }

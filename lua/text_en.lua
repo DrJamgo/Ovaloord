@@ -25,7 +25,7 @@ T.driedoutoasis = {'Dried out Oasis', 'This was a refuge of life in the sparse d
 
 T.desertvillage = {'Desert Village', 'Lets see if we can harvest these \1 weak souls..'}
 T.village = {'Village', 'Quiet and unknowing..'}
-T.rangervillage = {'Ranger Village'}
+T.rangeroutpost = {'Ranger Outpost'}
 
 -- level objects
 T.road = {'Road'}
@@ -38,6 +38,10 @@ T.Rosen = {'Rosen', 'He rose to serve.'}
 T.Warden = {'Warden', 'Protects ancient kings.'}
 T.Revenant = {'Revenant'}
 
+T.Pirate = {'Pirate'}
+T.Raider = {'Raider'}
+T.Marauder = {'Marauder'}
+
 T.Zombie = {'Zombie', 'Dead  flesh knows no pain.'}
 T.Cadaver = {'Cadaver'}
 T.Rotter = {'Rotter'}
@@ -47,10 +51,6 @@ T.Hitter = {'Hitter', 'Shoots from distance'}
 T.Revenant = {'Revenant', 'Comes to get you..'}
 
 -- Human
-T.Peasant = {'Peasant', 'Not very good in defeindg himself..'}
-T.Militia = {'Militia', 'This one found a knife somewhere.'}
-T.Ranger = {'Ranger', 'Defends the woods.'}
-
 
 
 return T
