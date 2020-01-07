@@ -62,7 +62,7 @@ function ControlWidget:_newDrawable(name, x, y)
   newUnit.name = name
   newUnit.type = name
   newUnit.cooldown = 0.0
-  newUnit.cooldowntime = 5.0
+  newUnit.cooldowntime = 5.0 * _G[name].tier
   newUnit.brief = _G[name].brief
   newUnit.long = _G[name].long
   return newUnit
@@ -115,11 +115,11 @@ function drawUnits(layer)
     if object.visible == false then
       -- do nothing
     elseif object.unlocked == false then
-      love.graphics.setColor(0.1,0.1,0.1,0.6)
+      love.graphics.setColor(0.1,0.1,0.1,0.5)
       object.sprite:drawAnimation(object.x+16, object.y+32, 'stand', 1, 0)
     elseif object.cooldown > 0 then
       local time = (object.cooldown / (object.cooldowntime)) * (5/6)
-      love.graphics.setColor(1-time-0.2, 1-time-0.2, 1-time-0.2, 1)
+      love.graphics.setColor(1-time-0.2, 1-time-0.2, 1-time-0.2, 1-time/2)
       object.sprite:drawAnimation(object.x+16, object.y+32, 'prone', 4, time)
     else
       love.graphics.setColor(1,1,1,1)
