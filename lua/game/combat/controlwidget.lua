@@ -181,7 +181,6 @@ function ControlWidget:update(dt)
     else
       self.map:setLayerTile('UnitButtons', x, y, 22)
     end
-    
   end
   
   local dir = (options['r'] and (-1)) or 1

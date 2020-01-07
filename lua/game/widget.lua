@@ -136,7 +136,10 @@ end
 
 function TiledWidget:mousemoved(x,y,...)
   self.cursor:set(x,y)
-  local tileOrObject = self:getTileAtPosition(x, y)
+  local tileOrObject
+  if x and y then
+    tileOrObject = self:getTileAtPosition(x, y)
+  end
   return tileOrObject ~= nil
 end
 

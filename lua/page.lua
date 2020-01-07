@@ -76,12 +76,15 @@ end
 
 function Page:forwardMouseEvent(f, x, y, ...)
   if self.widgets then
+    local hit = false
     for i=1,#self.widgets do
       -- iterate in reverse order to process last dawn widgets first
       local widget = self.widgets[#self.widgets + 1 - i]
       if widget:test(x,y) and widget[f] then
-        if widget[f](widget, x,y,...) then
-          return
+        if hit then
+          widget[f](widget, nil,nil,...)
+        else
+          hit = widget[f](widget, x,y,...)
         end
       end
     end
